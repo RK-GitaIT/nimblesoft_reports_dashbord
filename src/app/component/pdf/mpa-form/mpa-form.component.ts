@@ -130,6 +130,10 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
     const form = this.pdfDoc.getForm();
     const availableFields = form.getFields().map(field => field.getName());
     this.fields.forEach(fieldDef => {
+      if("field35" == fieldDef.controlName){
+        console.log("log");
+      }
+      //const value = fieldDef.controlName;
       const value = this.form.get(fieldDef.controlName)?.value;
       if (availableFields.includes(fieldDef.pdfField)) {
         try {
