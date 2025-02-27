@@ -125,7 +125,8 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     const formInstance = this.pdfDoc.getForm();
     const availableFields = formInstance.getFields().map(field => field.getName());
     this.fields.forEach(fieldDef => {
-      const value = this.form.get(fieldDef.controlName)?.value;
+      const value = fieldDef.controlName;
+      //const value = this.form.get(fieldDef.controlName)?.value;
       if (availableFields.includes(fieldDef.pdfField)) {
         try {
           switch (fieldDef.type) {
