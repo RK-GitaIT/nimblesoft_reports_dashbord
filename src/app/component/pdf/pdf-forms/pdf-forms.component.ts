@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MpaFormComponent } from '../mpa-form/mpa-form.component';
 import { HipaaFormComponent } from '../hippa-form/hippa-form.component';
+import { DpoaFormComponent } from '../dpoa-form/dpoa-form.component';
 
 @Component({
   selector: 'app-pdf-forms',
   standalone: true,
-  imports: [CommonModule, FormsModule, MpaFormComponent, HipaaFormComponent],
+  imports: [CommonModule, FormsModule, MpaFormComponent, HipaaFormComponent, DpoaFormComponent],
   templateUrl: './pdf-forms.component.html',
   styleUrls: ['./pdf-forms.component.css'],
 })

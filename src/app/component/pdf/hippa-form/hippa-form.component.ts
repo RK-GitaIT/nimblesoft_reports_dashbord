@@ -39,7 +39,7 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     { controlName: 'field8', pdfField: 'ComminicableDiseasesCB', label: 'Communicable Diseases', tooltip: '', type: 'checkbox' },
     { controlName: 'field9', pdfField: 'Alcoholdrugabusetreatmentrecords', label: 'Alcohol/Drug Records', tooltip: '', type: 'checkbox' },
     { controlName: 'field10', pdfField: 'Geneticinformation', label: 'Genetic Information', tooltip: '', type: 'checkbox' },
-    { controlName: 'field11', pdfField: 'OtherSpecify', label: 'Other (Specify)', tooltip: '', type: 'text' },
+    { controlName: 'field11', pdfField: 'OtherSpecify', label: 'Other (Specify)', tooltip: '', type: 'checkbox' },
     { controlName: 'field12', pdfField: 'sharinginformationrequest_1', label: 'Reason for Disclosure', tooltip: '', type: 'text' },
     { controlName: 'field13', pdfField: 'sharinginformationrequest_2', label: 'Field 13', tooltip: '', type: 'text' },
     { controlName: 'field14', pdfField: 'sharinginformationrequest_3', label: 'Field 14', tooltip: '', type: 'text' },
@@ -54,39 +54,20 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     { controlName: 'field23', pdfField: 'Describe_legal_authority_sign_form_2', label: 'Legal Authority 1', tooltip: '', type: 'text' },
     { controlName: 'field24', pdfField: 'Describe_legal_authority_sign_form_3', label: 'Legal Authority 2', tooltip: '', type: 'text' },
     { controlName: 'field25', pdfField: 'Describe_legal_authority_sign_form_4', label: 'Legal Authority 3', tooltip: '', type: 'text' },
-    { controlName: 'field26', pdfField: 'Form_of_Disclosure', label: 'Electronic Copy', tooltip: '', type: 'checkbox' },
-    { controlName: 'field27', pdfField: 'Reason_for_Disclosure', label: 'Hard Copy', tooltip: '', type: 'checkbox' },
+    { controlName: 'field26', pdfField: 'FormofDisclosure', label: 'Electronic Copy', tooltip: '', type: 'checkbox' },
+    { controlName: 'field27', pdfField: 'HardCopy', label: 'Hard Copy', tooltip: '', type: 'checkbox' },
     { controlName: 'field28', pdfField: 'Duration_to', label: 'To Date', tooltip: '', type: 'date' },
-    { controlName: 'field29', pdfField: 'Duration_a', label: 'From Date', tooltip: '', type: 'date' },
+    { controlName: 'field29', pdfField: 'Duration_a', label: 'From Date', tooltip: '', type: 'checkbox' },
     { controlName: 'field30', pdfField: 'Duration_From', label: 'From Date', tooltip: '', type: 'date' },
     { controlName: 'field31', pdfField: 'Information_share', label: 'Information Share', tooltip: '', type: 'text' },
     { controlName: 'field32', pdfField: 'Health_Information_Name2', label: 'Revocation Name', tooltip: '', type: 'text' },
     { controlName: 'field33', pdfField: 'Health_Information_Organization2', label: 'Revocation Organization', tooltip: '', type: 'text' },
     { controlName: 'field34', pdfField: 'Health_Information_Address', label: 'Recipient Address', tooltip: '', type: 'text' },
     { controlName: 'field35', pdfField: 'Health_Information_Address2', label: 'Revocation Address', tooltip: '', type: 'text' },
-    { controlName: 'field36', pdfField: 'Duration_b', label: 'All Periods', tooltip: '', type: 'text' },
+    { controlName: 'field36', pdfField: 'Duration_b', label: 'All Periods', tooltip: '', type: 'checkbox' },
     { controlName: 'field37', pdfField: 'Duration_c', label: 'Until Event', tooltip: '', type: 'checkbox' },
     { controlName: 'field38', pdfField: 'undefined1', label: 'Disclose My Complete Health Records', tooltip: '', type: 'checkbox' },
     { controlName: 'field39', pdfField: 'undefined2', label: 'Show Exceptions', tooltip: '', type: 'checkbox' },
-    {
-      controlName: 'field40',
-      pdfField: 'GenderField',
-      label: 'Gender',
-      tooltip: 'Select your gender',
-      type: 'radio',
-      options: [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' },
-        { label: 'Other', value: 'other' }
-      ]
-    },
-    {
-      controlName: 'field41',
-      pdfField: 'ConsentField',
-      label: 'Consent',
-      tooltip: 'Check if you agree',
-      type: 'checkbox'
-    }
   ];
 
   constructor(private fb: FormBuilder) {

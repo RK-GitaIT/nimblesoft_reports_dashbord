@@ -1,0 +1,341 @@
+<div class="max-h-screen overflow-y-auto p-4">
+    <form [formGroup]="form" (ngSubmit)="submitForm()" class="max-w-6xl mx-auto space-y-8">
+      
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Person Details &amp; Agent Details</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div>
+            <label for="field1" class="block text-sm font-medium text-gray-700">Your Name & Address</label>
+            <input
+              id="field1"
+              type="text"
+              formControlName="field1"
+              placeholder="Enter Name & Address"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label for="field2" class="block text-sm font-medium text-gray-700">Agent Name & Address</label>
+            <input
+              id="field2"
+              type="text"
+              formControlName="field2"
+              placeholder="Enter Agent Name & Address"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+          </div> 
+          <div></div>
+        </div>
+      </div>
+      
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Grant &amp; Withhold the Powers</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field3"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(A) Real property transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field4"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(B)Tangible personal property transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field5"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(C) Stock and bond transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field6"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(D) Commodity and option transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field7"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700"> (E) Banking and other financial institution transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field8"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(F) Business operating transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field9"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(G) Insurance and annuity transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field10"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(H) Estate, trust, and other beneficiary transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field11"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(I) Claims and litigation</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field12"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(J) Personal and family maintenance</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field13"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(K) Benefits from social security, Medicare, Medicaid, or other governmental programs or civil or military service</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field14"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(L) Retirement plan transactions</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field15"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(M) Tax matters</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field16"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(I) Digital assets and the content of an electronic communication</span>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              formControlName="field17"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-700">(O)  ALL OF THE POWERS LISTED IN (A) THROUGH (N).  YOU DO NOT
+                HAVE TO INITIAL THE LINE IN FRONT OF ANY OTHER POWER IF 
+               YOU INITIAL LINE (O)</span>
+          </div>
+         
+          <div></div>
+        </div>
+      </div>
+      <div  class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Special instructions applicable to agent compensation</h3>
+        <div class="grid grid-cols-1   gap-6">
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="field18" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700">My agent is entitled to reimbursement of reasonable expenses incurred on my behalf 
+                and to compensation that is reasonable under the circumstances. </span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="field19" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700"> My agent is entitled to reimbursement of reasonable expenses incurred on my behalf 
+                but shall receive no compensation for serving as my agent.  </span>
+          </div>       
+          <div></div>
+        </div>
+      </div>
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Special instructions applicable to co-agents </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2  gap-6">
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="field20" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700">Each of my co-agents may act independently for me. </span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="field21" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700">My co-agents may act for me only if the co-agents act jointly. </span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="field22" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700">My co-agents may act for me only if a majority of the co-agents act jointly.</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Special instructions applicable to gifts</h3>
+        <div class="grid gap-6">
+          <div class="flex ">
+            <input type="checkbox" formControlName="field23" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+            <span class="ml-2 text-sm text-gray-700"> I grant my agent the power to apply my property to make gifts outright to or for the 
+                benefit of a person, including by the exercise of a presently exercisable general power of 
+                appointment held by me, except that the amount of a gift to an individual may not exceed the 
+                amount of annual exclusions allowed from the federal gift tax for the calendar year of the gift</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+      <div class="xl:col-span-3 bg-white shadow rounded-lg p-6">
+        <label class="text-xl font-semibold text-gray-800 mb-4">Special Instructions
+            Limitting OR Extending The Powers Granted To Your Agent</label>
+        <div class="mt-2 space-y-2">
+          <input
+            type="text"
+            formControlName="field24"
+            placeholder="Instruction 1"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+          />
+          <input
+            type="text"
+            formControlName="field25"
+            placeholder="Instruction 2"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+          />
+          <input
+            type="text"
+            formControlName="field26"
+            placeholder="Instruction 3"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+          />
+          <input
+            type="text"
+            formControlName="field27"
+            placeholder="Instruction 4"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+          />
+          <input
+          type="text"
+          formControlName="field28"
+          placeholder="Instruction 5"
+          class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+        />
+        <input
+        type="text"
+        formControlName="field29"
+        placeholder="Instruction 6"
+        class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+      />
+      <input
+      type="text"
+      formControlName="field30"
+      placeholder="Instruction 7"
+      class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+    />
+        </div>
+      </div>
+      <!-- Card: Duration of Authorization -->
+      <div class="bg-white shadow rounded-lg p-6 ">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4"> Successor(s) To That Agent</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+           <div>
+            <label for="field31" class="block text-sm font-medium text-gray-700">Name</label>
+            <input
+              id="field31"
+              type="text"
+              formControlName="field31"
+              placeholder="Enter Name"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+            </div>
+            <div>
+            <label for="field33" class="block text-sm font-medium text-gray-700">Signed Date</label>
+            <input
+              type="date"
+              formControlName="field33"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+           </div>
+           <div>
+            <label for="field37" class="block text-sm font-medium text-gray-700">Country</label>
+            <input
+              type="text"
+              formControlName="field37"
+              id="field37"
+              placeholder="Country"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+          </div>
+          
+          <div>
+            <label for="field36" class="block text-sm font-medium text-gray-700">State</label>
+            <input
+              type="text"
+              formControlName="field36"
+              id="field36"
+              placeholder="State"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label for="field38" class="block text-sm font-medium text-gray-700">Acknowledgement Date</label>
+            <input
+              type="date"
+              formControlName="field38"      
+              id="field38"
+              placeholder="Acknowledgement Date"     
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+           </div>
+           <div>
+            <label for="field39" class="block text-sm font-medium text-gray-700">Principal Name</label>
+            <input
+              type="text"
+              formControlName="field39"
+              placeholder="Name"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+           </div>
+           <div>
+            <label for="field40" class="block text-sm font-medium text-gray-700">Printed Name</label>
+            <input
+              type="text"
+              formControlName="field38"
+              placeholder="Name"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+           </div>
+           <div>
+            <label for="field41" class="block text-sm font-medium text-gray-700">Commission Expires</label>
+            <input
+              type="date"
+              formControlName="field41"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            />
+           </div>
+          </div>
+        </div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+    </form>
+    <div>&nbsp;</div>
+      <div>&nbsp;</div>
+  </div>

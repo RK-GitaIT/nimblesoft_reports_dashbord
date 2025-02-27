@@ -6,6 +6,7 @@
           <option value="">Select Form</option>
           <option value="mpa-form">Medical Power Of Attorney</option>
           <option value="hipaa-form">HIPAA Release Form</option>
+          <option value="dpoa-form">STATUTORY DURABLE POWER OF ATTORNEY</option>
         </select>
       </div>
       <!-- Right Column: Action Buttons -->
@@ -41,6 +42,12 @@
       (formSubmitted)="handleFormSubmit($event)"
       (resetTriggered)="handleResetTriggered()">
     </app-hippa-form>
+     <app-dpoa-form
+      *ngSwitchCase="'dpoa-form'"
+      #childComponent
+      (formSubmitted)="handleFormSubmit($event)"
+      (resetTriggered)="handleResetTriggered()">
+    </app-dpoa-form>
   </ng-container>
   
   <!-- Success Message -->
