@@ -3,7 +3,7 @@
   
     <div class="flex flex-col md:flex-row justify-center gap-6 flex-1">
       <!-- Left Form Panel -->
-      <div class="bg-white shadow rounded-lg p-4 w-full max-w-md mx-auto">
+      <div class="bg-white shadow rounded-lg p-4 w-full max-w-md mx-auto h-fit">
         <form class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700">Website URL</label>
@@ -66,25 +66,26 @@
       </div>
   
       <!-- Right Preview Panel -->
-      <div class="bg-white shadow rounded-lg p-4 w-full max-w-md mx-auto flex flex-col items-center">
+      <div class="bg-white shadow rounded-lg p-4 w-full max-w-md mx-auto flex flex-col items-center h-fit" >
         <h2 class="text-lg font-semibold text-gray-800 mb-4">QR Code Preview</h2>
         <!-- Always rendered container for the QR code -->
         <div #qrCodeCanvas class="mb-4"></div>
-  
+    
         <!-- Download controls appear only when QR is generated -->
         <div *ngIf="isQrGenerated" class="w-full">
-          <label class="block text-sm font-medium text-gray-700">Download Format</label>
-          <select [(ngModel)]="downloadFormat" name="downloadFormat"
-                  class="mt-1 block w-full border rounded p-2 text-sm">
-            <option value="png">PNG</option>
-            <option value="svg">SVG</option>
-            <option value="jpg">JPG</option>
-          </select>
-          <button type="button" (click)="download()"
-          class="w-full bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all text-white p-3 rounded-2xl mt-4 text-base font-semibold"> Download QR
-        </button>
+            <label class="block text-sm font-medium text-gray-700">Download Format</label>
+            <select [(ngModel)]="downloadFormat" name="downloadFormat"
+                    class="mt-1 block w-full border rounded p-2 text-sm">
+                <option value="png">PNG</option>
+                <option value="svg">SVG</option>
+                <option value="jpg">JPG</option>
+            </select>
+            <button type="button" (click)="download()"
+                class="w-full bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transform hover:scale-105 transition-all text-white p-3 rounded-2xl mt-4 text-base font-semibold">
+                Download QR
+            </button>
         </div>
-      </div>
+    </div>
     </div>
   </div>
   
