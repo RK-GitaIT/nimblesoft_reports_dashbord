@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import QRCodeStyling, { DotType } from 'qr-code-styling';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-qrcodegenerator',
@@ -30,7 +31,7 @@ export class QrcodegeneratorComponent implements AfterViewInit {
   // ViewChild to hold the canvas container
   @ViewChild('qrCodeCanvas', { static: false }) qrCodeCanvas!: ElementRef;
 
-  constructor() {
+  constructor(private toastService: ToastService) {
     // Initialize with default options
     this.qrCode = new QRCodeStyling({
       width: this.size,
@@ -58,6 +59,7 @@ export class QrcodegeneratorComponent implements AfterViewInit {
   // Generate the QR code with the current form data
   generateQR() {
     if (!this.url) {
+      this.toastService.showToast('Error occurred!', 'Something went wrong.', 'error');
       // If there's no URL, do nothing (or you can show an alert)
       return;
     }

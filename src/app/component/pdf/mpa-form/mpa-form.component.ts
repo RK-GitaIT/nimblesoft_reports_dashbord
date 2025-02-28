@@ -183,7 +183,7 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'filled_form.pdf';
+      a.download = 'Medical power of attorney designation of health care agent.pdf';
       a.click();
       URL.revokeObjectURL(url);
       console.log('PDF downloaded successfully.');

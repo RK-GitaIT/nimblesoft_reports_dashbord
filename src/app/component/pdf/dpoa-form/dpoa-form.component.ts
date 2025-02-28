@@ -154,11 +154,26 @@ export class DpoaFormComponent  implements PDFFormInterface, OnInit {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'filled_form.pdf';
+      a.download = 'Statutory durable power of attorney.pdf';
       a.click();
       URL.revokeObjectURL(url);
       console.log('PDF downloaded successfully.');
     })().catch(error => console.error('Error during PDF download:', error));
   }
+
+  updateAllSelectionALLoFThePowerListedIn() {
+    const isChecked = this.form.get('field17')?.value;
+  
+    if (isChecked !== undefined) {
+      const updates: { [key: string]: boolean } = {};
+  
+      for (let i = 3; i <= 16; i++) {
+        updates[`field${i}`] = isChecked;
+      }
+  
+      this.form.patchValue(updates, { emitEvent: false });
+    }
+  }
+  
 
 }

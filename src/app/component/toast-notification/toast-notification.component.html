@@ -1,0 +1,26 @@
+<div *ngIf="(toast$ | async) as toast" 
+  class="fixed top-5 right-5 w-80 bg-white shadow-lg rounded-lg p-4 flex items-center space-x-3 border-l-4 animate-fadeIn transition-all duration-500"
+  [ngClass]="{
+    'border-green-500 text-green-700': toast.type === 'success',
+    'border-red-500 text-red-700': toast.type === 'error',
+    'border-yellow-500 text-yellow-700': toast.type === 'warning'
+  }">
+  
+  <!-- Icon -->
+  <div class="text-xl">
+    <span *ngIf="toast.type === 'success'" class="text-green-500">✔️</span>
+    <span *ngIf="toast.type === 'error'" class="text-red-500">❌</span>
+    <span *ngIf="toast.type === 'warning'" class="text-yellow-500">⚠️</span>
+  </div>
+
+  <!-- Text -->
+  <div class="flex-1">
+    <p class="font-semibold">{{ toast.message }}</p>
+    <p class="text-sm text-gray-600">{{ toast.subMessage }}</p>
+  </div>
+
+  <!-- Close Button -->
+  <button (click)="closeToast()" class="ml-auto text-gray-400 hover:text-gray-600 transition">
+    ✖
+  </button>
+</div>

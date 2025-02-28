@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MpaFormComponent } from '../mpa-form/mpa-form.component';
 import { HipaaFormComponent } from '../hippa-form/hippa-form.component';
 import { DpoaFormComponent } from '../dpoa-form/dpoa-form.component';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-pdf-forms',
@@ -21,13 +22,14 @@ export class PdfFormsComponent {
   formData: any = null;
   isFormSubmitted: boolean = false;
 
-  constructor() {}
+  constructor(private toastService: ToastService) {}
 
 
   handleDownloadPdf(): void {
     if (this.childComponent) {
       this.childComponent.downloadPdf();
     } else {
+      this.toastService.showToast('Error !', 'Please select the form', 'error');  
       console.error('No form loaded for download.');
     }
   }

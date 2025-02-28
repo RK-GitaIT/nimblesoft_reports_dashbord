@@ -158,7 +158,7 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'filled_form.pdf';
+      a.download = 'HIPAA Release Form.pdf';
       a.click();
       URL.revokeObjectURL(url);
       console.log('PDF downloaded successfully.');

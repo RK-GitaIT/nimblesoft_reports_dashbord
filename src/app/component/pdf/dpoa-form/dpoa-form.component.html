@@ -148,6 +148,7 @@
               type="checkbox"
               formControlName="field17"
               class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+              (change)="updateAllSelectionALLoFThePowerListedIn()"
             />
             <span class="ml-2 text-sm text-gray-700">(O)  ALL OF THE POWERS LISTED IN (A) THROUGH (N).  YOU DO NOT
                 HAVE TO INITIAL THE LINE IN FRONT OF ANY OTHER POWER IF 
@@ -318,7 +319,8 @@
             <label for="field40" class="block text-sm font-medium text-gray-700">Printed Name</label>
             <input
               type="text"
-              formControlName="field38"
+              id="field40"
+              formControlName="field40"
               placeholder="Name"
               class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
             />
