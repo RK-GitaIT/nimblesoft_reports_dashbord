@@ -50,9 +50,8 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
     { controlName: 'field17', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p1[0].NumericField1[0]', label: 'Day of month', tooltip: 'Enter value for Field 17', type: 'text' },
     { controlName: 'field18', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p1[0].DateField2[0]', label: 'Month and year', tooltip: 'Enter value for Field 18', type: 'text' },
     { controlName: 'field19', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p2[0].TextField2[0]', label: 'city and state', tooltip: 'Enter value for Field 19', type: 'text' },
-    { controlName: 'field20', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p3[0].SignatureField2[0]', label: 'Print name', tooltip: 'Enter value for Field 20', type: 'text' },
-    { controlName: 'field21', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p4[0].TextField2[0]', label: 'Name of witness one', tooltip: 'Enter value for Field 21', type: 'text' },
-    { controlName: 'field22', pdfField: 'form_MPOA[0].page3[0].s6[0].p3[0].TextField3[0]', label: 'Date', tooltip: 'Enter value for Field 22', type: 'text' },
+    { controlName: 'field21', pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p3[0].SignatureField2[0]', label: 'Print name', tooltip: 'Enter value for Field 20', type: 'text' },   
+    { controlName: 'field22', pdfField: 'form_MPOA[0].page3[0].s6[0].p3[0].TextField3[0]', label: 'State of Texas County of', tooltip: 'Enter value for Field 22', type: 'text' },
     { controlName: 'field23', pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p1[0].NumericField1[0]', label: 'Name of person acknowledging', tooltip: 'Enter value for Field 23', type: 'text' },
     { controlName: 'field24', pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p1[0].TextField5[0]', label: '  Notarys printed name', tooltip: 'Enter value for Field 24', type: 'text' },
     { controlName: 'field25', pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p2[0].left[0].p1[0].SignatureField3[0]', label: 'My commission expires', tooltip: 'Enter value for Field 25', type: 'text' },
@@ -71,8 +70,6 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
     { controlName: 'field38', pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].TextField2[0]', label: 'Field 38', tooltip: 'Enter value for Field 38', type: 'text' },
     { controlName: 'field39', pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].DateField3[0]', label: 'Field 39', tooltip: 'Enter value for Field 39', type: 'text' },
     { controlName: 'field40', pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].TextField2[1]', label: 'Field 40', tooltip: 'Enter value for Field 40', type: 'text' },
-  
-    // Extra demonstration fields for other input types:
     {
       controlName: 'field45',
       pdfField: 'GenderField',
@@ -133,8 +130,8 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
       if("field35" == fieldDef.controlName){
         console.log("log");
       }
-      //const value = fieldDef.controlName;
-      const value = this.form.get(fieldDef.controlName)?.value;
+      const value = fieldDef.controlName;
+      //const value = this.form.get(fieldDef.controlName)?.value;
       if (availableFields.includes(fieldDef.pdfField)) {
         try {
           switch (fieldDef.type) {
