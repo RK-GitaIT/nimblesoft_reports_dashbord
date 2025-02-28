@@ -101,13 +101,6 @@
             placeholder="Specify other"
             class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
           />
-          <input
-          id="field15"
-          type="text"
-          formControlName="field15"
-          placeholder="Specify other"
-          class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-        />
          <input
             id="field16"
             type="text"
@@ -154,36 +147,36 @@
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Reason for Disclosure</h3>
       <div>
         <label for="field12" class="block text-sm font-medium text-gray-700">Reason for Disclosure</label>
-        <textarea
+        <input type="text"
           id="field12"
           formControlName="field12"
           placeholder="Enter reason for disclosure field1"
           class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-        ></textarea>
-         <textarea
+        >
+         <input type="text"
           id="field13"
           formControlName="field13"
           placeholder="Enter reason for disclosure field2"
           class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-        ></textarea>
-         <textarea
+        >
+         <input type="text"
           id="field14"
           formControlName="field14"
           placeholder="Enter reason for disclosure field3"
           class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-        ></textarea>
-        <textarea
+        >
+        <input type="text"
           id="field19"
           formControlName="field19"
           placeholder="Enter reason for disclosure field4"
           class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-        ></textarea>
-        <textarea
+        >
+        <input type="text"
         id="field20"
         formControlName="field20"
         placeholder="Enter reason for disclosure field5"
         class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
-      ></textarea>
+      >
       </div>
     </div>
     
@@ -228,35 +221,35 @@
     <!-- Card: Duration of Authorization -->
     <div class="bg-white shadow rounded-lg p-6">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Duration of Authorization</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-center">
+      <div class="grid grid-cols-3 gap-2 items-center">
         <div class="flex items-center space-x-2">
-          <input type="checkbox" formControlName="field29" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+          <input type="checkbox" formControlName="field29" class="h-5 w-5 text-indigo-600 border-gray-300 rounded" />
           <span class="text-sm text-gray-700">From</span>
-        </div>
-        <div>
           <input
             type="date"
             formControlName="field30"
-            class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:ring-indigo-500"
           />
         </div>
-        <div>
+    
+        <div class="flex items-center space-x-2">
           <span class="text-sm text-gray-700">to</span>
           <input
             type="date"
             formControlName="field28"
-            class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-indigo-500"
+            class="block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:ring-indigo-500"
           />
         </div>
       </div>
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div class="flex items-center md:col-span-2">
+    
+      <div class="mt-3 grid flex gap-6">
+        <div class="flex items-center">
           <input type="checkbox" formControlName="field36" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
           <span class="ml-2 text-sm text-gray-700">All past, present, and future periods</span>
         </div>
         <div class="flex items-center">
           <input type="checkbox" formControlName="field37" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-          <span class="ml-2 text-sm text-gray-700">Until the following event:</span>
+          <span class="ml-2 text-sm text-gray-700">The date of the signature in section VI until the following event</span>
         </div>
       </div>
     </div>
