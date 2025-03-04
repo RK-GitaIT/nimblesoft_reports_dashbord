@@ -86,6 +86,7 @@ export class QrcodegeneratorComponent implements AfterViewInit {
 
   // Helper method to update the QR code
   private updateQrCode(imageUrl: string) {
+    this.isQrGenerated = true;
     this.qrCode.update({
       data: this.url,
       image: imageUrl,
@@ -94,7 +95,7 @@ export class QrcodegeneratorComponent implements AfterViewInit {
       dotsOptions: { color: this.dotColor, type: this.shape },
       backgroundOptions: { color: this.bgColor },
     });
-    this.isQrGenerated = true;
+
   }
 
   // Download the current QR code

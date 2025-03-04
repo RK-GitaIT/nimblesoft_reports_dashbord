@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HippaFormComponent } from './hippa-form.component';
+import { HipaaFormComponent } from './hippa-form.component';
 
 describe('HippaFormComponent', () => {
-  let component: HippaFormComponent;
-  let fixture: ComponentFixture<HippaFormComponent>;
+  let component: HipaaFormComponent;
+  let fixture: ComponentFixture<HipaaFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HippaFormComponent]
+      imports: [HipaaFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HippaFormComponent);
+    fixture = TestBed.createComponent(HipaaFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
