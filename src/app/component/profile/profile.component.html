@@ -1,0 +1,61 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6 text-center">Profiles Dashboard</h1>
+  
+    <!-- Form for Add / Edit Profile -->
+    <div class="bg-white shadow rounded-lg p-6 mb-8 max-w-md mx-auto">
+      <h2 class="text-xl font-semibold mb-4 text-gray-700">
+        {{ isEditing ? 'Edit Profile' : 'Add Profile' }}
+      </h2>
+      <form (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-600">Name</label>
+          <input 
+            type="text" 
+            formControlName="name"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
+            placeholder="Enter name"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600">Email</label>
+          <input 
+            type="email" 
+            formControlName="email"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
+            placeholder="Enter email"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600">File ID</label>
+          <select 
+            formControlName="fileId" 
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200">
+          {{ isEditing ? 'Update Profile' : 'Add Profile' }}
+        </button>
+      </form>
+    </div>
+  
+    <!-- Profiles List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let profile of profiles" class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-gray-800">{{ profile.name }}</h3>
+        <p class="text-gray-600">{{ profile.email }}</p>
+        <p class="text-gray-500 mt-2">File ID: {{ profile.fileId || profile.id }}</p>
+        <div class="mt-4 flex justify-between">
+          <button (click)="editProfile(profile)" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition duration-200">
+            Edit
+          </button>
+          <button (click)="deleteProfile(profile.id)" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

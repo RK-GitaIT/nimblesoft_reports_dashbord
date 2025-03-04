@@ -1,0 +1,48 @@
+[
+    {
+      "id": 1,
+      "fullLegalName": "John Doe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "gender": "Male",
+      "dob": "1985-07-15",
+      "relation": "Spouse"
+    },
+    {
+      "id": 2,
+      "fullLegalName": "Jane Doe",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "gender": "Female",
+      "dob": "1990-03-25",
+      "relation": "Spouse"
+    },
+    {
+      "id": 3,
+      "fullLegalName": "Michael Doe",
+      "firstName": "Michael",
+      "lastName": "Doe",
+      "gender": "Male",
+      "dob": "2015-09-10",
+      "relation": "Child"
+    },
+    {
+      "id": 4,
+      "fullLegalName": "Sarah Doe",
+      "firstName": "Sarah",
+      "lastName": "Doe",
+      "gender": "Female",
+      "dob": "2018-05-22",
+      "relation": "Child"
+    },
+    {
+      "id": 5,
+      "fullLegalName": "Robert Doe",
+      "firstName": "Robert",
+      "lastName": "Doe",
+      "gender": "Male",
+      "dob": "1955-11-02",
+      "relation": "Parent"
+    }
+  ]
+  
