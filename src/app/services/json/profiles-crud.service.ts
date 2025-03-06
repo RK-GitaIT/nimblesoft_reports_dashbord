@@ -22,8 +22,8 @@ export class ProfilesCrudService {
     this.http.get<any>(this.apiUrl).pipe(
       tap(response => console.log("Fetched Beneficiaries:", response)), // Log API response
       map(response => {
-        if (response && response.$values && Array.isArray(response.$values)) {
-          return response.$values; // ✅ Extract correct array
+        if (response && Array.isArray(response)) {
+          return response; // ✅ Extract correct array
         } else {
           console.warn("Unexpected response format:", response);
           return [];
