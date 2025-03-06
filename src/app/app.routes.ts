@@ -3,6 +3,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { QrcodegeneratorComponent } from './component/qrcodegenerator/qrcodegenerator.component';
 import { PdfFormsComponent } from './component/pdf/pdf-forms/pdf-forms.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { MyProfileComponent } from './component/my-profile/my-profile.component';
 
 export const routes: Routes = [
   { path: 'family-other', component: ProfileComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: '', component: QrcodegeneratorComponent},
   // Changed from {pdf-forms/{mpa-form}} to a route parameter.
   { path: 'pdf-forms/:formType', component: PdfFormsComponent },
-  { path: '', redirectTo: '/qrgenerator', pathMatch: 'full' }
+  { path: '', redirectTo: '/qrgenerator', pathMatch: 'full' },
+  {path:'my-profile', component:MyProfileComponent}
 ];

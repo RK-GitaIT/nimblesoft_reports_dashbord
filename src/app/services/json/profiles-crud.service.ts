@@ -1,71 +1,102 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfilesCrudService {
-  private jsonFilePath = 'assets/profiles.json';
-  private jsonData$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  private apiUrl = 'http://test.gitait.com/api/Beneficiaries'; 
+  private beneficiaries$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   constructor(private http: HttpClient) {
-    this.loadJson();
+    this.loadBeneficiaries();
   }
 
-
-  private loadJson(): void {
-    this.http.get<any[]>(this.jsonFilePath).pipe(
+  /** ✅ Fetch Beneficiaries for clientId = 1 */
+  private loadBeneficiaries(): void {
+    console.log("Fetching beneficiaries..."); // Debugging log
+  
+    this.http.get<any>(this.apiUrl).pipe(
+      tap(response => console.log("Fetched Beneficiaries:", response)), // Log API response
+      map(response => {
+        if (response && response.$values && Array.isArray(response.$values)) {
+          return response.$values; // ✅ Extract correct array
+        } else {
+          console.warn("Unexpected response format:", response);
+          return [];
+        }
+      }),
       catchError((err) => {
-        console.error('Error loading JSON:', err);
-        return []; 
+        console.error('Error fetching beneficiaries:', err);
+        return throwError(() => err);
       })
     ).subscribe((data) => {
-      if (data && Array.isArray(data)) {
-        this.jsonData$.next(data);
-      }
+      this.beneficiaries$.next(data); // ✅ Store extracted beneficiaries
     });
   }
+  
 
-
+  /** ✅ Get All Beneficiaries */
   getAll(): Observable<any[]> {
-    return this.jsonData$.asObservable();
+    return this.beneficiaries$.asObservable();
   }
 
-  getByFileId(fileId: number): Observable<any[]> {
-    return this.jsonData$.pipe(
-      map((data) => data.filter((item) => item['id'] === fileId))
+  /** ✅ Get Beneficiary by ID */
+  getByFileId(beneficiaryId: number): Observable<any> {
+    console.log(`Fetching Beneficiary ID: ${beneficiaryId}`);
+    return this.http.get<any>(`${this.apiUrl}/${beneficiaryId}`).pipe(
+      tap(data => console.log("Fetched Beneficiary:", data)),
+      catchError((err) => {
+        console.error(`Error fetching beneficiary ${beneficiaryId}:`, err);
+        return throwError(() => err);
+      })
     );
   }
 
-
-  add(newItem: any): void {
-    const currentData = this.jsonData$.value;
-    newItem.id = currentData.length ? Math.max(...currentData.map((d) => d.id)) + 1 : 1;
-    const updatedData = [...currentData, newItem];
-    this.saveJson(updatedData);
+  /** ✅ Add New Beneficiary */
+  add(newBeneficiary: any): Observable<any> {
+    console.log("Adding Beneficiary:", newBeneficiary);
+    return this.http.post<any>(this.apiUrl, newBeneficiary).pipe(
+      tap(response => {
+        console.log("Beneficiary Added:", response);
+        this.loadBeneficiaries(); // Refresh the list after adding
+      }),
+      catchError((err) => {
+        console.error('Error adding beneficiary:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-
-  update(id: number, updatedItem: any): void {
-    const currentData = this.jsonData$.value;
-    const index = currentData.findIndex((item) => item.id === id);
-    if (index !== -1) {
-      currentData[index] = { ...currentData[index], ...updatedItem };
-      this.saveJson(currentData);
-    }
+  /** ✅ Update Beneficiary */
+  update(beneficiaryId: number, updatedBeneficiary: any): Observable<any> {
+    console.log(`Updating Beneficiary ID: ${beneficiaryId}`, updatedBeneficiary);
+    return this.http.post<any>(`${this.apiUrl}/${beneficiaryId}`, updatedBeneficiary).pipe(
+      tap(response => {
+        console.log("Beneficiary Updated:", response);
+        this.loadBeneficiaries(); // Refresh the list after updating
+      }),
+      catchError((err) => {
+        console.error(`Error updating beneficiary ${beneficiaryId}:`, err);
+        return throwError(() => err);
+      })
+    );
   }
 
-
-  delete(id: number): void {
-    const updatedData = this.jsonData$.value.filter((item) => item.id !== id);
-    this.saveJson(updatedData);
-  }
-
-
-  private saveJson(updatedData: any[]): void {
-    this.jsonData$.next(updatedData);
-    console.warn('⚠️ JSON updates won’t persist in a browser-only environment.');
+  /** ✅ Delete Beneficiary */
+  delete(beneficiaryId: number): Observable<any> {
+    console.log(`Deleting Beneficiary ID: ${beneficiaryId}`);
+    return this.http.delete<any>(`${this.apiUrl}/${beneficiaryId}`).pipe(
+      tap(response => {
+        console.log("Beneficiary Deleted:", response);
+        this.loadBeneficiaries(); 
+      }),
+      catchError((err) => {
+        console.error(`Error deleting beneficiary ${beneficiaryId}:`, err);
+        return throwError(() => err);
+      })
+    );
   }
 }
