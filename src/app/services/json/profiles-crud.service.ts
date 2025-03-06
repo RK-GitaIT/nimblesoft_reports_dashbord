@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfilesCrudService {
-  private apiUrl = 'http://test.gitait.com/api/Beneficiaries'; 
+  private apiUrl = environment.apiBaseUrl + '/Beneficiaries'; 
   private beneficiaries$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   constructor(private http: HttpClient) {

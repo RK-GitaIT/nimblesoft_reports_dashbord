@@ -1,0 +1,49 @@
+<div class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3 cursor-pointer" (click)="toggleSorting('DocumentName')">
+            Document Name
+            <span *ngIf="sortColumn === 'DocumentName'">{{ ascending ? '🔼' : '🔽' }}</span>
+          </th>
+          <th scope="col" class="px-6 py-3 cursor-pointer" (click)="toggleSorting('DocumentType')">
+            Document Type
+            <span *ngIf="sortColumn === 'DocumentType'">{{ ascending ? '🔼' : '🔽' }}</span>
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Notes
+          </th>
+          <th scope="col" class="px-6 py-3 cursor-pointer" (click)="toggleSorting('UploadDate')">
+            Upload Date
+            <span *ngIf="sortColumn === 'UploadDate'">{{ ascending ? '🔼' : '🔽' }}</span>
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Download
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+          <td class="px-6 py-4">{{ doc.documentName }}</td>
+          <td class="px-6 py-4">{{ doc.documentType }}</td>
+          <td class="px-6 py-4">{{ doc.notes }}</td>
+          <td class="px-6 py-4">{{ doc.uploadDate | date:'medium' }}</td>
+          <td class="px-6 py-4">
+            <button class="text-blue-500 hover:underline" (click)="downloadDocument(doc.documentId, doc.documentName)">
+              Download
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Pagination Controls -->
+    <div class="flex justify-between items-center mt-4">
+      <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50" 
+              [disabled]="pageNumber === 1" (click)="prevPage()">Previous</button>
+      <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+      <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50" 
+              [disabled]="pageNumber === totalPages" (click)="nextPage()">Next</button>
+    </div>
+  </div>
+  
