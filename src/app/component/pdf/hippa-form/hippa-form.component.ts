@@ -3,6 +3,7 @@ import { PDFFormInterface } from '../../../models/pdf/pdf-form.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PDFDocument } from 'pdf-lib';
+import { LegalDocumentsService } from '../../../services/leagl_documents/leagl-documents.service';
 
 interface PDFField {
   controlName: string;
@@ -70,7 +71,7 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     { controlName: 'field39', pdfField: 'undefined2', label: 'Show Exceptions', tooltip: '', type: 'checkbox' },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private fileupload: LegalDocumentsService) {
     // Build form controls – default checkboxes to false, others to empty strings.
     const formControls = this.fields.reduce((controls, field) => {
       controls[field.controlName] = field.type === 'checkbox' ? [false] : [''];
@@ -148,21 +149,37 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     this.form.reset();
   }
 
+
   downloadPdf(): void {
     if (!this.pdfDoc) return;
-    const pdfDoc = this.pdfDoc; // Now pdfDoc is definitely not null.
+    const pdfDoc = this.pdfDoc;
+  
     (async () => {
       await this.updatePdfFields();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'HIPAA Release Form.pdf';
-      a.click();
-      URL.revokeObjectURL(url);
-      console.log('PDF downloaded successfully.');
-    })().catch(error => console.error('Error during PDF download:', error));
+  
+      const file = new File([blob], 'HIPAA Release Form.pdf', { type: 'application/pdf' });
+  
+      console.log("Uploading PDF to server...");
+  
+      this.fileupload.uploadDocument(file, "HIPAA Release Form.pdf", "HIPPA", 1).subscribe({
+        next: (response) => {
+          console.log("✅ File uploaded successfully!", response);
+
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name;
+          a.click();
+          URL.revokeObjectURL(url);
+          console.log('📥 PDF downloaded successfully.');
+        },
+        error: (error) => {
+          console.error("❌ File upload failed:", error);
+        }
+      });
+    })().catch(error => console.error('❌ Error during PDF processing:', error));
   }
 
    // Toggle showing the Exceptions section

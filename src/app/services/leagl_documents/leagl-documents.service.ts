@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environment';
+import { error } from 'pdf-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -34,16 +35,30 @@ export class LegalDocumentsService {
 
   uploadDocument(file: File, documentName: string, documentType: string, clientId: number): Observable<any> {
     const formData = new FormData();
-    formData.append('File', file);
-    formData.append('DocumentName', documentName);
-    formData.append('DocumentType', documentType);
-    formData.append('ClientId', clientId.toString());
-
+  
+    formData.append('file', file);
+    formData.append('documentName', documentName);
+    formData.append('documentType', documentType);
+    formData.append('clientId', clientId.toString());
+  
+    console.log("📤 Uploading file with FormData:");
+    formData.forEach((value, key) => console.log(`📂 ${key}:`, value));
+  
     return this.http.post<any>(this.apiUrl, formData).pipe(
-      map(response => response),
-      catchError(this.handleError)
+      map(response => {
+        console.log("✅ Upload Response:", response);
+        return response;
+      }),
+      catchError(error => {
+        console.error(" Upload Error:", error);
+        return throwError(() => error);
+      })
     );
   }
+  
+  
+  
+  
 
   downloadDocument(documentId: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${documentId}`, { responseType: 'blob' }).pipe(

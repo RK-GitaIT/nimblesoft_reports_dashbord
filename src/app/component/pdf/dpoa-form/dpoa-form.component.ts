@@ -3,6 +3,7 @@ import { PDFFormInterface } from '../../../models/pdf/pdf-form.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PDFDocument } from 'pdf-lib';
 import { CommonModule } from '@angular/common';
+import { LegalDocumentsService } from '../../../services/leagl_documents/leagl-documents.service';
 
 interface PDFField {
   controlName: string;
@@ -69,7 +70,7 @@ export class DpoaFormComponent  implements PDFFormInterface, OnInit {
   ];
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private fileupload: LegalDocumentsService) {
     const formControls = this.fields.reduce((controls, field) => {
       // For checkboxes, you may want a boolean default.
       controls[field.controlName] = field.type === 'checkbox' ? [false] : [''];
@@ -122,7 +123,7 @@ export class DpoaFormComponent  implements PDFFormInterface, OnInit {
             default:
               form.getTextField(fieldDef.pdfField).setText(value || '');
           }
-          console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
+        //  console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
         } catch (e) {
           console.warn(`Error setting value for field "${fieldDef.pdfField}":`, e);
         }
@@ -146,20 +147,36 @@ export class DpoaFormComponent  implements PDFFormInterface, OnInit {
 
   downloadPdf(): void {
     if (!this.pdfDoc) return;
-    const pdfDoc = this.pdfDoc; // Now pdfDoc is definitely not null.
+    const pdfDoc = this.pdfDoc;
+  
     (async () => {
       await this.updatePdfFields();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Statutory durable power of attorney.pdf';
-      a.click();
-      URL.revokeObjectURL(url);
-      console.log('PDF downloaded successfully.');
-    })().catch(error => console.error('Error during PDF download:', error));
+  
+      const file = new File([blob], 'Statutory durable power of attorney.pdf', { type: 'application/pdf' });
+  
+      console.log("Uploading PDF to server...");
+  
+      this.fileupload.uploadDocument(file, "Statutory durable power of attorney.pdf", "DPOA", 1).subscribe({
+        next: (response) => {
+          console.log("✅ File uploaded successfully!", response);
+
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name;
+          a.click();
+          URL.revokeObjectURL(url);
+          console.log('📥 PDF downloaded successfully.');
+        },
+        error: (error) => {
+          console.error("❌ File upload failed:", error);
+        }
+      });
+    })().catch(error => console.error('❌ Error during PDF processing:', error));
   }
+  
 
   updateAllSelectionALLoFThePowerListedIn() {
     const isChecked = this.form.get('field17')?.value;
