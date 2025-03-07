@@ -1,0 +1,56 @@
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Header and description -->
+    <h2 class="text-xl font-semibold text-gray-800">
+        <h1 class="text-xl font-semibold text-gray-800">
+            {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' + DocumentPrepareFor.beneficiary.lastName : '' }}'s Healthcare Documents'
+         </h1>
+      <span class="text-black font-bold">Designation of Healthcare Surrogate</span>
+    </h2>
+    <h3 class="text-lg text-blue-500 font-semibold mt-1">Successor Healthcare Agent</h3>
+    
+    <div class="flex gap-8 mt-4">
+      <!-- Available Agents List -->
+      <div class="flex-1">
+        <h4 class="font-bold mb-2">Available Agents</h4>
+        <div *ngFor="let user of healthcareAgents"
+             (click)="selectAgent(user)"
+             class="p-2 border rounded-md mb-2 cursor-pointer hover:bg-gray-100">
+          <p class="font-medium text-gray-800">{{ user.firstName + ' ' + user.lastName }}</p>
+          <p class="text-sm text-gray-500">{{ user.relationship }}</p>
+        </div>
+      </div>
+      
+      <!-- Selected Agents List with Drag & Drop -->
+      <div class="flex-1">
+        <h4 class="font-bold mb-2">Selected Agents (Drag to Order)</h4>
+        <div cdkDropList 
+             [cdkDropListData]="DocumentPrepareFor?.HealthcareSuccessorHealthcareAgents || []" 
+             (cdkDropListDropped)="drop($event)" 
+             class="border rounded-md p-2 min-h-[100px]">
+          <div *ngFor="let user of DocumentPrepareFor?.HealthcareSuccessorHealthcareAgents; let i = index" 
+               cdkDrag 
+               class="p-2 border rounded-md mb-2 flex items-center justify-between bg-white">
+            <div>
+              <span class="mr-2 font-bold">{{ i + 1 }}.</span>
+              <span class="font-medium text-gray-800">{{ user.firstName + ' ' + user.lastName }}</span>
+              <span class="text-sm text-gray-500 ml-2">{{ user.relationship }}</span>
+            </div>
+            <button (click)="removeAgent(user)" class="text-red-500 hover:text-red-700">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+    <!-- Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="confirmToNext()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Next
+      </button>
+    </div>
+  </div>
+  

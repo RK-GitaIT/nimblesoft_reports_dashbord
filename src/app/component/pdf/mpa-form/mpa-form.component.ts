@@ -182,15 +182,16 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
       await this.updatePdfFields();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  
-      const file = new File([blob], 'Medical power of attorney designation of health care agent.pdf', { type: 'application/pdf' });
+      const fileName = 'Medical power of attorney designation of health care agent.pdf';
+      const file = new File([blob], fileName, { type: 'application/pdf' });
   
       console.log("Uploading PDF to server...");
   
-      this.fileupload.uploadDocument(file, "Medical power of attorney designation of health care agent.pdf", "HIPPA", 1).subscribe({
+      // Updated call to uploadDocuments (which accepts an array of files)
+      this.fileupload.uploadDocuments([file], fileName, "HIPPA", 1).subscribe({
         next: (response) => {
           console.log("✅ File uploaded successfully!", response);
-
+  
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -205,4 +206,5 @@ export class MpaFormComponent implements PDFFormInterface, OnInit {
       });
     })().catch(error => console.error('❌ Error during PDF processing:', error));
   }
+  
 }

@@ -149,7 +149,6 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
     this.form.reset();
   }
 
-
   downloadPdf(): void {
     if (!this.pdfDoc) return;
     const pdfDoc = this.pdfDoc;
@@ -158,15 +157,16 @@ export class HipaaFormComponent implements PDFFormInterface, OnInit {
       await this.updatePdfFields();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  
-      const file = new File([blob], 'HIPAA Release Form.pdf', { type: 'application/pdf' });
+      const fileName = 'HIPAA Release Form.pdf';
+      const file = new File([blob], fileName, { type: 'application/pdf' });
   
       console.log("Uploading PDF to server...");
   
-      this.fileupload.uploadDocument(file, "HIPAA Release Form.pdf", "HIPPA", 1).subscribe({
+      // Updated call to uploadDocuments (which accepts an array of files)
+      this.fileupload.uploadDocuments([file], fileName, "HIPPA", 1).subscribe({
         next: (response) => {
           console.log("✅ File uploaded successfully!", response);
-
+  
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;

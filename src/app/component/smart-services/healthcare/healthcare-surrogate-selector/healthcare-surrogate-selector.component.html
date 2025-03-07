@@ -1,0 +1,43 @@
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Header and description -->
+    <h2 class="text-xl font-semibold text-gray-800">
+        <h1 class="text-xl font-semibold text-gray-800">
+            {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' + DocumentPrepareFor.beneficiary.lastName : '' }}'s Healthcare Documents'
+        </h1>
+      <span class="text-black font-bold">Healthcare Documents</span>
+    </h2>
+    <h3 class="text-lg text-blue-500 font-semibold mt-1">Designation of Healthcare Surrogate</h3>
+    <p class="text-gray-600 text-sm mt-3">
+      Your Designation of Healthcare Surrogate names one or more people to direct your healthcare if you become unable to do so.
+    </p>
+    
+    <!-- Multi-Select List -->
+    <div class="space-y-2">
+      <div *ngFor="let user of actual_data_members"
+           (click)="toggleSelection(user)"
+           [class.bg-blue-100]="isSelected(user)"
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+              [ngClass]="isSelected(user) ? 'bg-gray-700' : 'bg-gray-300'">
+          {{ isSelected(user) ? '✓' : '' }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ user.firstName + ' ' + user.lastName }}</p>
+          <p class="text-sm text-gray-500">{{ user.relationship }}</p>
+        </div>
+      </div>
+    </div>
+        
+    <!-- Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="confirmToNext()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Next
+      </button>
+    </div>
+  </div>
+  

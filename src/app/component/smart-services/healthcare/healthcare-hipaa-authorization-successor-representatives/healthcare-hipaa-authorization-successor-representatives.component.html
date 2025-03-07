@@ -1,0 +1,92 @@
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-xl font-semibold text-gray-800">
+            {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' + DocumentPrepareFor.beneficiary.lastName : '' }}'s Healthcare Documents'
+        </h1>
+      <h2 class="text-base text-blue-600 font-semibold">
+        HIPAA.Authorization
+      </h2>
+    </div>
+  
+    <!-- Main Content: two-column layout (left form, right help text) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Left Panel -->
+      <div class="md:col-span-2 bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">
+          Successor Representatives
+        </h3>
+  
+        <!-- Dropdown -->
+        <div class="mb-4">
+          <label class="block mb-2 text-gray-700 font-medium">Choose an Option</label>
+          <select
+            [(ngModel)]="successorType"
+            (ngModelChange)="onSuccessorTypeChange($event)"
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="multiple">Multiple Successors Serving Together</option>
+            <option value="one">One Successor</option>
+            <option value="none">No Successor</option>
+          </select>
+        </div>
+  
+        <!-- Explanation or additional fields for each selection (optional) -->
+        <div class="mb-4 text-sm text-gray-600">
+          <ng-container [ngSwitch]="successorType">
+            <div *ngSwitchCase="'multiple'">
+              You have chosen to name multiple successor representatives who will serve <b>together</b>.
+            </div>
+            <div *ngSwitchCase="'one'">
+              You have chosen to name <b>one</b> successor representative.
+            </div>
+            <div *ngSwitchCase="'none'">
+              You have chosen to name <b>no</b> successor representatives.
+            </div>
+          </ng-container>
+        </div>
+  
+        <!-- Multi-Select List (hidden if 'none') -->
+        <div class="space-y-2" *ngIf="successorType !== 'none'">
+          <div *ngFor="let user of data_members"
+               (click)="toggleSelection(user)"
+               [class.bg-blue-100]="isSelected(user)"
+               class="flex items-center p-3 border rounded-md cursor-pointer">
+            <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+                  [ngClass]="isSelected(user) ? 'bg-gray-700' : 'bg-gray-300'">
+              {{ isSelected(user) ? '✓' : '' }}
+            </span>
+            <div class="ml-3">
+              <p class="font-medium text-gray-800">{{ user.firstName + ' ' + user.lastName }}</p>
+              <p class="text-sm text-gray-500">{{ user.relationship }}</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Next Button -->
+        <div class="flex justify-end mt-4">
+          <button
+            (click)="confirmToNext()"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+  
+      <!-- Right Panel (Help / FAQ) -->
+      <div class="bg-white p-4 rounded shadow">
+        <h4 class="text-gray-700 font-semibold mb-2">
+          Why do I need to name successor HIPAA Representatives?
+        </h4>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Naming successor HIPAA Representatives ensures that your confidential
+          healthcare information is available to authorized individuals if you
+          become incapacitated or otherwise unable to communicate. This can be
+          crucial in emergency situations where immediate decisions need to be
+          made regarding your care.
+        </p>
+      </div>
+    </div>
+  </div>
+  

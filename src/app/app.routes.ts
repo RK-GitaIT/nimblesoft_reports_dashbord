@@ -5,12 +5,14 @@ import { PdfFormsComponent } from './component/pdf/pdf-forms/pdf-forms.component
 import { ProfileComponent } from './component/profile/profile.component';
 import { MyProfileComponent } from './component/my-profile/my-profile.component';
 import { MyfilesComponent } from './component/myfiles/myfiles.component';
+import { HealthcareComponent } from './component/smart-services/healthcare/healthcare.component';
 
 export const routes: Routes = [
   { path: 'family-other', component: ProfileComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'qrgenerator', component: QrcodegeneratorComponent },
   { path: 'pdf-forms', component: PdfFormsComponent },
+  { path: 'health-care', component: HealthcareComponent },
   { path: 'my-files', component: MyfilesComponent },
   { path: '', component: QrcodegeneratorComponent},
   // Changed from {pdf-forms/{mpa-form}} to a route parameter.

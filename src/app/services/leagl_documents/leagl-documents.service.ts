@@ -33,16 +33,24 @@ export class LegalDocumentsService {
     );
   }
 
-  uploadDocument(file: File, documentName: string, documentType: string, clientId: number): Observable<any> {
+  uploadDocuments(
+    files: File[],
+    documentName: string,
+    documentType: string,
+    clientId: number
+  ): Observable<any> {
     const formData = new FormData();
   
-    formData.append('file', file);
+    files.forEach(file => {
+      formData.append('Files', file, file.name);
+    });
+  
     formData.append('documentName', documentName);
     formData.append('documentType', documentType);
     formData.append('clientId', clientId.toString());
   
-    console.log("📤 Uploading file with FormData:");
-    formData.forEach((value, key) => console.log(`📂 ${key}:`, value));
+    console.log("📤 Uploading files with FormData:");
+    formData.forEach((value, key) => console.log(`${key}:`, value));
   
     return this.http.post<any>(this.apiUrl, formData).pipe(
       map(response => {
@@ -50,14 +58,11 @@ export class LegalDocumentsService {
         return response;
       }),
       catchError(error => {
-        console.error(" Upload Error:", error);
+        console.error("❌ Upload Error:", error);
         return throwError(() => error);
       })
     );
   }
-  
-  
-  
   
 
   downloadDocument(documentId: number): Observable<Blob> {

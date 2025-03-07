@@ -14,14 +14,14 @@ export class myProfileService {
 
   /** ✅ Fetch Profile Data */
   getProfile(): Observable<any | null> {
-    return this.http.get<any>(this.apiUrl).pipe(
+    return this.http.get<any>(this.apiUrl +"/"+ this.clientId).pipe(
       map(response => {
-        console.log("Full API Response:", response); // ✅ Debug API response
-        return response?.$values?.[0] || null; // ✅ Extract first client
+        console.log("Full API Response:", response); 
+        return response; 
       }),
       catchError(error => {
         console.error("Error fetching profile:", error);
-        throw error; // ✅ Rethrow error for debugging
+        throw error; 
       })
     );
   }
