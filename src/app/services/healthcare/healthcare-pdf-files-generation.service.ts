@@ -152,8 +152,8 @@ export class HealthcarePdfFilesGenerationService {
     this.client_data = client_data;
     this.files = [];
     await this.medicalPowerOfAttorney();
-    //await this.hipaa();
-    //await this.sdpoa();
+    await this.hipaa();
+    await this.sdpoa();
     await this.pdf_files_uploads();
   }
 
