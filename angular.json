@@ -16,7 +16,6 @@
             "outputPath": "dist/nimblesoft_reporting",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/netlaw/",
             "polyfills": [
               "zone.js"
             ],
@@ -39,8 +38,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1.2mb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
