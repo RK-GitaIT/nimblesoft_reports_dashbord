@@ -203,65 +203,57 @@
 
         <!-- Relationship Selection -->
         <div class="mb-4">
-          <label class="block text-black-600 font-semibold mb-2 text-sm"
-            >Relationship</label
-          >
-          <div class="flex space-x-4">
+          <label class="block text-black-600 font-semibold mb-2 text-sm">Relationship</label>
+        
+          <!-- Spouse (Automatically Set) -->
+          <div *ngIf="selectedRelation === 'Spouse'">
+            <input type="hidden" formControlName="relationship" [value]="'Spouse'" />
+            <p class="text-gray-700 text-sm font-semibold">Spouse</p>
+          </div>
+        
+          <!-- Child (Displays Three Radio Buttons) -->
+          <div *ngIf="selectedRelation === 'Child'" class="flex flex-col space-y-2">
             <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Spouse"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Spouse'"
-                  class="w-3 h-3 bg-blue-500 rounded-full"
-                ></div>
+              <input type="radio" formControlName="relationship" value="Son" class="hidden" />
+              <div class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center">
+                <div *ngIf="memberForm.value.relationship === 'Son'" class="w-3 h-3 bg-blue-500 rounded-full"></div>
               </div>
-              <span class="text-gray-700 text-sm">Spouse</span>
+              <span class="text-gray-700 text-sm">Son</span>
             </label>
-
+        
             <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Child"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-yellow-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Child'"
-                  class="w-3 h-3 bg-yellow-500 rounded-full"
-                ></div>
+              <input type="radio" formControlName="relationship" value="Daughter" class="hidden" />
+              <div class="w-5 h-5 border-2 border-pink-500 rounded-full flex items-center justify-center">
+                <div *ngIf="memberForm.value.relationship === 'Daughter'" class="w-3 h-3 bg-pink-500 rounded-full"></div>
               </div>
-              <span class="text-gray-700 text-sm">Child</span>
+              <span class="text-gray-700 text-sm">Daughter</span>
             </label>
-
+        
             <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Parent"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-green-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Parent'"
-                  class="w-3 h-3 bg-green-500 rounded-full"
-                ></div>
+              <input type="radio" formControlName="relationship" value="Other" class="hidden" />
+              <div class="w-5 h-5 border-2 border-gray-500 rounded-full flex items-center justify-center">
+                <div *ngIf="memberForm.value.relationship === 'Other'" class="w-3 h-3 bg-gray-500 rounded-full"></div>
               </div>
-              <span class="text-gray-700 text-sm">Parent</span>
+              <span class="text-gray-700 text-sm">Other</span>
             </label>
           </div>
+        
+          <!-- Parent & Other (Shows Text Input) -->
+          <div *ngIf="selectedRelation === 'Parent' || selectedRelation === 'Other'" class="mt-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-1">
+              Specify Relationship
+            </label>
+            <input
+              type="text"
+              formControlName="relationship"
+              class="w-full border border-gray-400 bg-gray-100 text-black p-3 rounded-lg"
+              placeholder="Enter relationship"
+            />
+          </div>
         </div>
+        
+        
+        
 
         <!-- Gender & Date of Birth -->
         <div class="flex space-x-4 mb-6">
