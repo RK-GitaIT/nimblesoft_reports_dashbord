@@ -3,11 +3,15 @@ import { PDFDocument } from 'pdf-lib';
 import { LegalDocumentsService } from '../leagl_documents/leagl-documents.service';
 import { ToastService } from '../../services/toast.service';
 import { Router } from '@angular/router';
+import { DocumentPrepareFor } from '../../component/smart-services/property-guardianship/property-guardianship.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HealthcarePdfFilesGenerationService {
+  generatePdf(DocumentPrepareFor: DocumentPrepareFor) {
+    throw new Error('Method not implemented.');
+  }
 
   client_data: any = null;
   files: File[] = [];
