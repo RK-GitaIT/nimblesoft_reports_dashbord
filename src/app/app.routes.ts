@@ -6,6 +6,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { MyProfileComponent } from './component/my-profile/my-profile.component';
 import { MyfilesComponent } from './component/myfiles/myfiles.component';
 import { HealthcareComponent } from './component/smart-services/healthcare/healthcare.component';
+import { PropertyGuardianshipComponent } from './component/smart-services/property-guardianship/property-guardianship.component';
 
 export const routes: Routes = [
   { path: 'family-other', component: ProfileComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   // Changed from {pdf-forms/{mpa-form}} to a route parameter.
   { path: 'pdf-forms/:formType', component: PdfFormsComponent },
   { path: '', redirectTo: '/qrgenerator', pathMatch: 'full' },
-  {path:'my-profile', component:MyProfileComponent}
+  {path:'my-profile', component:MyProfileComponent},
+  {path:'last-will',component:PropertyGuardianshipComponent}
 ];
