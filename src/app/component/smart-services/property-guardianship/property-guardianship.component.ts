@@ -7,7 +7,7 @@ import { Beneficiary } from '../../../models/interfaces/Beneficiary.model';
 import { PropertyGuardianshipSelectorComponent } from './property-guardianship-selector/property-guardianship-selector.component';
 import { PropertyGuardianshipRepresentativesComponent } from './property-guardianship-representatives/property-guardianship-representatives.component';
 import { Router } from '@angular/router';
-import { HealthcarePdfFilesGenerationService } from '../../../services/healthcare/healthcare-pdf-files-generation.service';
+import { LastWillTrustService } from '../../../services/Lastwill_trust/last-will-trust.service';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -44,10 +44,9 @@ export class PropertyGuardianshipComponent implements OnInit {
   currentStep: 'initial' | 'executors' | 'representative' | 'finish' = 'initial';
 
   constructor(
-    private legalDocumentsService: LegalDocumentsService,
     private profileService: myProfileService,
     private router: Router,
-    private pdfgeneration: HealthcarePdfFilesGenerationService
+    private lastwilltrus: LastWillTrustService,
   ) {}
 
   ngOnInit(): void {
@@ -116,7 +115,7 @@ export class PropertyGuardianshipComponent implements OnInit {
     });
   }
   Assemble(): void {
-    this.pdfgeneration.loadPdfs(this.DocumentPrepareFor);
+    this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
     console.log("Download PDF for:", this.DocumentPrepareFor);
     // Trigger your PDF generation logic here.
   }
@@ -144,7 +143,7 @@ export class PropertyGuardianshipComponent implements OnInit {
       console.error("No document data available.");
       return;
     }
-    this.pdfgeneration.generatePdf(this.DocumentPrepareFor);
+    this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
     this.currentStep = 'finish';
   }
   getBack(previousStep: 'executors' | 'initial'): void {

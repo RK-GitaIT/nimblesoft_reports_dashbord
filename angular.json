@@ -16,7 +16,6 @@
             "outputPath": "dist/nimblesoft_reporting",
             "index": "src/index.html",
             "browser": "src/main.ts",
-           
             "polyfills": [
               "zone.js"
             ],
