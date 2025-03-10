@@ -63,9 +63,16 @@ export class HealthcareSuccessorHealthcareAgentComponent implements OnInit {
   // When Next is clicked, emit the final ordered list of selected agents.
   confirmToNext(): void {
     if (!this.DocumentPrepareFor) return;
-    console.log("Final Selected Successor Agents:", this.DocumentPrepareFor.HealthcareSuccessorHealthcareAgents);
+    // Update each selected agent with its order (using 1-based indexing)
+    this.DocumentPrepareFor.HealthcareSuccessorHealthcareAgents = 
+      this.DocumentPrepareFor.HealthcareSuccessorHealthcareAgents.map((agent, index) => {
+        return { ...agent, order: index + 1 };
+      });
+    
+    console.log("Final Selected Successor Agents with order:", this.DocumentPrepareFor.HealthcareSuccessorHealthcareAgents);
     this.selectionConfirmed.emit([...this.DocumentPrepareFor.HealthcareSuccessorHealthcareAgents]);
   }
+  
 
   // When Back is clicked, emit the cancellation event.
   cancelSelection(): void {

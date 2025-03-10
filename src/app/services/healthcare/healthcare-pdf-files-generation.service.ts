@@ -24,51 +24,66 @@ export class HealthcarePdfFilesGenerationService {
       const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(pdfBytes);
 
-       var fields = [
-        { pdfField: 'NameTXT' , type: 'text', value: this.client_data?.beneficiary?.firstName + this.client_data?.beneficiary?.lastName},
-        { pdfField: 'NomineeTxt' , type: 'text', value: this.client_data?.beneficiary?.firstName + this.client_data?.beneficiary?.lastName },
-        {  pdfField: 'NomineeAddress' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'NomineePhone' , type: 'text', value: this.client_data?.beneficiary?.address},
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p2[0].TextField1[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p2[0].TextField1[1]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p2[0].TextField1[2]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p2[0].TextField1[3]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[0]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[1]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[2]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[3]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[4]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[5]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[2].TextField2[6]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[3].TextField2[7]' , type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[3].TextField2[8]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[4].TextField2[9]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[4].TextField2[10]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page2[0].s2[0].TextField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p1[0].NumericField1[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p1[0].DateField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p2[0].TextField2[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p3[0].SignatureField2[0]',  type: 'text',value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p4[0].TextField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p3[0].TextField3[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p1[0].NumericField1[0]',  type: 'text', value: this.client_data?.beneficiary?.address},
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p1[0].TextField5[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p2[0].left[0].p1[0].SignatureField3[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p2[0].left[0].p2[0].TextField4[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page3[0].s6[0].p4[0].p2[0].left[0].p3[0].TextField2[0]',  type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s7[0].p2[0].p1[0].NumericField1[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s7[0].p2[0].p1[0].DateField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s7[0].p2[0].p2[0].TextField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s7[0].p2[0].p3[0].SignatureField2[0]', type: 'text',value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s7[0].p2[0].p4[0].TextField2[0]',type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s8[0].p3[0].SignatureField4[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s8[0].p3[0].TextField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s8[0].p3[0].DateField3[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s8[0].p3[0].TextField2[1]',type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].SignatureField4[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].TextField2[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].DateField3[0]', type: 'text', value: this.client_data?.beneficiary?.address },
-        {  pdfField: 'form_MPOA[0].page4[0].s9[0].p2[0].TextField2[1]', type: 'text', value: this.client_data?.beneficiary?.address },
+      var fields = [
+        { 
+          pdfField: 'NameTXT', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim()
+        },
+        { 
+          pdfField: 'NomineeTxt', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim()
+        },
+        { 
+          pdfField: 'NomineeAddress', 
+          type: 'text', 
+          value: this.client_data?.beneficiary?.address ?? ''
+        },
+        { 
+          pdfField: 'NomineePhone', 
+          type: 'text', 
+          value: this.client_data?.beneficiary?.phoneNumber ?? ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[0]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]
+            ? `${this.client_data.HealthcareSuccessorHealthcareAgents[0].firstName ?? ''} ${this.client_data.HealthcareSuccessorHealthcareAgents[0].lastName ?? ''}`.trim()
+            : ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[1]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]?.address ?? ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[0].TextField2[2]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]?.phoneNumber ?? ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[3]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[1]
+            ? `${this.client_data.HealthcareSuccessorHealthcareAgents[1].firstName ?? ''} ${this.client_data.HealthcareSuccessorHealthcareAgents[1].lastName ?? ''}`.trim()
+            : ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[4]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[1]?.address ?? ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page1[0].s1[0].p4[0].p1[0].#subform[1].TextField2[5]', 
+          type: 'text', 
+          value: this.client_data?.HealthcareSuccessorHealthcareAgents?.[1]?.phoneNumber ?? ''
+        },
+        { 
+          pdfField: 'form_MPOA[0].page3[0].s6[0].p2[0].p4[0].TextField2[0]', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim()
+        },
       ];
       
      const form = pdfDoc.getForm();
@@ -114,13 +129,90 @@ export class HealthcarePdfFilesGenerationService {
       console.error('Error loading Medical Power Of Attorney PDF:', error);
     }
   }
-  
 
   private async hipaa(): Promise<void> {
     try {
       const url = 'assets/pdf/HiPa.pdf';
       const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(pdfBytes);
+
+      var fields = [
+        { 
+          controlName: 'field2', 
+          pdfField: 'Print your name', 
+          label: 'Print Your Name', 
+          tooltip: 'Enter your name', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field6', 
+          pdfField: 'Name', 
+          label: 'Patient Name', 
+          tooltip: 'Enter patient name', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field21', 
+          pdfField: 'Health_Information_Name', 
+          label: 'Recipient Name', 
+          tooltip: '', 
+          type: 'text', 
+          value: this.client_data?.HealthcareHipaaAuthorizationSuccessorRepresentatives?.[0]
+            ? `${this.client_data.HealthcareHipaaAuthorizationSuccessorRepresentatives[0].firstName ?? ''} ${this.client_data.HealthcareHipaaAuthorizationSuccessorRepresentatives[0].lastName ?? ''}`.trim()
+            : ''
+        },
+        { 
+          controlName: 'field31', 
+          pdfField: 'Information_share', 
+          label: 'Information Share', 
+          tooltip: '', 
+          type: 'text', 
+          value: this.client_data?.HealthcareHipaaAuthorizationSuccessorRepresentatives?.[0]
+            ? `${this.client_data.HealthcareHipaaAuthorizationSuccessorRepresentatives[0].firstName ?? ''} ${this.client_data.HealthcareHipaaAuthorizationSuccessorRepresentatives[0].lastName ?? ''}`.trim()
+            : ''
+        },
+        { 
+          controlName: 'field34', 
+          pdfField: 'Health_Information_Address', 
+          label: 'Recipient Address', 
+          tooltip: '', 
+          type: 'text', 
+          value: this.client_data?.HealthcareHipaaAuthorizationSuccessorRepresentatives?.[0]?.address ?? ''
+        },
+      ];      
+      
+     const form = pdfDoc.getForm();
+     const availableFields = form.getFields().map(field => field.getName());
+ 
+     fields.forEach(fieldDef => {
+       const value = fieldDef.value;
+       if (availableFields.includes(fieldDef.pdfField)) {
+         try {
+           switch (fieldDef.type) {
+             case 'text':
+               form.getTextField(fieldDef.pdfField).setText(value);
+               break;
+             case 'radio':
+               form.getRadioGroup(fieldDef.pdfField).select(value);
+               break;
+             case 'checkbox':
+               const checkbox = form.getCheckBox(fieldDef.pdfField);
+               value ? checkbox.check() : checkbox.uncheck();
+               break;
+             default:
+               form.getTextField(fieldDef.pdfField).setText(value);
+           }
+           console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
+         } catch (e) {
+           console.warn(`Error setting value for field "${fieldDef.pdfField}":`, e);
+         }
+       } else {
+         console.warn(`PDF field "${fieldDef.pdfField}" not found. Available fields: ${availableFields.join(', ')}`);
+       }
+     });
+
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
       const fileName = 'HIPAA.pdf';
@@ -137,6 +229,128 @@ export class HealthcarePdfFilesGenerationService {
       const url = 'assets/pdf/SDPOA.pdf';
       const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(pdfBytes);
+
+      var fields = [
+        { 
+          controlName: 'field1', 
+          pdfField: 'Name', 
+          label: 'Your Name & Address', 
+          tooltip: 'insert your name and adress', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''} ${this.client_data?.beneficiary?.address ?? ''}`.trim() 
+        },  
+        { 
+          controlName: 'field2', 
+          pdfField: 'Person_Appointed', 
+          label: 'Your Agent Name & Address', 
+          tooltip: 'insert the name and address of the person appointed', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[0]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[0]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[0]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field24', 
+          pdfField: 'Agent_1', 
+          label: 'SPECIAL INSTRUCTIONS 1', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[0]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[0]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[0]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field25', 
+          pdfField: 'Agent_2', 
+          label: 'SPECIAL INSTRUCTIONS 2', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[1]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[1]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[1]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field26', 
+          pdfField: 'Agent_3', 
+          label: 'SPECIAL INSTRUCTIONS 3', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[2]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[2]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[2]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field27', 
+          pdfField: 'Agent_4', 
+          label: 'SPECIAL INSTRUCTIONS 4', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[3]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[3]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[3]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field28', 
+          pdfField: 'Agent_5', 
+          label: 'SPECIAL INSTRUCTIONS 5', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[4]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[4]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[4]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field29', 
+          pdfField: 'Agent_6', 
+          label: 'SPECIAL INSTRUCTIONS 6', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[5]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[5]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[5]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field30', 
+          pdfField: 'Agent_7', 
+          label: 'SPECIAL INSTRUCTIONS 7', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSurrogateSelector?.[6]?.firstName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[6]?.lastName ?? ''} ${this.client_data?.HealthcareSurrogateSelector?.[6]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field31', 
+          pdfField: 'successor_agent', 
+          label: 'Successor(s) To That Agent Name', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]?.firstName ?? ''} ${this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]?.lastName ?? ''} ${this.client_data?.HealthcareSuccessorHealthcareAgents?.[0]?.address ?? ''}`.trim() 
+        },
+        { 
+          controlName: 'field40', 
+          pdfField: 'printed_name', 
+          label: 'Printed Name', 
+          tooltip: '', 
+          type: 'text', 
+          value: `${this.client_data?.beneficiary?.firstName ?? ''} ${this.client_data?.beneficiary?.lastName ?? ''}`.trim() 
+        },
+      ];      
+      
+     const form = pdfDoc.getForm();
+     const availableFields = form.getFields().map(field => field.getName());
+ 
+     fields.forEach(fieldDef => {
+       const value = fieldDef.value;
+       if (availableFields.includes(fieldDef.pdfField)) {
+         try {
+           switch (fieldDef.type) {
+             case 'text':
+               form.getTextField(fieldDef.pdfField).setText(value);
+               break;
+             case 'radio':
+               form.getRadioGroup(fieldDef.pdfField).select(value);
+               break;
+             case 'checkbox':
+               const checkbox = form.getCheckBox(fieldDef.pdfField);
+               value ? checkbox.check() : checkbox.uncheck();
+               break;
+             default:
+               form.getTextField(fieldDef.pdfField).setText(value);
+           }
+           console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
+         } catch (e) {
+           console.warn(`Error setting value for field "${fieldDef.pdfField}":`, e);
+         }
+       } else {
+         console.warn(`PDF field "${fieldDef.pdfField}" not found. Available fields: ${availableFields.join(', ')}`);
+       }
+     });
+
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
       const fileName = 'SDPOA.pdf';
