@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { myProfileService } from '../../services/json/my-profile.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,7 @@ export class MyProfileComponent {
   familyMembers: any;
   profileName:string ='';
 
-  constructor(private myProfileService: myProfileService, private fb: FormBuilder) {
+  constructor(private myProfileService: myProfileService, private fb: FormBuilder, private toastService: ToastService) {
     this. myProfileForm = this.fb.group({
       ClientId: [null], // ✅ Store client ID
       fullLegalName: [{ value: '', disabled: true }],
@@ -119,9 +120,11 @@ export class MyProfileComponent {
       next: (response) => {
         this.loadProfile();
         console.log("Profile updated successfully", response);
+        this.toastService.showToast("Success", "Beneficiary added successfully", "success");
       },
       error: (error) => {
         console.error("Error updating profile:", error);
+        this.toastService.showToast("Error", "Error updating profile", "error");
       }
     });
     

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfilesCrudService } from '../../services/json/profiles-crud.service';
+import { ToastService } from '../../services/toast.service'; // adjust the path as needed
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -9,6 +10,7 @@ interface FamilyMember {
   lastName: string;
   fullLegalName: string;
   relationship: string;
+  RelationshipCategory: string;
   dateOfBirth: string;
   address?: string;
   state?: string;
@@ -17,6 +19,7 @@ interface FamilyMember {
   phoneNumber?: string;
   email?: string;
   gender?: string;
+  clientId?: number;
 }
 
 @Component({
@@ -36,24 +39,63 @@ export class ProfileComponent implements OnInit {
 
   memberForm: FormGroup;
   colorPalette = [
-    'bg-red-400',    // Light Red
-    'bg-blue-400',   // Light Blue
-    'bg-green-400',  // Light Green
-    'bg-yellow-400', // Light Yellow
-    'bg-purple-400', // Light Purple
-    'bg-pink-400',   // Light Pink
-    'bg-orange-400', // Light Orange
-    'bg-teal-400',   // Light Teal
-    'bg-indigo-400', // Light Indigo
-    'bg-rose-400'    // Light Rose
+    'bg-red-400',
+    'bg-blue-400',
+    'bg-green-400',
+    'bg-yellow-400',
+    'bg-purple-400',
+    'bg-pink-400',
+    'bg-orange-400',
+    'bg-teal-400',
+    'bg-indigo-400',
+    'bg-rose-400'
   ];
 
-  constructor(private profileCrud: ProfilesCrudService, private fb: FormBuilder) {
+  relationMapping: { [category: string]: { genderDependent: boolean, options: { Male?: string[], Female?: string[] } } } = {
+    child: {
+      genderDependent: false,
+      options: { Male: ['son'], Female: ['daughter'] }
+    },
+    parent: {
+      genderDependent: false,
+      options: { Male: ['father'], Female: ['mother'] }
+    },
+    sibling: {
+      genderDependent: false,
+      options: { Male: ['brother', 'half-brother', 'stepbrother'], Female: ['sister', 'half-sister', 'stepsister'] }
+    },
+    spouse: {
+      genderDependent: false,
+      options: { Male: ['husband'], Female: ['wife'] }
+    },
+    other: {
+      genderDependent: true,
+      options: {
+        Male: [
+          'advisor', 'colleague', 'cousin', 'friend',
+          'uncle', 'nephew', 'grandfather', 'grandson', 'godson',
+          'mentor', 'neighbor', 'business associate', 'roommate'
+        ],
+        Female: [
+          'advisor', 'colleague', 'cousin', 'friend',
+          'aunt', 'niece', 'grandmother', 'granddaughter', 'goddaughter',
+          'mentor', 'neighbor', 'business associate', 'roommate'
+        ]
+      }
+    }
+  };
+
+  constructor(
+    private profileCrud: ProfilesCrudService, 
+    private fb: FormBuilder,
+    private toastService: ToastService 
+  ) {
     this.memberForm = this.fb.group({
-      beneficiaryId: [null], // Unique identifier
+      beneficiaryId: [null],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      fullLegalName: [{ value: '', disabled: true }],  // ✅ Add fullLegalName & disable editing
+      fullLegalName: [{ value: '', disabled: true }],
+      RelationshipCategory: ['', Validators.required],
       relationship: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       gender: ['', Validators.required],
@@ -61,12 +103,11 @@ export class ProfileComponent implements OnInit {
       state: [''],
       city: [''],
       zipCode: [''],
-      phoneNumber: ['', [Validators.pattern('^[0-9]{10}$')]], // Ensure 10-digit phone number
+      phoneNumber: ['', [Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.email]]
     });
-    
 
-    // Auto-update full name when firstName or lastName changes
+    // Auto-update full legal name when firstName or lastName changes.
     this.memberForm.valueChanges.subscribe(values => {
       const fullName = `${values.firstName || ''} ${values.lastName || ''}`.trim();
       this.memberForm.patchValue({ fullLegalName: fullName }, { emitEvent: false });
@@ -77,32 +118,46 @@ export class ProfileComponent implements OnInit {
     this.loadFamilyMembers();
   }
 
+  getRelationshipOptions(): string[] {
+    const category = this.memberForm.get('RelationshipCategory')?.value;
+    if (!category) {
+      return [];
+    }
+    const mapping = this.relationMapping[category];
+    if (mapping) {
+      if (mapping.genderDependent) {
+        const gender = this.memberForm.get('gender')?.value as "Male" | "Female" | null;
+        return gender && mapping.options[gender] ? mapping.options[gender]! : [];
+      } else {
+        const optionsMale = mapping.options.Male || [];
+        const optionsFemale = mapping.options.Female || [];
+        return Array.from(new Set([...optionsMale, ...optionsFemale]));
+      }
+    }
+    return [];
+  }
+
   loadFamilyMembers() {
     this.profileCrud.getAll().subscribe(data => {
       this.familyMembers = data
-        .filter(member => member.clientId === 1) // ✅ Get only clientId = 1
+        .filter(member => member.clientId === 1)
         .map(member => ({
           ...member,
           fullLegalName: `${member.firstName} ${member.lastName}`.trim()
         }));
     });
   }
-  
- 
+
   openPopup(relation: string) {
     this.selectedRelation = relation;
     this.isPopupOpen = true;
     this.isEditPopupOpen = false;
-    this.toggleDropdown();
+    this.isDropdownOpen = false;
     this.memberForm.reset();
-    this.memberForm.patchValue({ relationship: relation }); // ✅ Set Relationship
-  }
-  getColor(name: string): string {
-    const index = name.charCodeAt(0) % this.colorPalette.length; // Hashing based on first letter
-    return this.colorPalette[index];
-  }
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+    const category = ['child', 'parent', 'sibling', 'spouse', 'other'].includes(relation.toLowerCase())
+      ? relation.toLowerCase()
+      : '';
+    this.memberForm.patchValue({ relationCategory: category, relationship: '' });
   }
 
   openEditPopup(beneficiaryId: number) {
@@ -112,13 +167,15 @@ export class ProfileComponent implements OnInit {
 
     this.profileCrud.getByFileId(beneficiaryId).subscribe(member => {
       if (member) {
+        const derivedCategory = this.deriveRelationCategory(member.relationship);
         this.memberForm.patchValue({
           beneficiaryId: member.beneficiaryId,
           firstName: member.firstName,
           lastName: member.lastName,
-          fullLegalName:member.firstName + member.lastName,
+          fullLegalName: `${member.firstName} ${member.lastName}`,
           relationship: member.relationship,
-          dateOfBirth: member.dateOfBirth.split('T')[0], // ✅ Convert API Date to `YYYY-MM-DD`
+          RelationshipCategory: derivedCategory,
+          dateOfBirth: member.dateOfBirth.split('T')[0],
           gender: member.gender,
           address: member.address,
           state: member.state,
@@ -129,8 +186,21 @@ export class ProfileComponent implements OnInit {
         });
       } else {
         console.warn("No member found with ID:", beneficiaryId);
+        this.toastService.showToast("Error", "No member found with the given ID", "error");
       }
     });
+  }
+
+  deriveRelationCategory(relationship: string): string {
+    if (!relationship) return '';
+    const lowerRel = relationship.toLowerCase();
+    for (const category in this.relationMapping) {
+      if (this.relationMapping[category].options.Male?.map(r => r.toLowerCase()).includes(lowerRel) ||
+          this.relationMapping[category].options.Female?.map(r => r.toLowerCase()).includes(lowerRel)) {
+        return category;
+      }
+    }
+    return '';
   }
 
   closePopup() {
@@ -141,7 +211,7 @@ export class ProfileComponent implements OnInit {
   addMember() {
     if (this.memberForm.valid) {
       const newMember = {
-        clientId:"1",
+        clientId: 1,
         FirstName: this.memberForm.value.firstName,
         LastName: this.memberForm.value.lastName,
         Relationship: this.memberForm.value.relationship,
@@ -152,17 +222,20 @@ export class ProfileComponent implements OnInit {
         ZipCode: this.memberForm.value.zipCode || null,
         PhoneNumber: this.memberForm.value.phoneNumber || null,
         Email: this.memberForm.value.email || null,
-        Gender: this.memberForm.value.gender || null
+        Gender: this.memberForm.value.gender || null,
+        RelationshipCategory: this.memberForm.value.RelationshipCategory || null
       };
 
       this.profileCrud.add(newMember).subscribe({
         next: (response) => {
           console.log("Beneficiary Added:", response);
-          this.loadFamilyMembers(); // ✅ Refresh List
+          this.toastService.showToast("Success", "Beneficiary added successfully", "success");
+          this.loadFamilyMembers();
           this.closePopup();
         },
         error: (err) => {
           console.error("Error adding beneficiary:", err);
+          this.toastService.showToast("Error", "Failed to add beneficiary", "error");
         }
       });
     } else {
@@ -173,7 +246,7 @@ export class ProfileComponent implements OnInit {
   updateMember() {
     if (this.selectedMemberIndex !== null && this.memberForm.valid) {
       const updatedMember = {
-        clientId:"1",
+        clientId: 1,
         BeneficiaryId: this.memberForm.value.beneficiaryId,
         FirstName: this.memberForm.value.firstName,
         LastName: this.memberForm.value.lastName,
@@ -185,17 +258,20 @@ export class ProfileComponent implements OnInit {
         ZipCode: this.memberForm.value.zipCode || null,
         PhoneNumber: this.memberForm.value.phoneNumber || null,
         Email: this.memberForm.value.email || null,
-        Gender: this.memberForm.value.gender || null
+        Gender: this.memberForm.value.gender || null,
+        RelationshipCategory: this.memberForm.value.RelationshipCategory || null
       };
 
       this.profileCrud.update(updatedMember.BeneficiaryId, updatedMember).subscribe({
         next: (response) => {
           console.log("Beneficiary Updated:", response);
-          this.loadFamilyMembers(); // ✅ Refresh List
+          this.toastService.showToast("Success", "Beneficiary updated successfully", "success");
+          this.loadFamilyMembers();
           this.closePopup();
         },
         error: (err) => {
           console.error("Error updating beneficiary:", err);
+          this.toastService.showToast("Error", "Failed to update beneficiary", "error");
         }
       });
     } else {
@@ -207,10 +283,12 @@ export class ProfileComponent implements OnInit {
     this.profileCrud.delete(beneficiaryId).subscribe({
       next: () => {
         console.log(`Beneficiary ID ${beneficiaryId} deleted.`);
-        this.loadFamilyMembers(); // ✅ Refresh List
+        this.toastService.showToast("Success", "Beneficiary deleted successfully", "success");
+        this.loadFamilyMembers();
       },
       error: (err) => {
         console.error("Error deleting beneficiary:", err);
+        this.toastService.showToast("Error", "Failed to delete beneficiary", "error");
       }
     });
   }
@@ -219,6 +297,17 @@ export class ProfileComponent implements OnInit {
     const invalidFields = Object.keys(this.memberForm.controls).filter(
       key => this.memberForm.controls[key].invalid
     );
-    alert("Please fill all required fields: " + invalidFields.join(", "));
+    // Use ToastService to notify the user about validation errors
+    this.toastService.showToast("Validation Error", "Please fill all required fields: " + invalidFields.join(", "), "warning", 5000);
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  getColor(name: string): string {
+    if (!name) return this.colorPalette[0];
+    const index = name.charCodeAt(0) % this.colorPalette.length;
+    return this.colorPalette[index];
   }
 }

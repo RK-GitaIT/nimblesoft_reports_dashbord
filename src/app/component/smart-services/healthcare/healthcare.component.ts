@@ -73,7 +73,7 @@ export class HealthcareComponent implements OnInit {
             lastName: res.lastName ?? '',
             dateOfBirth: res.dateOfBirth ?? '',
             gender: (res.gender as 'Male' | 'Female' | 'Other') ?? 'Other',
-            relationship: 'Self',
+            relationship: 'self',
             phoneNumber: res.phoneNumber ?? '',
             email: res.email ?? '',
             address: res.address ?? '',
@@ -81,6 +81,7 @@ export class HealthcareComponent implements OnInit {
             state: res.state ?? '',
             zipCode: res.zipCode ?? '',
             creationDate: res.creationDate ?? '',
+            relationshipCategory: 'self',
           };
         }
         this.beneficiaries = Array.isArray(res?.beneficiaries)
@@ -93,7 +94,7 @@ export class HealthcareComponent implements OnInit {
         }
         // Filter for Prepare_for_client (e.g., Self or Spouse)
         this.Prepare_for_client = this.total_members.filter(a =>
-          a.relationship && (a.relationship.includes("Self") || a.relationship.includes("Spouse"))
+          a.relationshipCategory && (a.relationshipCategory.includes("self") || a.relationshipCategory.includes("spouse"))
         );
         // Set default selection if available.
         if (this.Prepare_for_client.length > 0) {

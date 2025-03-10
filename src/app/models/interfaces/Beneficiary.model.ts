@@ -5,6 +5,7 @@ export interface Beneficiary {
     dateOfBirth: string; 
     gender: 'Male' | 'Female' | 'Other'; 
     relationship: string;
+    relationshipCategory: string;
     phoneNumber: string;
     email: string;
     address: string;

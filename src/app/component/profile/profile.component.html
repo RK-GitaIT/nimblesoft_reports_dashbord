@@ -1,23 +1,13 @@
 <div class="max-w-xxl mx-auto p-6 bg-white shadow-md rounded-lg relative">
-  <div
-    [ngClass]="{
-      'flex justify-between items-center': familyMembers.length !== 0
-    }"
-  >
+  <div [ngClass]="{ 'flex justify-between items-center': familyMembers.length !== 0 }">
     <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">
       Family & Contacts
     </h2>
 
     <!-- When No Family Members Exist -->
-    <div
-      *ngIf="familyMembers.length === 0"
-      class="flex flex-col items-center justify-center text-gray-500"
-    >
+    <div *ngIf="familyMembers.length === 0" class="flex flex-col items-center justify-center text-gray-500">
       <div class="p-3">
-        <button
-          (click)="toggleDropdown()"
-          class="bg-blue-500 text-white p-3 rounded-lg flex items-center gap-2"
-        >
+        <button (click)="toggleDropdown()" class="bg-blue-500 text-white p-3 rounded-lg flex items-center gap-2">
           <i class="fas fa-plus"></i> Add New
         </button>
       </div>
@@ -26,117 +16,66 @@
     </div>
 
     <!-- When Family Members Exist -->
-    <div
-      *ngIf="familyMembers.length !== 0"
-      class="flex justify-center items-center gap-4 p-3"
-    >
-      <button
-        (click)="toggleDropdown()"
-        class="bg-blue-500 text-white p-3 rounded-lg flex items-center gap-2"
-      >
+    <div *ngIf="familyMembers.length !== 0" class="flex justify-center items-center gap-4 p-3">
+      <button (click)="toggleDropdown()" class="bg-blue-500 text-white p-3 rounded-lg flex items-center gap-2">
         <i class="fas fa-plus"></i> Add New
       </button>
     </div>
   </div>
 
   <ul class="grid grid-cols-12 gap-4">
-    <li
-      *ngFor="let member of familyMembers; let i = index"
-      class="col-span-6 flex items-center justify-between p-4 bg-white shadow-md rounded-lg border"
-    >
+    <li *ngFor="let member of familyMembers; let i = index" class="col-span-6 flex items-center justify-between p-4 bg-white shadow-md rounded-lg border">
       <!-- Left Section: Avatar + Name & Relation -->
       <div class="flex items-center space-x-3">
         <!-- Circle with First 2 Letters -->
-        <div
-          class="w-10 h-10 flex items-center justify-center bg-blue-500 text-white font-bold text-lg rounded-full"
-          [ngClass]="getColor(member.firstName)"
-        >
-          {{ member.firstName | slice : 0 : 2 | uppercase }}
+        <div class="w-10 h-10 flex items-center justify-center bg-blue-500 text-white font-bold text-lg rounded-full"
+             [ngClass]="getColor(member.firstName)">
+          {{ member.firstName | slice:0:2 | uppercase }}
         </div>
-
         <!-- Name & Relation -->
         <div>
-          <strong class="text-gray-800 text-lg">{{
-            member.fullLegalName
-          }}</strong>
+          <strong class="text-gray-800 text-lg">{{ member.fullLegalName }}</strong>
           <p class="text-gray-500 text-sm">{{ member.relationship }}</p>
         </div>
       </div>
 
       <!-- Right Section Edit & Delete Icons -->
       <div class="flex items-center space-x-4">
-        <!-- Edit Icon -->
-        <button
-          (click)="openEditPopup(member.beneficiaryId)"
-          class="text-blue-500 hover:text-blue-700"
-        >
+        <button (click)="openEditPopup(member.beneficiaryId)" class="text-blue-500 hover:text-blue-700">
           <i class="fas fa-edit"></i>
         </button>
-
-        <!-- Delete Icon -->
-        <button
-          (click)="deleteMember(member.beneficiaryId)"
-          class="text-red-500 hover:text-red-700"
-        >
+        <button (click)="deleteMember(member.beneficiaryId)" class="text-red-500 hover:text-red-700">
           <i class="fas fa-trash"></i>
         </button>
       </div>
     </li>
   </ul>
-  <!-- Popup Background Overlay -->
-  <!-- Popup Background Overlay -->
-  <!-- Popup Background Overlay (Fixed Fullscreen) -->
-  <!-- Popup Background Overlay -->
-  <div
-    *ngIf="isDropdownOpen"
-    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20"
-  >
-    <!-- Popup Container (Centered & Fixed Size) -->
-    <div
-      class="bg-white shadow-2xl rounded-lg p-5 w-72 border transform scale-95 opacity-1 animate-fade-in-scale relative"
-    >
+
+  <!-- Relation Category Dropdown Popup -->
+  <div *ngIf="isDropdownOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
+    <div class="bg-white shadow-2xl rounded-lg p-5 w-72 border transform scale-95 opacity-1 animate-fade-in-scale relative">
       <!-- Close Button & Title -->
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-700 text-center w-full">
           Select Relationship
         </h3>
-
-        <button
-          (click)="isDropdownOpen = false"
-          class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-500 hover:text-red-500 hover:border-red-500 transition"
-        >
+        <button (click)="isDropdownOpen = false" class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-500 hover:text-red-500 hover:border-red-500 transition">
           <i class="fas fa-times-circle text-lg"></i>
-          <!-- Close-Circle Icon -->
         </button>
       </div>
 
-      <!-- Relationship Options -->
+      <!-- Relationship Options for Presetting the Relation Category -->
       <div class="w-64 space-y-3">
-        <button
-          (click)="openPopup('Spouse')"
-          class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md"
-        >
+        <button (click)="openPopup('Spouse')" class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md">
           <i class="fas fa-user text-red-500 mr-3"></i> Spouse
         </button>
-
-        <button
-          (click)="openPopup('Child')"
-          class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md"
-        >
+        <button (click)="openPopup('Child')" class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md">
           <i class="fas fa-child text-yellow-500 mr-3"></i> Child
         </button>
-
-        <button
-          (click)="openPopup('Parent')"
-          class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md"
-        >
+        <button (click)="openPopup('Parent')" class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md">
           <i class="fas fa-user text-green-500 mr-3"></i> Parent
         </button>
-
-        <button
-          (click)="openPopup('Other')"
-          class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md"
-        >
+        <button (click)="openPopup('Other')" class="flex items-center w-full px-4 py-3 text-left bg-gray-50 rounded-md transition duration-300 transform active:scale-95 hover:bg-blue-100 hover:shadow-md">
           <i class="fas fa-users text-blue-500 mr-3"></i> Other
         </button>
       </div>
@@ -144,14 +83,8 @@
   </div>
 
   <!-- Add/Edit Popup Modal -->
-  <!-- Add/Edit Popup Modal -->
-  <div
-    *ngIf="isPopupOpen"
-    class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50"
-  >
-    <div
-      class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-[50vw] animate-fade-in"
-    >
+  <div *ngIf="isPopupOpen" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-[50vw] animate-fade-in">
       <!-- Header -->
       <h3 class="text-xl text-gray-800 text-start">
         Key Person's <strong>Information</strong>
@@ -169,254 +102,116 @@
       <!-- Form Binding Starts Here -->
       <form [formGroup]="memberForm">
         <div class="mb-4">
-          <input
-            type="text"
-            formControlName="fullLegalName"
-            placeholder="Enter Full Legal Name"
-            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
+          <input type="text" formControlName="fullLegalName" placeholder="Enter Full Legal Name"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           <p class="text-sm text-gray-500 mt-1">
-            This is how the person's name will appear in the document. Include
-            Jr., Sr., etc., after the name if appropriate.
+            This is how the person's name will appear in the document. Include Jr., Sr., etc., if appropriate.
           </p>
         </div>
 
-        <!-- First Name & Last Name (50% width each) -->
+        <!-- First Name & Last Name -->
         <div class="flex space-x-4 mb-4">
           <div class="w-1/2">
-            <input
-              type="text"
-              formControlName="firstName"
-              placeholder="First Name"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+            <input type="text" formControlName="firstName" placeholder="First Name"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           </div>
           <div class="w-1/2">
-            <input
-              type="text"
-              formControlName="lastName"
-              placeholder="Last Name"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+            <input type="text" formControlName="lastName" placeholder="Last Name"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           </div>
         </div>
-
-        <!-- Relationship Selection -->
-        <div class="mb-4">
-          <label class="block text-black-600 font-semibold mb-2 text-sm"
-            >Relationship</label
-          >
-          <div class="flex space-x-4">
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Spouse"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Spouse'"
-                  class="w-3 h-3 bg-blue-500 rounded-full"
-                ></div>
-              </div>
-              <span class="text-gray-700 text-sm">Spouse</span>
-            </label>
-
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Child"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-yellow-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Child'"
-                  class="w-3 h-3 bg-yellow-500 rounded-full"
-                ></div>
-              </div>
-              <span class="text-gray-700 text-sm">Child</span>
-            </label>
-
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                formControlName="relationship"
-                value="Parent"
-                class="hidden"
-              />
-              <div
-                class="w-5 h-5 border-2 border-green-500 rounded-full flex items-center justify-center"
-              >
-                <div
-                  *ngIf="memberForm.value.relationship === 'Parent'"
-                  class="w-3 h-3 bg-green-500 rounded-full"
-                ></div>
-              </div>
-              <span class="text-gray-700 text-sm">Parent</span>
-            </label>
-          </div>
-        </div>
-
+      
         <!-- Gender & Date of Birth -->
         <div class="flex space-x-4 mb-6">
           <div class="w-1/2">
-            <label class="block text-black-600 font-semibold mb-2 text-sm"
-              >Gender</label
-            >
+            <label class="block text-black-600 font-semibold mb-2 text-sm">Gender</label>
             <div class="flex space-x-4">
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  formControlName="gender"
-                  value="Male"
-                  class="hidden"
-                />
-                <div
-                  class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center"
-                >
-                  <div
-                    *ngIf="memberForm.value.gender === 'Male'"
-                    class="w-3 h-3 bg-blue-500 rounded-full"
-                  ></div>
+                <input type="radio" formControlName="gender" value="Male" class="hidden" />
+                <div class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center">
+                  <div *ngIf="memberForm.value.gender === 'Male'" class="w-3 h-3 bg-blue-500 rounded-full"></div>
                 </div>
                 <span class="text-gray-700 text-sm">Male</span>
               </label>
-
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  formControlName="gender"
-                  value="Female"
-                  class="hidden"
-                />
-                <div
-                  class="w-5 h-5 border-2 border-pink-500 rounded-full flex items-center justify-center"
-                >
-                  <div
-                    *ngIf="memberForm.value.gender === 'Female'"
-                    class="w-3 h-3 bg-pink-500 rounded-full"
-                  ></div>
+                <input type="radio" formControlName="gender" value="Female" class="hidden" />
+                <div class="w-5 h-5 border-2 border-pink-500 rounded-full flex items-center justify-center">
+                  <div *ngIf="memberForm.value.gender === 'Female'" class="w-3 h-3 bg-pink-500 rounded-full"></div>
                 </div>
                 <span class="text-gray-700 text-sm">Female</span>
               </label>
             </div>
           </div>
-
           <!-- Date of Birth -->
           <div class="w-1/2">
-            <input
-              type="date"
-              formControlName="dateOfBirth"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+            <input type="date" formControlName="dateOfBirth"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           </div>
         </div>
+
+        <!-- Relationship Dropdown (dynamic based on category) -->
+        <div class="mb-4">
+          <label class="block text-black-600 font-semibold mb-2 text-sm">Relationship</label>
+          <select formControlName="RelationshipCategory" class="w-1/2 p-2 border rounded focus:ring focus:ring-blue-300 text-sm">
+            <option value="">Select Category</option>
+            <option value="child">Child</option>
+            <option value="parent">Parent</option>
+            <option value="sibling">Sibling</option>
+            <option value="spouse">Spouse</option>
+            <option value="other">Other</option>
+          </select>
+          <select formControlName="relationship" class="w-1/2 p-2 border rounded focus:ring focus:ring-blue-300 text-sm">
+            <option value="">Select Relationship</option>
+            <option *ngFor="let relation of getRelationshipOptions()" [value]="relation">
+              {{ relation | titlecase }}
+            </option>
+          </select>
+        </div>
+
         <!-- Address Information -->
         <div class="mb-4">
-          <input
-            type="text"
-            formControlName="address"
-            placeholder="Street Address"
-            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
+          <input type="text" formControlName="address" placeholder="Street Address"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
         </div>
-
         <div class="flex space-x-4 mb-4">
-          <!-- City -->
           <div class="w-1/2">
-            <input
-              type="text"
-              formControlName="city"
-              placeholder="City"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+            <input type="text" formControlName="city" placeholder="City"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           </div>
-          <!-- State -->
           <div class="w-1/2">
-            <input
-              type="text"
-              formControlName="state"
-              placeholder="State"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+            <input type="text" formControlName="state" placeholder="State"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
           </div>
         </div>
-
         <!-- ZIP Code -->
         <div class="mb-4">
-          <input
-            type="text"
-            formControlName="zipCode"
-            placeholder="Zip Code"
-            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
+          <input type="text" formControlName="zipCode" placeholder="Zip Code"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
         </div>
-
-        <!-- Phone Number -->
         <!-- Phone Number -->
         <div class="mb-4">
-          <input
-            type="text"
-            formControlName="phoneNumber"
-            placeholder="Phone Number (10 digits)"
+          <input type="text" formControlName="phoneNumber" placeholder="Phone Number (10 digits)"
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            required
-            minlength="10"
-            maxlength="10"
-            pattern="^[0-9]{10}$"
-          />
-
-          <!-- Error Message -->
-          <p
-            *ngIf="
-              memberForm.controls['phoneNumber'].invalid &&
-              memberForm.controls['phoneNumber'].touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
+            required minlength="10" maxlength="10" pattern="^[0-9]{10}$" />
+          <p *ngIf="memberForm.controls['phoneNumber'].invalid && memberForm.controls['phoneNumber'].touched"
+             class="text-red-500 text-sm mt-1">
             Phone number must be 10 digits.
           </p>
         </div>
-
         <!-- Email -->
         <div class="mb-4">
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="Email Address"
-            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
+          <input type="email" formControlName="email" placeholder="Email Address"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
         </div>
-
         <!-- Buttons -->
         <div class="flex justify-end space-x-4">
-          <button
-            type="button"
-            (click)="closePopup()"
-            class="px-5 py-2 text-gray-600 bg-gray-300 rounded-lg"
-          >
+          <button type="button" (click)="closePopup()" class="px-5 py-2 text-gray-600 bg-gray-300 rounded-lg">
             Cancel
           </button>
-          <button
-            *ngIf="isEditPopupOpen"
-            type="button"
-            (click)="updateMember()"
-            class="px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
+          <button *ngIf="isEditPopupOpen" type="button" (click)="updateMember()" class="px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
             Update
           </button>
-          <button
-            *ngIf="!isEditPopupOpen"
-            type="button"
-            (click)="addMember()"
-            class="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-          >
+          <button *ngIf="!isEditPopupOpen" type="button" (click)="addMember()" class="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
             Save
           </button>
         </div>
