@@ -69,7 +69,7 @@ export class PropertyGuardianshipComponent implements OnInit {
             lastName: res.lastName ?? '',
             dateOfBirth: res.dateOfBirth ?? '',
             gender: (res.gender as 'Male' | 'Female' | 'Other') ?? 'Other',
-            relationship: 'Self',
+            relationship: 'self',
             phoneNumber: res.phoneNumber ?? '',
             email: res.email ?? '',
             address: res.address ?? '',
@@ -77,6 +77,7 @@ export class PropertyGuardianshipComponent implements OnInit {
             state: res.state ?? '',
             zipCode: res.zipCode ?? '',
             creationDate: res.creationDate ?? '',
+            relationshipCategory: 'self',
           };
         }
         this.beneficiaries = Array.isArray(res?.beneficiaries)
@@ -89,7 +90,7 @@ export class PropertyGuardianshipComponent implements OnInit {
         }
 
         this.Prepare_for_client = this.total_members.filter(a =>
-          a.relationship && (a.relationship.includes("Self") || a.relationship.includes("Spouse"))
+          a.relationshipCategory && (a.relationshipCategory.includes("self") || a.relationshipCategory.includes("spouse"))
         );
 
         if (this.Prepare_for_client.length > 0) {

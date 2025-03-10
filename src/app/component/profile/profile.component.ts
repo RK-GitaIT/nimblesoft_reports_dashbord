@@ -116,6 +116,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadFamilyMembers();
+    this.memberForm.get('RelationshipCategory')?.valueChanges.subscribe(value => {
+      this.selectedRelation = value;
+    });
+    
   }
 
   getRelationshipOptions(): string[] {
@@ -123,6 +127,7 @@ export class ProfileComponent implements OnInit {
     if (!category) {
       return [];
     }
+    this.selectedRelation  = category;
     const mapping = this.relationMapping[category];
     if (mapping) {
       if (mapping.genderDependent) {
@@ -157,7 +162,8 @@ export class ProfileComponent implements OnInit {
     const category = ['child', 'parent', 'sibling', 'spouse', 'other'].includes(relation.toLowerCase())
       ? relation.toLowerCase()
       : '';
-    this.memberForm.patchValue({ relationCategory: category, relationship: '' });
+    // Fix: Using the correct control name "RelationshipCategory"
+    this.memberForm.patchValue({ RelationshipCategory: category, relationship: '' });
   }
 
   openEditPopup(beneficiaryId: number) {
