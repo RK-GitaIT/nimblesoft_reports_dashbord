@@ -29,7 +29,6 @@ export interface NamedPersonBequest {
   charityCity: string;
   charityState: string;
   individualName: string;
-
   issueToTakeShare: boolean | null;
   otherBeneficiariesToTakeShare: boolean | null;
   alternateBeneficiaryName: string;
@@ -55,6 +54,10 @@ export interface DocumentPrepareFor {
     bequestsList2?: NamedPersonBequest[];
     Ultimate_Disposition_Beneficiaries?: NamedPersonBequest[];
     ultimateDispositionType?: any;
+    child_name_1? : string;
+    child_name_2? : string;
+    Spouse_name?: string;
+    name?: string;
   };
 }
 
@@ -114,8 +117,27 @@ export class PropertyGuardianshipComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.updateLastWillTestament();
   }
 
+  updateLastWillTestament(): void {
+    if (!this.DocumentPrepareFor) return; 
+    const spouseData = this.total_members.filter(
+      member => member.index !== this.DocumentPrepareFor!.beneficiary.index &&
+                (member.relationshipCategory.includes('spouse') ||  member.relationshipCategory.includes('self'))
+    );
+    this.DocumentPrepareFor.last_will.name = `${this.DocumentPrepareFor.beneficiary.firstName} ${this.DocumentPrepareFor.beneficiary.lastName}`;
+    this.DocumentPrepareFor.last_will.Spouse_name = spouseData.length > 0 
+      ? `${spouseData[0].firstName} ${spouseData[0].lastName}` 
+      : '';
+    this.DocumentPrepareFor.last_will.child_name_1 = this.DocumentPrepareFor.SuccessorExecutors[0]
+      ? `${this.DocumentPrepareFor.SuccessorExecutors[0].firstName} ${this.DocumentPrepareFor.SuccessorExecutors[0].lastName}`
+      : '';
+    this.DocumentPrepareFor.last_will.child_name_2 = this.DocumentPrepareFor.SuccessorExecutors[1]
+      ? `${this.DocumentPrepareFor.SuccessorExecutors[1].firstName} ${this.DocumentPrepareFor.SuccessorExecutors[1].lastName}`
+      : '';
+  }
+  
   loadUsers(): void {
     this.profileService.getProfile().subscribe({
       next: (res) => {
@@ -146,7 +168,6 @@ export class PropertyGuardianshipComponent implements OnInit {
               index: indexCounter++
             }))
           : [];
-
 
         this.total_members = [...this.beneficiaries];
         if (this.user) {
@@ -180,6 +201,8 @@ export class PropertyGuardianshipComponent implements OnInit {
           this.actual_data_members = this.total_members.filter(
             member => member.index !== this.DocumentPrepareFor!.beneficiary.index
           );
+          // Automatically update last will details
+          this.updateLastWillTestament();
         }
       },
       error: (error) => {
@@ -268,6 +291,8 @@ export class PropertyGuardianshipComponent implements OnInit {
       this.DocumentPrepareFor.SuccessorExecutors = [];
     }
 
+    this.updateLastWillTestament();
+
     // Trigger PDF generation or any final logic
     this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
     this.currentStep = 'finish';
@@ -276,6 +301,7 @@ export class PropertyGuardianshipComponent implements OnInit {
   /** "Assemble" button in the 'initial' step */
   Assemble(): void {
     if (this.DocumentPrepareFor) {
+      this.updateLastWillTestament();
       this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
       console.log('Download PDF for:', this.DocumentPrepareFor);
     }
