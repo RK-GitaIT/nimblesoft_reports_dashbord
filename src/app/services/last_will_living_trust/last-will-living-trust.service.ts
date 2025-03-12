@@ -297,7 +297,11 @@ export class LastWillLivingTrustService {
     }
   }
 
-  async load_PDFs(client_data: ClientData): Promise<void> {
+  async load_PDFs(client_data: ClientData | null): Promise<void> {
+    if(client_data === null)
+    {
+      return;
+    }
     this.client_data = client_data;
     this.files = [];
     await this.last_Will_Testament_Execution_Instructions();
