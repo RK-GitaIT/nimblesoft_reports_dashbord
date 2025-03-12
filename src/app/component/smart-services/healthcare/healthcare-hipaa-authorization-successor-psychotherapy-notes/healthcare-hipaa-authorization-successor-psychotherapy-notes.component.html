@@ -29,16 +29,23 @@
             <option value="exclude">DO NOT INCLUDE the disclosure of psychotherapy notes</option>
           </select>
         </div>
-  
-        <!-- Finish Button -->
-        <div class="flex justify-end">
-          <button
-            (click)="handleFinish()"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Finish
-          </button>
-        </div>
+          <!-- Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <!-- Finish Button -->
+      <div class="flex justify-end">
+        <button
+          (click)="handleFinish()"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Finish
+        </button>
+      </div>
+    </div>
+       
       </div>
   
       <!-- Right Panel (Help text) -->

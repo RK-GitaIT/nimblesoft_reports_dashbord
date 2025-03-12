@@ -1,6 +1,6 @@
 <!-- Initial view: Display beneficiary selection and overall document info -->
 <ng-container *ngIf="currentStep === 'initial'">
-    <div class="flex-1 h-screen overflow-hidden max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="flex-1  overflow-hidden max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold text-gray-800">Healthcare Documents</h2>
       <p class="text-gray-600 text-sm mt-1">
         There are three healthcare-related documents that allow you to build and manage your healthcare needs.
@@ -97,7 +97,9 @@
   <ng-container *ngIf="currentStep === 'hipaa_psychotherapy'">
     <app-healthcare-hipaa-authorization-successor-psychotherapy-notes
       [DocumentPrepareFor]="DocumentPrepareFor"
+     
       (finish)="handleHipaaPsychotherapyFinish($event)"
+      (selectionCanceled)="handleHipaaPsychotherapyCanceled()"
     ></app-healthcare-hipaa-authorization-successor-psychotherapy-notes>
   </ng-container>
   

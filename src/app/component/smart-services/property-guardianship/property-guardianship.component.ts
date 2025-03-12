@@ -339,8 +339,9 @@ export class PropertyGuardianshipComponent implements OnInit {
 
   /** Filter out the main beneficiary from the successor options */
   filteredSuccessors(): Beneficiary[] {
-    return this.actual_data_members;
+    return this.actual_data_members.filter(item => !this.selectedExecutors.includes(item));
   }
+  
 
   /**
    * First "Specific Bequests" list (bequestsList)

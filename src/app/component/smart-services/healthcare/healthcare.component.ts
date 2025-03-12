@@ -206,10 +206,12 @@ export class HealthcareComponent implements OnInit {
     // Move to next step or go back to 'initial', etc.
     this.currentStep = 'hipaa_psychotherapy';
   }
-  
+  handleHipaaPsychotherapyCanceled(){
+    this.currentStep='hipaa_successor';
+  }
   handleHipaaSuccessorCanceled(): void {
     // Revert or go back to previous step
-    this.currentStep = 'successor';
+    this.currentStep = 'hipaa_authorization';
   }
 
   handleHipaaPsychotherapyFinish(choice: 'include' | 'exclude'): void {

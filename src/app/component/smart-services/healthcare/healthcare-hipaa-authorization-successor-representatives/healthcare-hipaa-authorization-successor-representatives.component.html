@@ -64,14 +64,18 @@
         </div>
   
         <!-- Next Button -->
-        <div class="flex justify-end mt-4">
-          <button
-            (click)="confirmToNext()"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Next
-          </button>
-        </div>
+           <!-- Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="confirmToNext()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Next
+      </button>
+    </div>
+       
       </div>
   
       <!-- Right Panel (Help / FAQ) -->

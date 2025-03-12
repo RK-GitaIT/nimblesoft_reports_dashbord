@@ -9,6 +9,10 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './healthcare-hipaa-authorization-successor-psychotherapy-notes.component.css'
 })
 export class HealthcareHipaaAuthorizationSuccessorPsychotherapyNotesComponent implements OnInit  {
+  @Output() selectionCanceled = new EventEmitter<void>();
+  cancelSelection(): void {
+    this.selectionCanceled.emit();
+  }
   @Input() DocumentPrepareFor: DocumentPrepareFor | null = null;
 
   /** Emitted when the user clicks Finish. We send the chosen value ('include' or 'exclude'). */
