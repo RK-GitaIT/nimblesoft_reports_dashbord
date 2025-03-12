@@ -1,0 +1,34 @@
+export interface TrustData {
+    settlorsAndTrustees?: string;
+    trustName?: string;
+    taxIdentification?: string;
+    settlorsTrust?: string;
+    initialTrustees?: string;
+    actingTrustee?: string;
+    addressTrustee1?: string;
+    addressTrustee2?: string;
+    trustTitle?: string;
+    titleExecutedDate?: string;
+    titleExecutedMonth?: string;
+    currentTrustees?: string;
+    assetTrustName?: string;
+    assetTrustTitle?: string;
+    trustProperty?: string;
+    printSignature1?: string;
+    printSignature2?: string;
+    signature1?: string;
+    signature2?: string;
+    countyOf?: string;
+    acknowledgedTrustName?: string;
+    acknowledgedDate?: string;
+    acknowledgedDay?: string;
+    notaryPublic?: string;
+    commissionExpires?: string;
+    agreementDay?: string;
+    agreementDate?: string;
+    assetDay?: string;
+    assetDate?: string;
+    witnessDate?: string;
+    witnessDay?: string;
+    stateName?: string;
+  }
