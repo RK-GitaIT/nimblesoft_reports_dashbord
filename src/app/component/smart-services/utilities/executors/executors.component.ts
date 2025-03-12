@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class ExecutorsComponent implements OnInit, OnChanges {
   @Input() executors_data?: IExecutors | null;
   @Output() backClicked = new EventEmitter<string>(); 
-  @Output() nextClicked = new EventEmitter<void>();
+  @Output() nextClicked = new EventEmitter<string>();
   @Output() selectedUsers = new EventEmitter<Beneficiary[]>(); 
 
   selectedUserIndices: Set<number> = new Set<number>();
@@ -48,7 +48,7 @@ export class ExecutorsComponent implements OnInit, OnChanges {
     ) || [];
     
     this.selectedUsers.emit(selectedMembers);
-    this.nextClicked.emit();
+    this.nextClicked.emit(this.executors_data?.next);
   }
 
   toggleSelection(user: Beneficiary): void {
