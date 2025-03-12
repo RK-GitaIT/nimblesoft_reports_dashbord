@@ -11,6 +11,8 @@ import { DocumentPrepareFor } from '../healthcare.component';
   styleUrls: ['./healthcare-surrogate-selector.component.css']
 })
 export class HealthcareSurrogateSelectorComponent implements OnInit {
+  @Input() getColor!: (user: any) => string; // Accept function from parent
+
   @Input() actual_data_members: Beneficiary[] = [];
   @Input() DocumentPrepareFor: DocumentPrepareFor | null = null;
   // When Next is clicked, we emit the selected surrogates.

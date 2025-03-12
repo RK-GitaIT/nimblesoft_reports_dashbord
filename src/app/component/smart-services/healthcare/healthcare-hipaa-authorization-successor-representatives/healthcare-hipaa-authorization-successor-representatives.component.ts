@@ -17,6 +17,7 @@ export class HealthcareHipaaAuthorizationSuccessorRepresentativesComponent imple
   @Input() DocumentPrepareFor: DocumentPrepareFor | null = null;
   @Output() selectionConfirmed = new EventEmitter<Beneficiary[]>();
   @Output() selectionCanceled = new EventEmitter<void>();
+  @Input() getColor!: (user: any) => string; // Accept function from parent
 
   successorType: string = 'multiple';
 

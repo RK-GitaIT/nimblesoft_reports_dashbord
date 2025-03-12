@@ -133,6 +133,14 @@ export class HealthcareComponent implements OnInit {
     this.actual_data_members = this.total_members.filter(member => member.index !== user.index);
     console.log("Selected User:", this.DocumentPrepareFor);
   }
+  getUserColor(user: { firstName: string; lastName: string }): string {
+    const colors = [
+      'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500',
+      'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500'
+    ];
+    const index = (user.firstName.charCodeAt(0) + user.lastName.charCodeAt(0)) % colors.length;
+    return colors[index];
+  }
 
   // Called when Edit is clicked. Backup state and switch to surrogate selection.
   Edit(): void {

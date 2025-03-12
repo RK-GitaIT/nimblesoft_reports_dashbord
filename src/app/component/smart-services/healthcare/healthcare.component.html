@@ -18,8 +18,8 @@
                class="flex items-center p-3 border rounded-md cursor-pointer">
             <!-- Show ✓ only for selected user -->
             <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
-                  [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : 'bg-gray-300'">
-              {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : '' }}
+                  [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+              {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : (data.firstName.charAt(0) + data.lastName.charAt(0)) }}
             </span>
             <div class="ml-3">
               <p class="font-medium text-gray-800">{{ data.firstName + ' ' + data.lastName }}</p>
@@ -58,11 +58,14 @@
   <!-- Surrogate selection step -->
   <ng-container *ngIf="currentStep === 'surrogate'">
     <app-healthcare-surrogate-selector 
-        [actual_data_members]="actual_data_members"
-        [DocumentPrepareFor]="DocumentPrepareFor"
-        (selectionConfirmed)="handleSurrogateConfirmed($event)"
-        (selectionCanceled)="handleSurrogateCanceled()">
-    </app-healthcare-surrogate-selector>
+    [actual_data_members]="actual_data_members"
+    [DocumentPrepareFor]="DocumentPrepareFor"
+    (selectionConfirmed)="handleSurrogateConfirmed($event)"
+    (selectionCanceled)="handleSurrogateCanceled()"
+    [getColor]="getUserColor">  <!-- ✅ Pass function reference, do NOT call it -->
+</app-healthcare-surrogate-selector>
+
+
   </ng-container>
   
   <!-- Successor selection step -->
@@ -81,7 +84,8 @@
         [actual_data_members]="actual_data_members"
         [DocumentPrepareFor]="DocumentPrepareFor"
         (selectionConfirmed)="handleHipaaConfirmed($event)"
-        (selectionCanceled)="handleHipaaCanceled()">
+        (selectionCanceled)="handleHipaaCanceled()"
+        [getColor]="getUserColor">
     </app-healthcare-hipaa-authorization-representatives>
   </ng-container>
   
@@ -91,6 +95,7 @@
       [DocumentPrepareFor]="DocumentPrepareFor"
       (selectionConfirmed)="handleHipaaSuccessorConfirmed($event)"
       (selectionCanceled)="handleHipaaSuccessorCanceled()"
+      [getColor]="getUserColor"
     ></app-healthcare-hipaa-authorization-successor-representatives>
   </ng-container>
 

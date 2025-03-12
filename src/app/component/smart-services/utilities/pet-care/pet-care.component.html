@@ -1,0 +1,78 @@
+<div class="flex  p-4">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
+     
+  
+      <!-- Wrap all inputs inside the form with formGroup -->
+      <form [formGroup]="trustForm">
+        <!-- Do you have any pets? -->
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Do you have any pets?</label>
+          <div class="flex gap-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="true" formControlName="hasPets" class="form-radio text-blue-500">
+              <span>Yes</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="false" formControlName="hasPets" class="form-radio text-blue-500">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+  
+        <!-- Do you want to create a trust for their care? -->
+        <div class="mb-4" *ngIf="showCreateTrust">
+          <label class="block text-gray-700 font-medium mb-2">Do you want to create a trust for their care?</label>
+          <div class="flex gap-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="true" formControlName="createTrust" class="form-radio text-blue-500">
+              <span>Yes</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="false" formControlName="createTrust" class="form-radio text-blue-500">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+  
+        <!-- Do you want to leave money to the trust? -->
+        <div class="mb-4" *ngIf="showLeaveMoney">
+          <label class="block text-gray-700 font-medium mb-2">Do you want to leave money to the trust?</label>
+          <div class="flex gap-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="true" formControlName="leaveMoney" class="form-radio text-blue-500">
+              <span>Yes</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" [value]="false" formControlName="leaveMoney" class="form-radio text-blue-500">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+  
+        <!-- Asset Type Selection -->
+        <div class="mb-4" *ngIf="showAssetFields">
+          <label class="block text-gray-700 font-medium mb-2">Asset Type</label>
+          <select formControlName="assetType" class="border p-2 rounded w-full">
+            <option *ngFor="let type of assetTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+  
+        <!-- Dollar Amount Input -->
+        <div class="mb-4" *ngIf="isDollarAmount">
+          <label class="block text-gray-700 font-medium mb-2">Enter a whole number with no periods or commas</label>
+          <input type="number" formControlName="incomeAsset" class="border p-2 rounded w-full" placeholder="100000">
+        </div>
+  
+        <!-- Income Producing Asset Description -->
+        <div class="mb-4" *ngIf="!isDollarAmount && showAssetFields">
+          <label class="block text-gray-700 font-medium mb-2">Describe the asset</label>
+          <input type="text" formControlName="assetDescription" class="border p-2 rounded w-full" placeholder="For example, 100 shares of ABC stock">
+        </div>
+  
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-600 transition">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+  
