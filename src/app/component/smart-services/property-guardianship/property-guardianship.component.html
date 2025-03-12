@@ -17,8 +17,8 @@
              [class.bg-blue-100]="DocumentPrepareFor?.beneficiary?.index === data.index" 
              class="flex items-center p-3 border rounded-md cursor-pointer">
           <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
-                [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : 'bg-gray-300'">
-            {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : '' }}
+                [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+            {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : (data.firstName.charAt(0) + data.lastName.charAt(0)) }}
           </span>
           <div class="ml-3">
             <p class="font-medium text-gray-800">{{ data.firstName + ' ' + data.lastName }}</p>
@@ -67,21 +67,23 @@
 
     Executors Selection
     <h3 class="text-lg text-blue-500 font-semibold">Executors</h3>
-    <div class="flex flex-wrap gap-4 mt-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
       <div *ngFor="let user of actual_data_members"
            (click)="toggleExecutor(user)"
            [class.bg-blue-100]="selectedExecutors.includes(user)"
            class="flex items-center p-3 border rounded-md cursor-pointer">
-        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
-              [ngClass]="selectedExecutors.includes(user) ? 'bg-gray-700' : 'bg-gray-300'">
-          {{ selectedExecutors.includes(user) ? '✓' : '' }}
-        </span>
+           <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+           [ngClass]="selectedExecutors.includes(user) ? 'bg-gray-700' : getUserColor(user)">
+       {{ selectedExecutors.includes(user) ? '✓' : (user.firstName.charAt(0) + user.lastName.charAt(0)) }}
+     </span>
+     
         <div class="ml-3">
           <p class="font-medium text-gray-800">{{ user.firstName }} {{ user.lastName }}</p>
           <p class="text-sm text-gray-500">{{ user.relationship }}</p>
         </div>
       </div>
     </div>
+    
 
     <!-- Successor Executors Selection -->
     <h3 class="text-lg text-blue-500 font-semibold mt-6">Successor Executors</h3>
@@ -95,14 +97,14 @@
       <h3 class="text-lg text-blue-500 font-semibold">Select Successor Executors</h3>
 
       <!-- One Successor -->
-      <div *ngIf="DocumentPrepareFor!.last_will.successorType === 'one'" class="flex flex-wrap gap-4">
+      <div *ngIf="DocumentPrepareFor!.last_will.successorType === 'one'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
         <div *ngFor="let user of filteredSuccessors()"
              (click)="selectSingleSuccessor(user)"
              [class.bg-blue-100]="selectedSingleSuccessor?.index === user.index"
              class="flex items-center p-3 border rounded-md cursor-pointer">
           <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
-                [ngClass]="selectedSingleSuccessor?.index === user.index ? 'bg-gray-700' : 'bg-gray-300'">
-            {{ selectedSingleSuccessor?.index === user.index ? '✓' : '' }}
+                [ngClass]="selectedSingleSuccessor?.index === user.index ? 'bg-gray-700' : getUserColor(user)">
+            {{ selectedSingleSuccessor?.index === user.index ? '✓' : (user.firstName.charAt(0) + user.lastName.charAt(0)) }}
           </span>
           <div class="ml-3">
             <p class="font-medium text-gray-800">{{ user.firstName }} {{ user.lastName }}</p>
@@ -112,14 +114,14 @@
       </div>
 
       <!-- Multiple Successors -->
-      <div *ngIf="DocumentPrepareFor!.last_will.successorType === 'multiple'" class="flex flex-wrap gap-4">
+      <div *ngIf="DocumentPrepareFor!.last_will.successorType === 'multiple'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
         <div *ngFor="let user of filteredSuccessors()"
              (click)="toggleSuccessorExecutor(user)"
              [class.bg-blue-100]="selectedSuccessorExecutors.includes(user)"
              class="flex items-center p-3 border rounded-md cursor-pointer">
           <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
-                [ngClass]="selectedSuccessorExecutors.includes(user) ? 'bg-gray-700' : 'bg-gray-300'">
-            {{ selectedSuccessorExecutors.includes(user) ? '✓' : '' }}
+                [ngClass]="selectedSuccessorExecutors.includes(user) ? 'bg-gray-700' : getUserColor(user)">
+            {{ selectedSuccessorExecutors.includes(user) ? '✓' : (user.firstName.charAt(0) + user.lastName.charAt(0)) }}
           </span>
           <div class="ml-3">
             <p class="font-medium text-gray-800">{{ user.firstName }} {{ user.lastName }}</p>

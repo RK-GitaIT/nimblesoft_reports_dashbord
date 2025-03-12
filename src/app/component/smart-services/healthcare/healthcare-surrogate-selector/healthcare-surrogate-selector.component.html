@@ -12,14 +12,14 @@
     </p>
     
     <!-- Multi-Select List -->
-    <div class="space-y-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
       <div *ngFor="let user of actual_data_members"
            (click)="toggleSelection(user)"
            [class.bg-blue-100]="isSelected(user)"
            class="flex items-center p-3 border rounded-md cursor-pointer">
         <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
-              [ngClass]="isSelected(user) ? 'bg-gray-700' : 'bg-gray-300'">
-          {{ isSelected(user) ? '✓' : '' }}
+              [ngClass]="isSelected(user) ? 'bg-gray-700' : getColor(user)">
+          {{ isSelected(user) ? '✓' : (user.firstName.charAt(0) + user.lastName.charAt(0)) }}
         </span>
         <div class="ml-3">
           <p class="font-medium text-gray-800">{{ user.firstName + ' ' + user.lastName }}</p>
