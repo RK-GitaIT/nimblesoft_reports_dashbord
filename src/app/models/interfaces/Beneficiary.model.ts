@@ -1,4 +1,5 @@
 export interface Beneficiary {
+    selected?: any;
     index: number,
     firstName: string;
     lastName: string;
