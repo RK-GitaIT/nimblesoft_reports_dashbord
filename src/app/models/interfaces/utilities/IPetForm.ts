@@ -7,4 +7,5 @@ export interface IPetForm {
   assetDescription?: string;
   next: string;
   back: string;
+  title?: string,
 }
