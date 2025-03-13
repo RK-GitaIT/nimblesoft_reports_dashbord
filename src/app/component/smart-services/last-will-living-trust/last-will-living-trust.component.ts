@@ -212,6 +212,5 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     console.log('Trust data emitted:', data);
     this.trustOptionData = data;
   }
-
   
 }
