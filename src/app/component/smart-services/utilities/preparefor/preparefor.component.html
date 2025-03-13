@@ -1,48 +1,49 @@
 <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">{{ preparer_for?.title }}</h1>
-    <p class="text-gray-500 text-sm mt-2">{{ preparer_for?.description }}</p>
-  
-    <div class="mt-4 bg-white p-4 rounded-lg shadow">
-      <h3 class="text-gray-700 font-medium mb-2">Prepare for</h3>
-      <div class="space-y-2">
-        <div *ngFor="let data of preparer_for?.beneficiary" 
-             (click)="selectUser(data)" 
-             [class.bg-blue-100]="DocumentPrepareFor?.beneficiary?.index === data.index" 
-             class="flex items-center p-3 border rounded-md cursor-pointer">
-          
-          <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
-                [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : 'bg-gray-300'">
-            {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : '' }}
-          </span>
-          
-          <div class="ml-3">
-            <p class="font-medium text-gray-800">{{ data.firstName + ' ' + data.lastName }}</p>
-            <p class="text-sm text-gray-500">{{ data.relationship }}</p>
-          </div>
+  <!-- Display title -->
+  <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">
+    {{ preparer_for?.title }}
+  </h1>
+  <p class="text-gray-500 text-sm mt-2">{{ preparer_for?.description }}</p>
+
+  <div class="mt-4 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Prepare for</h3>
+    <div class="space-y-2">
+      <div *ngFor="let data of preparer_for?.beneficiary" 
+           (click)="selectUser(data)" 
+           [class.bg-blue-100]="selectedBeneficiaryItem?.index === data.index" 
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+              [ngClass]="selectedBeneficiaryItem?.index === data.index ? 'bg-gray-700' : 'bg-gray-300'">
+          {{ selectedBeneficiaryItem?.index === data.index ? '✓' : '' }}
+        </span>
+        
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ data.firstName + ' ' + data.lastName }}</p>
+          <p class="text-sm text-gray-500">{{ data.relationship }}</p>
         </div>
       </div>
-  
-      <div class="flex gap-4 mt-4">
-        <button (click)="proceedToNextStep()" class="px-4 py-2 bg-gray-600 text-white rounded-md">
-          Edit
-        </button>
-        <button (click)="Assemble()" class="px-4 py-2 bg-blue-600 text-white rounded-md">
-          Assemble
-        </button>
-      </div>
     </div>
-  
-    <div class="mt-6">
-      <h3 class="text-gray-800 font-semibold">{{ preparer_for?.bottomTitle }}</h3>
-      <p class="text-gray-600 text-sm mt-2">{{ preparer_for?.bottomDescription }}</p>
-      
-      <h3 class="text-gray-800 font-semibold">{{ preparer_for?.filesTitle }}</h3>
-      <p class="text-gray-600 text-sm mt-2">{{ preparer_for?.filesDescription }}</p>
-  
-      <h3 class="text-gray-800 font-semibold mt-4">Documents included in this package</h3>
-      <ul class="text-gray-600 text-sm mt-2 space-y-1">
-        <li *ngFor="let data of preparer_for?.filesNames">📄 {{ data }}</li>
-      </ul>
+
+    <div class="flex gap-4 mt-4">
+      <button (click)="proceedToNextStep()" class="px-4 py-2 bg-gray-600 text-white rounded-md">
+        Edit
+      </button>
+      <button (click)="Assemble()" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+        Assemble
+      </button>
     </div>
   </div>
-  
+
+  <div class="mt-6">
+    <h3 class="text-gray-800 font-semibold">{{ preparer_for?.bottomTitle }}</h3>
+    <p class="text-gray-600 text-sm mt-2">{{ preparer_for?.bottomDescription }}</p>
+    
+    <h3 class="text-gray-800 font-semibold">{{ preparer_for?.filesTitle }} - </h3>
+    <p class="text-gray-600 text-sm mt-2" *ngIf="preparer_for?.filesTitleDescription">{{ preparer_for?.filesTitleDescription }}</p>
+    <h3 class="text-gray-800 font-semibold mt-4">Documents included in this package</h3>
+    <ul class="text-gray-600 text-sm mt-2 space-y-1">
+      <li *ngFor="let fileName of preparer_for?.filesNames">📄 {{ fileName }}</li>
+    </ul>
+  </div>
+</div>

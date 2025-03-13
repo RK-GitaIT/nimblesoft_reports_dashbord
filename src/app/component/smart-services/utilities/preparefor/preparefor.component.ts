@@ -1,24 +1,39 @@
-import { Component, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IPrepareFor } from '../../../../models/interfaces/utilities/ipreparefor';
 import { CommonModule } from '@angular/common';
+import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 
 @Component({
   selector: 'app-preparefor',
   imports: [CommonModule],
   templateUrl: './preparefor.component.html',
-  styleUrl: './preparefor.component.css'
+  styleUrls: ['./preparefor.component.css']
 })
-export class PrepareforComponent {
+export class PrepareforComponent implements OnChanges {
   @Input() preparer_for?: IPrepareFor | null;
+  @Input() defaultSelectedBeneficiary?: Beneficiary;
+  @Output() editClicked = new EventEmitter<void>(); 
+  @Output() assembleClicked = new EventEmitter<void>(); 
+  @Output() selectedBeneficiary = new EventEmitter<Beneficiary>(); 
 
-  @Output() editClicked = new EventEmitter<void>(); // Event to notify parent when "Edit" is clicked
-  @Output() assembleClicked = new EventEmitter<void>(); // Event to notify parent when "Assemble" is clicked
+  selectedBeneficiaryItem?: Beneficiary;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['defaultSelectedBeneficiary'] && this.defaultSelectedBeneficiary && !this.selectedBeneficiaryItem) {
+      this.selectedBeneficiaryItem = this.defaultSelectedBeneficiary;
+    }
+  }
 
   proceedToNextStep() {
-    this.editClicked.emit(); // Notify parent that "Edit" was clicked
+    this.editClicked.emit(); 
   }
 
   Assemble() {
-    this.assembleClicked.emit(); // Notify parent that "Assemble" was clicked
+    this.assembleClicked.emit(); 
+  }
+
+  selectUser(data: Beneficiary) {
+    this.selectedBeneficiaryItem = data;
+    this.selectedBeneficiary.emit(data);
   }
 }

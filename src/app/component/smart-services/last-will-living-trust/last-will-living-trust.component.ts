@@ -1,43 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { myProfileService } from '../../../services/json/my-profile.service';
+import { PrepareforComponent } from '../utilities/preparefor/preparefor.component';
 import { Beneficiary } from '../../../models/interfaces/Beneficiary.model';
-import { LastWillLivingTrustService } from '../../../services/last_will_living_trust/last-will-living-trust.service';
-import { ClientData } from '../../../models/interfaces/ClientData';
-
-/** 
- * Original interface for the first list of "Specific Bequests" 
- * (e.g., items or dollar amounts).
- */
-export interface SpecificBequest {
-  bequestType: 'charity' | 'individual';
-  charityName: string;
-  charityCity: string;
-  charityState: string;
-  individualName: string;
-  itemType: 'dollar' | 'item';
-  amount: number | null;
-  itemDescription: string;
-  effectiveDate: 'regardless' | 'notSurvive' | '';
-}
-
-export interface NamedPersonBequest {
-  bequestType: 'charity' | 'individual';
-  charityName: string;
-  charityCity: string;
-  charityState: string;
-  individualName: string;
-
-  issueToTakeShare: boolean | null;
-  otherBeneficiariesToTakeShare: boolean | null;
-  alternateBeneficiaryName: string;
-  percentage: number | null;
-
-  effectiveDate: 'regardless' | 'notSurvive' | '';
-}
-
+import { myProfileService } from '../../../services/json/my-profile.service';
+import { ITrustOptions } from '../../../models/interfaces/utilities/ITrustOptions';
+import { IPrepareFor } from '../../../models/interfaces/utilities/ipreparefor';
+import { TrustOptionComponent } from './trust-option/trust-option.component';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -45,111 +14,52 @@ export interface DocumentPrepareFor {
   SuccessorExecutors: Beneficiary[];
   PropertyGuardianshipRepresentatives: Beneficiary[];
   last_will: {
-otheRealEstate?: any;
-  replacement?: any;
-  jointly?: any;
-  Ownership?: any;
-  personalresidence?: any;
-   assetDescription?: any;
-   dollarAmount?: any;
     successorType: string;
     bequests: boolean;
     dispositionOfResiduaryEstate: string;
     ultimateDispositionOfProperty: string;
     excludeChildrenShares: boolean;
     excludedChildren?: Beneficiary[];
-    bequestsList?: SpecificBequest[];
-    bequestsList2?: NamedPersonBequest[];
-    Ultimate_Disposition_Beneficiaries?: NamedPersonBequest[];
     ultimateDispositionType?: any;
-    pets?: any;
-    trustForPets?: any;
-    leaveMoney?: any;
-    AssType?:any;
-    assetType?:any;
+    child_name_1?: string;
+    child_name_2?: string;
+    Spouse_name?: string;
+    name?: string;
   };
 }
 
 @Component({
   selector: 'app-last-will-living-trust',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
+  imports: [CommonModule, FormsModule, PrepareforComponent, TrustOptionComponent], 
   templateUrl: './last-will-living-trust.component.html',
   styleUrls: ['./last-will-living-trust.component.css']
 })
 export class LastWillLivingTrustComponent implements OnInit {
+  private readonly validSteps = ["initial", "trust_option", "successor", "hipaa_authorization", "hipaa_successor", "hipaa_psychotherapy", "finish"] as const;
+
   user: Beneficiary | null = null;
+  DocumentPrepareFor: DocumentPrepareFor | null = null;
+  currentStep: 'initial' | 'trust_option' | 'successor' | 'hipaa_authorization' | 'hipaa_successor' | 'hipaa_psychotherapy' | 'finish' = 'initial';
   beneficiaries: Beneficiary[] = [];
   total_members: Beneficiary[] = [];
   actual_data_members: Beneficiary[] = [];
   Prepare_for_client: Beneficiary[] = [];
-  DocumentPrepareFor: DocumentPrepareFor | null = null;
-  currentStep: 'initial' | 'JointRevocable' | 'representative' | 'Ultimate_Disposition' | 'finish' = 'initial';
-  selectedExecutors: Beneficiary[] = [];
-  selectedSingleSuccessor: Beneficiary | null = null;
-  selectedSuccessorExecutors: Beneficiary[] = [];
-  documentData: ClientData | null= null;
+  prepareForData!: IPrepareFor;
+  defaultSelected: Beneficiary | undefined = undefined;
+  trustOptionData!: ITrustOptions;
 
-  newBequest: SpecificBequest = {
-    bequestType: 'charity',
-    charityName: '',
-    charityCity: '',
-    charityState: '',
-    individualName: '',
-    itemType: 'dollar',
-    amount: null,
-    itemDescription: '',
-    effectiveDate: ''
-  };
-
-  newBequest2: NamedPersonBequest = {
-    bequestType: 'charity',
-    charityName: '',
-    charityCity: '',
-    charityState: '',
-    individualName: '',
-    issueToTakeShare: null,
-    otherBeneficiariesToTakeShare: null,
-    alternateBeneficiaryName: '',
-    percentage: null,
-    effectiveDate: ''
-  };
-selectedOption: any;
-trustName: any;
-
-  constructor(
-    private profileService: myProfileService,
-    private router: Router,
-    private lastwilltrus: LastWillLivingTrustService,
-  ) {}
+  constructor(private profileService: myProfileService) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
-
-  updateLastWillTestament(): void {
-    if (this.documentData == null) {
-      this.documentData = {} as ClientData;
-    }
-    
-    if (this.DocumentPrepareFor == null) {
-      return;
-    }
-    
-    this.documentData.beneficiary = this.DocumentPrepareFor.beneficiary;
-  }
-  
-  
 
   loadUsers(): void {
     this.profileService.getProfile().subscribe({
       next: (res) => {
         let indexCounter = 0;
         if (res) {
-          // Build the main user object
           this.user = {
             index: indexCounter++,
             firstName: res.firstName ?? '',
@@ -169,46 +79,55 @@ trustName: any;
         }
 
         this.beneficiaries = Array.isArray(res?.beneficiaries)
-          ? res.beneficiaries.map((ben: Beneficiary) => ({
-              ...ben,
-              index: indexCounter++
-            }))
+          ? res.beneficiaries.map((ben: Beneficiary, i: number) => ({ ...ben, index: indexCounter++ }))
           : [];
-
 
         this.total_members = [...this.beneficiaries];
         if (this.user) {
           this.total_members.unshift(this.user);
         }
 
-        this.Prepare_for_client = this.total_members.filter(a =>
+        // Filter for beneficiaries with 'self' or 'spouse' relationshipCategory
+        this.Prepare_for_client = this.total_members.filter((a) =>
           a.relationshipCategory &&
           (a.relationshipCategory.includes('self') || a.relationshipCategory.includes('spouse'))
         );
 
-        if (this.Prepare_for_client.length > 0) {
-          this.DocumentPrepareFor = {
-            beneficiary: this.Prepare_for_client[0],
-            Executors: [],
-            SuccessorExecutors: [],
-            PropertyGuardianshipRepresentatives: [],
-            last_will: {
-              successorType: 'none',
-              bequests: false,
-              dispositionOfResiduaryEstate: '',
-              ultimateDispositionOfProperty: '',
-              excludeChildrenShares: false,
-              bequestsList: [],
-              bequestsList2: []
-            }
-          };
+        this.actual_data_members = this.total_members.filter(
+          (member) => !this.DocumentPrepareFor || member.index !== this.DocumentPrepareFor.beneficiary.index
+        );
+
+        console.log(this.Prepare_for_client, 'Prepare_for_client Data');
+        console.log(this.DocumentPrepareFor, 'Default Selected User');
+        console.log(this.total_members, 'Total Members List');
+
+        if (this.Prepare_for_client && this.Prepare_for_client.length > 0) {
+          this.defaultSelected = this.Prepare_for_client[0];
+          this.selectUser(this.defaultSelected);
         }
 
-        if (this.DocumentPrepareFor) {
-          this.actual_data_members = this.total_members.filter(
-            member => member.index !== this.DocumentPrepareFor!.beneficiary.index
-          );
-        }
+        this.prepareForData = {
+          title: 'Last Will + Living Trust',
+          description: `When you die, your Will must be filed with a court. This starts a lengthy process. Until the process is done your designated heirs have no access to the assets you left them.
+
+The property included in your Living Trust during your life will generally pass to the assigned person immediately. Also, this part is kept confidential and not part of the public record.
+
+Finally, you can protect your children’s inheritance by keeping it in trust until the age or ages that you select.`,
+          beneficiary: this.Prepare_for_client,
+          bottomTitle: 'Last Will & Testament —',
+          bottomDescription: 'accompanies the Living Trust document with pour-over directives.',
+          filesTitle: 'Revocable Living Trust — ',
+          filesNames: [
+            'Last Will & Testament',
+            'Last Will & Testament Execution Instructions',
+            'Revocable Living Trust',
+            'Certificate of Trust',
+            'Revocable Living Trust Execution Instructions',
+            'Revocable Living Trust Funding Instructions'
+          ]
+        };
+
+        this.trust_data_update();
       },
       error: (error) => {
         console.error('Error fetching data:', error);
@@ -216,243 +135,83 @@ trustName: any;
     });
   }
 
-  selectUser(user: Beneficiary): void {
-    this.DocumentPrepareFor = {
-      beneficiary: user,
-      Executors: [],
-      SuccessorExecutors: [],
-      PropertyGuardianshipRepresentatives: [],
-      last_will: {
-        successorType: 'none',
-        bequests: false,
-        dispositionOfResiduaryEstate: '',
-        ultimateDispositionOfProperty: '',
-        excludeChildrenShares: false,
-        excludedChildren: [],
-        bequestsList: [],
-        bequestsList2: []
-      }
-    };
-
-    // Update "actual_data_members" to exclude the newly selected beneficiary
-    this.actual_data_members = this.total_members.filter(
-      member => member.index !== user.index
-    );
-  }
-
-  /** Step Navigation */
-  proceedToNextStep(step: 'JointRevocable' | 'representative' |  'Ultimate_Disposition' | 'finish'): void {
-    this.currentStep = step;
-  }
-
-  goBack(): void {
-    if (this.currentStep === 'JointRevocable') {
-      this.currentStep = 'initial';
-    } else if (this.currentStep === 'representative') {
-      this.currentStep = 'JointRevocable';
-    } else if (this.currentStep === 'Ultimate_Disposition') {
-      this.currentStep = 'representative';
-    } else if (this.currentStep === 'finish') {
-      this.currentStep = 'representative';
+  setStep(value: string): void {
+    if (this.validSteps.includes(value as any)) {
+      this.currentStep = value as typeof this.validSteps[number];
+    } else {
+      console.warn("Invalid step value received:", value);
     }
   }
 
-  /** Confirm selection of Executors & Successors, move on to next step */
-  confirmSelection(): void {
-    if (this.DocumentPrepareFor) {
-      this.DocumentPrepareFor.Executors = this.selectedExecutors;
-      if (this.DocumentPrepareFor.last_will.successorType === 'one' && this.selectedSingleSuccessor) {
-        this.DocumentPrepareFor.SuccessorExecutors = [this.selectedSingleSuccessor];
-      } else if (this.DocumentPrepareFor.last_will.successorType === 'multiple') {
-        this.DocumentPrepareFor.SuccessorExecutors = this.selectedSuccessorExecutors;
-      } else {
-        this.DocumentPrepareFor.SuccessorExecutors = [];
-      }
+  handleEdit(): void {
+    if(this.DocumentPrepareFor?.beneficiary.relationshipCategory === 'self'){
+      this.currentStep = 'trust_option'
     }
-    this.proceedToNextStep('representative');
+    console.log('Edit clicked from child component');
+  }
+  
+  handleAssemble(): void {
+    console.log('Assemble clicked from child component');
   }
 
-  confirmAndNext(data: any): void{
-    this.proceedToNextStep(data);
-  }
-
-  /** Final step: load PDFs, move to "finish" */
-  confirmAndFinish(): void {
-    this.finalizeDocuments();
-  }
-
-  finalizeDocuments(): void {
+  selectUser(data: Beneficiary): void {
     if (!this.DocumentPrepareFor) {
-      console.error('No document data available.');
-      return;
-    }
-    // Ensure the chosen executors are set
-    this.DocumentPrepareFor.Executors = this.selectedExecutors;
-    if (this.DocumentPrepareFor.last_will.successorType === 'one' && this.selectedSingleSuccessor) {
-      this.DocumentPrepareFor.SuccessorExecutors = [this.selectedSingleSuccessor];
-    } else if (this.DocumentPrepareFor.last_will.successorType === 'multiple') {
-      this.DocumentPrepareFor.SuccessorExecutors = this.selectedSuccessorExecutors;
+      this.DocumentPrepareFor = {
+        beneficiary: data,
+        Executors: [],
+        SuccessorExecutors: [],
+        PropertyGuardianshipRepresentatives: [],
+        last_will: {
+          successorType: '',
+          bequests: false,
+          dispositionOfResiduaryEstate: '',
+          ultimateDispositionOfProperty: '',
+          excludeChildrenShares: false
+        }
+      };
     } else {
-      this.DocumentPrepareFor.SuccessorExecutors = [];
+      this.DocumentPrepareFor.beneficiary = data;
     }
 
-    // Trigger PDF generation or any final logic
-    //this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
-    this.currentStep = 'finish';
+    const spouseData = this.total_members.filter(
+      member => member.index !== this.DocumentPrepareFor!.beneficiary.index &&
+                (member.relationshipCategory.includes('spouse') ||  member.relationshipCategory.includes('self'))
+    );
+    this.DocumentPrepareFor.last_will.Spouse_name = spouseData.length > 0 
+      ? `${spouseData[0].firstName} ${spouseData[0].lastName}` 
+      : '';
+    console.log(this.DocumentPrepareFor);
+    this.trust_data_update();
+    console.log('Selected Beneficiary:', data);
   }
 
-  /** "Assemble" button in the 'initial' step */
-  Assemble(): void {
-    if (this.DocumentPrepareFor) {
-      this.lastwilltrus.load_PDFs(this.documentData);
-      console.log('Download PDF for:', this.DocumentPrepareFor);
-    }
-  }
-
-  /** Navigate to My Files */
-  goToMyFiles(): void {
-    this.router.navigate(['/my-files']);
-  }
-
-  /** Toggle an executor in the "Executors" step */
-  toggleExecutor(user: Beneficiary): void {
-    const index = this.selectedExecutors.findIndex(exec => exec.index === user.index);
-    if (index > -1) {
-      this.selectedExecutors.splice(index, 1);
-    } else {
-      this.selectedExecutors.push(user);
-    }
-  }
-
-  /** For "one" successor: select exactly one */
-  selectSingleSuccessor(user: Beneficiary): void {
-    this.selectedSingleSuccessor = user;
-  }
-
-  /** For "multiple" successors: toggle them on/off */
-  toggleSuccessorExecutor(user: Beneficiary): void {
-    const index = this.selectedSuccessorExecutors.findIndex(exec => exec.index === user.index);
-    if (index > -1) {
-      this.selectedSuccessorExecutors.splice(index, 1);
-    } else {
-      this.selectedSuccessorExecutors.push(user);
-    }
-  }
-
-  /** Filter out the main beneficiary from the successor options */
-  filteredSuccessors(): Beneficiary[] {
-    return this.actual_data_members;
-  }
-
-  /**
-   * First "Specific Bequests" list (bequestsList)
-   * e.g., items or dollar amounts
-   */
-  addBequest(): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.bequestsList) {
-      this.DocumentPrepareFor.last_will.bequestsList = [];
-    }
-    // Push a copy of newBequest
-    this.DocumentPrepareFor.last_will.bequestsList.push({ ...this.newBequest });
-
-    // Reset newBequest
-    this.newBequest = {
-      bequestType: 'charity',
-      charityName: '',
-      charityCity: '',
-      charityState: '',
-      individualName: '',
-      itemType: 'dollar',
-      amount: null,
-      itemDescription: '',
-      effectiveDate: ''
-    };
-  }
-
-  removeBequest(index: number): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.bequestsList) return;
-    this.DocumentPrepareFor.last_will.bequestsList.splice(index, 1);
-  }
-
-  /**
-   * Second "Named Persons" list (bequestsList2)
-   * e.g., beneficiaries with extra fields (issueToTakeShare, percentage, etc.)
-   */
-  addBequest2(): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.bequestsList2) {
-      this.DocumentPrepareFor.last_will.bequestsList2 = [];
-    }
-    // Push a copy of newBequest2
-    this.DocumentPrepareFor.last_will.bequestsList2.push({ ...this.newBequest2 });
-
-    // Reset newBequest2
-    this.newBequest2 = {
-      bequestType: 'charity',
-      charityName: '',
-      charityCity: '',
-      charityState: '',
-      individualName: '',
-      issueToTakeShare: null,
-      otherBeneficiariesToTakeShare: null,
-      alternateBeneficiaryName: '',
-      percentage: null,
-      effectiveDate: ''
-    };
-  }
-
-  removeBequest2(index: number): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.bequestsList2) return;
-    this.DocumentPrepareFor.last_will.bequestsList2.splice(index, 1);
-  }
-
-  toggleExcludedChild(user: Beneficiary): void {
-    if (!this.DocumentPrepareFor?.last_will.excludedChildren) {
-      this.DocumentPrepareFor!.last_will.excludedChildren = [];
-    }
-    const index = this.DocumentPrepareFor!.last_will.excludedChildren.findIndex(u => u.index === user.index);
-    if (index > -1) {
-      this.DocumentPrepareFor!.last_will.excludedChildren.splice(index, 1);
-    } else {
-      this.DocumentPrepareFor!.last_will.excludedChildren.push(user);
-    }
+  handleBackClicked(value: string): void {
+    this.setStep(value);
   }
   
-  isExcluded(user: Beneficiary): boolean {
-    return !!this.DocumentPrepareFor?.last_will.excludedChildren?.some(u => u.index === user.index);
+  handleNextClicked(value: string): void {
+    this.setStep(value);
   }
   
+  trust_data_update(): void {
+    this.trustOptionData = {
+      title: 'Decision',
+      sub_title: 'Joint Revocable Trust Option',
+      sub_title_description: 
+        `NetLaw offers married clients two choices when creating a Revocable Living Trust, a joint trust or separate individual trusts. Please keep in mind that the NetLaw Trusts, whether joint or individual, are created for the purpose of probate avoidance only. The NetLaw Trusts do not include estate or income tax planning or asset protection planning. If you have questions or concerns with regard to tax or asset protection planning, please contact customer service or an attorney of your choice.
 
-  addBequest3(): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.Ultimate_Disposition_Beneficiaries) {
-      this.DocumentPrepareFor.last_will.Ultimate_Disposition_Beneficiaries = [];
-    }
-    // Push a copy of newBequest2
-    this.DocumentPrepareFor.last_will.Ultimate_Disposition_Beneficiaries.push({ ...this.newBequest2 });
+If you choose to create a joint Revocable Trust, you will be able to create two Wills, one for each spouse, and one joint Revocable Trust. The first spouse to complete documents will create the joint Trust (along with his or her Will), then the other spouse will create his or her Will separately. Collectively, these documents allow you to name the Personal Representative of your estate, the Guardian of your minor children, and direct how you want your assets or property distributed.
 
-    // Reset newBequest2
-    this.newBequest2 = {
-      bequestType: 'charity',
-      charityName: '',
-      charityCity: '',
-      charityState: '',
-      individualName: '',
-      issueToTakeShare: null,
-      otherBeneficiariesToTakeShare: null,
-      alternateBeneficiaryName: '',
-      percentage: null,
-      effectiveDate: ''
+Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor != null) ? this.DocumentPrepareFor.last_will.Spouse_name : "") + " ?",
+      back: 'initial',
+      next: 'next-step'
     };
   }
 
-  removeBequest3(index: number): void {
-    if (!this.DocumentPrepareFor) return;
-    if (!this.DocumentPrepareFor.last_will.Ultimate_Disposition_Beneficiaries) return;
-    this.DocumentPrepareFor.last_will.Ultimate_Disposition_Beneficiaries.splice(index, 1);
+  handleTrustDataEmit(data: ITrustOptions): void {
+    console.log('Trust data emitted:', data);
+    this.trustOptionData = data;
   }
+
   
 }

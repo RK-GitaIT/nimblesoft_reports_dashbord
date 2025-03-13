@@ -7,5 +7,6 @@ export interface IPrepareFor {
   bottomTitle?: string; 
   bottomDescription?: string; 
   filesTitle?: string; 
+  filesTitleDescription?: string; 
   filesNames?: string[]; 
 }
