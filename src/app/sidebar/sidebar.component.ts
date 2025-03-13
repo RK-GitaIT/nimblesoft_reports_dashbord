@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent implements OnInit {
 
+  isSmartServicesOpen = false;
   constructor() {}
 
   ngOnInit() {
