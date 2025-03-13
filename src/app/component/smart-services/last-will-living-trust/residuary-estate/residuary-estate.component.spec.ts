@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResidueEstateComponent } from './residue-estate.component';
+import { ResiduaryEstateComponent } from './residuary-estate.component';
 
-describe('ResidueEstateComponent', () => {
-  let component: ResidueEstateComponent;
-  let fixture: ComponentFixture<ResidueEstateComponent>;
+describe('ResiduaryEstateComponent', () => {
+  let component: ResiduaryEstateComponent;
+  let fixture: ComponentFixture<ResiduaryEstateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ResidueEstateComponent]
+      imports: [ResiduaryEstateComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ResidueEstateComponent);
+    fixture = TestBed.createComponent(ResiduaryEstateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

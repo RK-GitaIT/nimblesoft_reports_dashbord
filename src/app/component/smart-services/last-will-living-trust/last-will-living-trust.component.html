@@ -66,4 +66,11 @@
   </app-personal-residence>
 </ng-container>
 
+<ng-container *ngIf="currentStep === 'residence-estate'">
+  <app-residuary-estate
+  (backClicked)="handleBackClicked($event)"
+  (nextClicked)="handleNextClicked($event)">
+  </app-residuary-estate>
+</ng-container>
+
   
