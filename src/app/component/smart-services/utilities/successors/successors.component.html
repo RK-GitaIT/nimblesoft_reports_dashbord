@@ -1,0 +1,41 @@
+<div class="md:col-span-2 bg-white p-4 rounded shadow">
+    <!-- Dropdown -->
+    <div class="mb-4" *ngIf="isChooseOption">
+      <label class="block mb-2 text-gray-700 font-medium">Choose an Option</label>
+      <select [(ngModel)]="successorType" (ngModelChange)="onSuccessorTypeChange($event)"
+        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <option value="multiple">Multiple Successors Serving Together</option>
+        <option value="one">One Successor</option>
+        <option value="none">No Successor</option>
+      </select>
+    </div>
+
+    <!-- Explanation -->
+    <div class="mb-4 text-sm text-gray-600">
+      <ng-container [ngSwitch]="successorType">
+        <div *ngSwitchCase="'multiple'">You have chosen to name multiple successor representatives who will serve <b>together</b>.</div>
+        <div *ngSwitchCase="'one'">You have chosen to name <b>one</b> successor representative.</div>
+        <div *ngSwitchCase="'none'">You have chosen to name <b>no</b> successor representatives.</div>
+      </ng-container>
+    </div>
+
+    <!-- Multi-Select List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2" *ngIf="successorType !== 'none'">
+      <div *ngFor="let user of data_members" (click)="toggleSelection(user)"
+           [class.bg-blue-100]="isSelected(user)"
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        
+        <!-- Selection Icon -->
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+              [ngClass]="isSelected(user) ? 'bg-gray-700' : getColor(user)">
+          {{ isSelected(user) ? '✓' : (user.firstName.charAt(0) + user.lastName.charAt(0)) }}
+        </span>
+        
+        <!-- User Info -->
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ user.firstName }} {{ user.lastName }}</p>
+          <p class="text-sm text-gray-500">{{ user.relationship }}</p>
+        </div>
+      </div>
+    </div>
+</div>
