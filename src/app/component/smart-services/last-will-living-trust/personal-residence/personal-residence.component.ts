@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 
+
+
 @Component({
   selector: 'app-personal-residence',
   standalone: true,

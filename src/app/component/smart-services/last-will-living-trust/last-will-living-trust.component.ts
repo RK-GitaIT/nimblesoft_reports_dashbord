@@ -16,6 +16,7 @@ import { IPetForm } from '../../../models/interfaces/utilities/IPetForm';
 import { PetCareComponent } from '../utilities/pet-care/pet-care.component';
 import { IPersonalResidence } from '../../../models/interfaces/utilities/IPersonalResidence';
 import { PersonalResidenceComponent } from './personal-residence/personal-residence.component';
+import { ResiduaryEstateComponent } from "./residuary-estate/residuary-estate.component";
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -42,25 +43,24 @@ export interface DocumentPrepareFor {
 @Component({
   selector: 'app-last-will-living-trust',
   standalone: true,
-  imports: [CommonModule, 
-    FormsModule, 
-    PrepareforComponent, 
-    TrustOptionComponent, 
-    PersonalRepresentativesComponent, 
+  imports: [CommonModule,
+    FormsModule,
+    PrepareforComponent,
+    TrustOptionComponent,
+    PersonalRepresentativesComponent,
     SuccessorRepresentativesComponent,
     TrusteesOfJointRevocableComponent,
     PetCareComponent,
-    PersonalResidenceComponent
-  ], 
+    PersonalResidenceComponent, ResiduaryEstateComponent], 
   templateUrl: './last-will-living-trust.component.html',
   styleUrls: ['./last-will-living-trust.component.css']
 })
 export class LastWillLivingTrustComponent implements OnInit {
-  private readonly validSteps = ["initial", "trust_option", "personal-representatives", "successor-representatives", "trustee-representatives", "pet-care", "personal-residence"] as const;
+  private readonly validSteps = ["initial",'residence-estate', "trust_option", "personal-representatives", "successor-representatives", "trustee-representatives", "pet-care", "personal-residence"] as const;
 
   user: Beneficiary | null = null;
   DocumentPrepareFor: DocumentPrepareFor | null = null;
-  currentStep: 'initial' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence'| 'initial' = 'initial';
+  currentStep: 'initial' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence'| 'residence-estate'|'initial' = 'initial';
   beneficiaries: Beneficiary[] = [];
   total_members: Beneficiary[] = [];
   actual_data_members: Beneficiary[] = [];
@@ -341,7 +341,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   personalResidence_update(): void {
     this.personalResidenceFormData = {
      Beneficiary: this.Prepare_for_client,
-     next: "initial",
+     next: "residence-estate",
      back: "pet-care",
     };
   }
