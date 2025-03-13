@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
+import { ResidueEstateComponent } from "../../utilities/residue-estate/residue-estate.component";
+
 
 @Component({
   selector: 'app-personal-residence',
-  imports: [],
+  imports: [ResidueEstateComponent],
   templateUrl: './personal-residence.component.html',
   styleUrl: './personal-residence.component.css'
 })

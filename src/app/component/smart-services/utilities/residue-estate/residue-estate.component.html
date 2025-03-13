@@ -1,0 +1,63 @@
+<div class="p-6  max-w-2xl mx-auto">
+    <h2 class="text-lg font-semibold mb-4 text-gray-800">Residue Estate Distribution</h2>
+
+    <!-- Dropdown to select distribution method -->
+    <label class="block font-medium">How do you want to distribute your estate?</label>
+    <select [(ngModel)]="selectedOption" class="border p-2 rounded w-full mt-2">
+        <option value="" disabled selected>Select an option</option>
+        <option value="children">All to my children</option>
+        <option value="namedPersons">All to named persons and/or charities</option>
+    </select>
+
+    <!-- If "All to my children" is selected -->
+    <div *ngIf="selectedOption === 'children'" class="mt-4">
+        <!-- Omit children radio -->
+        <label class="block font-medium">Do you want to omit any children?</label>
+        <div class="flex gap-4 mt-1">
+            <label class="inline-flex items-center">
+                <input type="radio" [(ngModel)]="omitChildren" name="omitChildren" value="yes">
+                Yes
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" [(ngModel)]="omitChildren" name="omitChildren" value="no">
+                No
+            </label>
+        </div>
+
+        <!-- Render SuccessorsComponent if "Yes" -->
+        <div *ngIf="omitChildren === 'yes'" class="mt-4">
+            <app-successors
+            [data_members]="total_members"
+            [isChooseOption]="false"
+            ></app-successors>
+        </div>
+
+        <!-- Descendant's Trust radio -->
+        <label class="block font-medium mt-4">Descendant's Trust?</label>
+        <div class="flex gap-4 mt-1">
+            <label class="inline-flex items-center">
+                <input type="radio" [(ngModel)]="descendantsTrust" name="descendantsTrust" value="yes">
+                Yes
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" [(ngModel)]="descendantsTrust" name="descendantsTrust" value="no">
+                No
+            </label>
+        </div>
+
+        <!-- Trust Dropdown if "Yes" -->
+        <div *ngIf="descendantsTrust === 'yes'" class="mt-4">
+            <label class="block font-medium">Select Trust Option</label>
+            <select [(ngModel)]="trustOption" class="border p-2 rounded w-full mt-2">
+                <option value="" disabled selected>Select an option</option>
+                <option value="25">All at 25</option>
+                <option value="21">All at 21</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- If "All to named persons and/or charities" is selected -->
+    <div *ngIf="selectedOption === 'namedPersons'" class="mt-4">
+        <app-add-beneficiery></app-add-beneficiery>
+    </div>
+</div>
