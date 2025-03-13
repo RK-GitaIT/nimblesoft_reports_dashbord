@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IPersonalRepresentatives } from '../../../../../models/interfaces/utilities/IPersonalRepresentatives';
+import { SuccessorsComponent } from "../../../utilities/successors/successors.component";
+import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model';
 @Component({
   selector: 'app-personal-representatives',
-  imports: [],
+  imports: [SuccessorsComponent],
   templateUrl: './personal-representatives.component.html',
   styleUrls: ['./personal-representatives.component.css']
 })
@@ -29,6 +31,19 @@ export class PersonalRepresentativesComponent implements OnInit, OnChanges {
       this.personal_presentatives_data_emit.emit(this.personal_presentatives_data);
       this.nextClicked.emit(this.personal_presentatives_data.next);
     }
+  }
+  ///
+  data_members: Beneficiary[] = [];
+
+  selectedRepresentatives: Beneficiary[] = [];
+
+  getColor(user: Beneficiary): string {
+    return user.index % 2 === 0 ? 'bg-green-500' : 'bg-red-500';
+  }
+
+  handleSelectionChange(updatedReps: Beneficiary[]) {
+    console.log('Updated Representatives:', updatedReps);
+    this.selectedRepresentatives = updatedReps;
   }
 
 }
