@@ -18,4 +18,43 @@
       </app-trust-option>
     </div>
   </ng-container>
+
+<ng-container *ngIf="currentStep === 'personal-representatives'">
+    <app-personal-representatives 
+      [personal_presentatives_data]="personalReps"
+      (backClicked)="handleBackClicked($event)"
+      (nextClicked)="handleNextClicked($event)"
+      (personal_presentatives_data_emit)="Personal_handleMembersDataEmit($event)">
+    </app-personal-representatives>
+</ng-container>
+
+
+<ng-container *ngIf="currentStep === 'successor-representatives'">
+  <app-successor-representatives
+    [successorRepresentativesData]="personalReps"
+    (backClicked)="handleBackClicked($event)"
+    (nextClicked)="handleNextClicked($event)"
+    (successorRepresentativesDataEmit)="successor_handleMembersDataEmit($event)">
+  </app-successor-representatives>
+</ng-container>
+
+
+<ng-container *ngIf="currentStep === 'trustee-representatives'">
+  <app-trustees-of-joint-revocable
+    [trusteesOfJointRevocableData]="personalReps"
+    (backClicked)="handleBackClicked($event)"
+    (nextClicked)="handleNextClicked($event)"
+    (trusteesOfJointRevocableData_emit)="trustee_handleMembersDataEmit($event)">
+  </app-trustees-of-joint-revocable>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'pet-care'">
+  <app-pet-care 
+    [petForm]="petFormData"
+    (backClicked)="handleBackClicked($event)"
+    (nextClicked)="handleNextClicked($event)"
+    (petData_emit)="onPetData($event)">
+  </app-pet-care>
+</ng-container>
+
   

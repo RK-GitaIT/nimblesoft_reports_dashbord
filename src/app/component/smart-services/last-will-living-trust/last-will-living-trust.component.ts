@@ -7,12 +7,20 @@ import { myProfileService } from '../../../services/json/my-profile.service';
 import { ITrustOptions } from '../../../models/interfaces/utilities/ITrustOptions';
 import { IPrepareFor } from '../../../models/interfaces/utilities/ipreparefor';
 import { TrustOptionComponent } from './trust-option/trust-option.component';
+import { IRepresentatives } from '../../../models/interfaces/utilities/IRepresentatives';
+import { IPersonalRepresentatives } from '../../../models/interfaces/utilities/IPersonalRepresentatives';
+import { PersonalRepresentativesComponent } from './representatives/personal-representatives/personal-representatives.component';
+import { SuccessorRepresentativesComponent } from './representatives/successor-representatives/successor-representatives.component';
+import { TrusteesOfJointRevocableComponent } from './representatives/trustees-of-joint-revocable/trustees-of-joint-revocable.component';
+import { IPetForm } from '../../../models/interfaces/utilities/IPetForm';
+import { PetCareComponent } from '../utilities/pet-care/pet-care.component';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
-  Executors: Beneficiary[];
+  selected_personalReps?: Beneficiary[];
   SuccessorExecutors: Beneficiary[];
   PropertyGuardianshipRepresentatives: Beneficiary[];
+  petFormData?: IPetForm,
   last_will: {
     successorType: string;
     bequests: boolean;
@@ -31,16 +39,24 @@ export interface DocumentPrepareFor {
 @Component({
   selector: 'app-last-will-living-trust',
   standalone: true,
-  imports: [CommonModule, FormsModule, PrepareforComponent, TrustOptionComponent], 
+  imports: [CommonModule, 
+    FormsModule, 
+    PrepareforComponent, 
+    TrustOptionComponent, 
+    PersonalRepresentativesComponent, 
+    SuccessorRepresentativesComponent,
+    TrusteesOfJointRevocableComponent,
+    PetCareComponent
+  ], 
   templateUrl: './last-will-living-trust.component.html',
   styleUrls: ['./last-will-living-trust.component.css']
 })
 export class LastWillLivingTrustComponent implements OnInit {
-  private readonly validSteps = ["initial", "trust_option", "successor", "hipaa_authorization", "hipaa_successor", "hipaa_psychotherapy", "finish"] as const;
+  private readonly validSteps = ["initial", "trust_option", "personal-representatives", "successor-representatives", "trustee-representatives", "pet-care", "finish"] as const;
 
   user: Beneficiary | null = null;
   DocumentPrepareFor: DocumentPrepareFor | null = null;
-  currentStep: 'initial' | 'trust_option' | 'successor' | 'hipaa_authorization' | 'hipaa_successor' | 'hipaa_psychotherapy' | 'finish' = 'initial';
+  currentStep: 'initial' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'finish' = 'initial';
   beneficiaries: Beneficiary[] = [];
   total_members: Beneficiary[] = [];
   actual_data_members: Beneficiary[] = [];
@@ -48,12 +64,17 @@ export class LastWillLivingTrustComponent implements OnInit {
   prepareForData!: IPrepareFor;
   defaultSelected: Beneficiary | undefined = undefined;
   trustOptionData!: ITrustOptions;
+  representativeData!: IRepresentatives;
+  personalReps!: IPersonalRepresentatives;
+  petFormData!: IPetForm;
 
   constructor(private profileService: myProfileService) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
+
+  //#region Initial component
 
   loadUsers(): void {
     this.profileService.getProfile().subscribe({
@@ -135,30 +156,11 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
     });
   }
 
-  setStep(value: string): void {
-    if (this.validSteps.includes(value as any)) {
-      this.currentStep = value as typeof this.validSteps[number];
-    } else {
-      console.warn("Invalid step value received:", value);
-    }
-  }
-
-  handleEdit(): void {
-    if(this.DocumentPrepareFor?.beneficiary.relationshipCategory === 'self'){
-      this.currentStep = 'trust_option'
-    }
-    console.log('Edit clicked from child component');
-  }
-  
-  handleAssemble(): void {
-    console.log('Assemble clicked from child component');
-  }
-
   selectUser(data: Beneficiary): void {
     if (!this.DocumentPrepareFor) {
       this.DocumentPrepareFor = {
         beneficiary: data,
-        Executors: [],
+        selected_personalReps: [],
         SuccessorExecutors: [],
         PropertyGuardianshipRepresentatives: [],
         last_will: {
@@ -185,17 +187,44 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
     console.log('Selected Beneficiary:', data);
   }
 
+
+  //#endregion
+
+  handleEdit(): void {
+    if(this.DocumentPrepareFor?.beneficiary.relationshipCategory === 'self'){
+      this.currentStep = 'trust_option'
+    }
+    console.log('Edit clicked from child component');
+  }
+  
+  handleAssemble(): void {
+    console.log('Assemble clicked from child component');
+  }
+
+  setStep(value: string): void {
+    if (this.validSteps.includes(value as any)) {
+      this.currentStep = value as typeof this.validSteps[number];
+    } else {
+      console.warn("Invalid step value received:", value);
+    }
+  }
+
   handleBackClicked(value: string): void {
+    console.log(value);
     this.setStep(value);
   }
   
   handleNextClicked(value: string): void {
     this.setStep(value);
   }
+
+  //#region  Trust option Decision
   
   trust_data_update(): void {
     this.trustOptionData = {
-      title: 'Decision',
+      user: this.DocumentPrepareFor?.beneficiary,
+      title: 'Last Will + Living Trust',
+      title2: 'Decision',
       sub_title: 'Joint Revocable Trust Option',
       sub_title_description: 
         `NetLaw offers married clients two choices when creating a Revocable Living Trust, a joint trust or separate individual trusts. Please keep in mind that the NetLaw Trusts, whether joint or individual, are created for the purpose of probate avoidance only. The NetLaw Trusts do not include estate or income tax planning or asset protection planning. If you have questions or concerns with regard to tax or asset protection planning, please contact customer service or an attorney of your choice.
@@ -203,14 +232,100 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
 If you choose to create a joint Revocable Trust, you will be able to create two Wills, one for each spouse, and one joint Revocable Trust. The first spouse to complete documents will create the joint Trust (along with his or her Will), then the other spouse will create his or her Will separately. Collectively, these documents allow you to name the Personal Representative of your estate, the Guardian of your minor children, and direct how you want your assets or property distributed.
 
 Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor != null) ? this.DocumentPrepareFor.last_will.Spouse_name : "") + " ?",
+      input_label: 'Trust Name',
       back: 'initial',
-      next: 'next-step'
+      next: 'personal-representatives'
     };
   }
 
   handleTrustDataEmit(data: ITrustOptions): void {
     console.log('Trust data emitted:', data);
     this.trustOptionData = data;
+    this.personal_representative_data_update();
+  }
+
+  //#endregion
+
+  //#region personal Representatives component
+
+  personal_representative_data_update(): void {
+    this.personalReps = {
+      members: this.actual_data_members,
+      sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
+      back: 'trust_option',
+      next: 'successor-representatives'
+    };
+  }
+
+  Personal_handleMembersDataEmit(data: IPersonalRepresentatives): void {
+    console.log('Members data emitted:', data);
+    // Update your parent component state as needed.
+    this.personalReps = data;
+    this.successor_representative_data_update();
+  }
+
+  //#endregion
+  
+  //#region successor Representatives component
+
+  successor_representative_data_update(): void {
+      this.personalReps = {
+        members: this.actual_data_members,
+        sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
+        back: 'personal-representatives',
+        next: 'trustee-representatives'
+      };
+    }
+  
+  successor_handleMembersDataEmit(data: IPersonalRepresentatives): void {
+      console.log('Members data emitted:', data);
+      // Update your parent component state as needed.
+      this.personalReps = data;
+    this.trustee_representative_data_update();
   }
   
+    //#endregion
+    
+  //#region trustee Representatives component
+
+  trustee_representative_data_update(): void {
+    this.personalReps = {
+      members: this.actual_data_members,
+      sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
+      back: 'successor-representatives',
+      next: 'pet-care'
+    };
+  }
+
+  trustee_handleMembersDataEmit(data: IPersonalRepresentatives): void {
+    console.log('Members data emitted:', data);
+    // Update your parent component state as needed.
+    this.personalReps = data;
+    this.pet_care_update();
+  }
+
+  //#endregion
+  
+
+  //#region pet-form
+
+  pet_care_update(): void {
+    this.petFormData = {
+      hasPets: false,
+      createTrust: false,
+      leaveMoney: false,
+      assetType: '',
+      incomeAsset: 0,
+      assetDescription: '',
+      back: 'trustee-representatives',
+      next: 'initial'
+    };
+  }
+  onPetData(data: IPetForm): void {
+    console.log('Received pet data:', data);
+    if(this.DocumentPrepareFor!= null){
+      this.DocumentPrepareFor.petFormData = data;
+    }
+  }
+  //#endregion
 }

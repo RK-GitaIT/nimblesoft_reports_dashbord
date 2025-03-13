@@ -1,17 +1,18 @@
 <div class="flex p-4">
   <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
-    <form [formGroup]="trustForm" (ngSubmit)="confirmToNext()">
+    <!-- Use a regular HTML form (template-driven) with ngModel -->
+    <form (ngSubmit)="confirmToNext()">
       <div class="mb-4">
         <label class="block text-gray-700 font-medium mb-2">
           Do you have any pets?
         </label>
         <div class="flex gap-4">
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="true" formControlName="hasPets" class="form-radio text-blue-500">
+            <input type="radio" name="hasPets" [(ngModel)]="petFormModel.hasPets" [value]="true" class="form-radio text-blue-500">
             <span>Yes</span>
           </label>
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="false" formControlName="hasPets" class="form-radio text-blue-500">
+            <input type="radio" name="hasPets" [(ngModel)]="petFormModel.hasPets" [value]="false" class="form-radio text-blue-500">
             <span>No</span>
           </label>
         </div>
@@ -23,11 +24,11 @@
         </label>
         <div class="flex gap-4">
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="true" formControlName="createTrust" class="form-radio text-blue-500">
+            <input type="radio" name="createTrust" [(ngModel)]="petFormModel.createTrust" [value]="true" class="form-radio text-blue-500">
             <span>Yes</span>
           </label>
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="false" formControlName="createTrust" class="form-radio text-blue-500">
+            <input type="radio" name="createTrust" [(ngModel)]="petFormModel.createTrust" [value]="false" class="form-radio text-blue-500">
             <span>No</span>
           </label>
         </div>
@@ -39,11 +40,11 @@
         </label>
         <div class="flex gap-4">
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="true" formControlName="leaveMoney" class="form-radio text-blue-500">
+            <input type="radio" name="leaveMoney" [(ngModel)]="petFormModel.leaveMoney" [value]="true" class="form-radio text-blue-500">
             <span>Yes</span>
           </label>
           <label class="flex items-center space-x-2">
-            <input type="radio" [value]="false" formControlName="leaveMoney" class="form-radio text-blue-500">
+            <input type="radio" name="leaveMoney" [(ngModel)]="petFormModel.leaveMoney" [value]="false" class="form-radio text-blue-500">
             <span>No</span>
           </label>
         </div>
@@ -53,32 +54,33 @@
         <label class="block text-gray-700 font-medium mb-2">
           Asset Type
         </label>
-        <select formControlName="assetType" class="border p-2 rounded w-full">
+        <select name="assetType" [(ngModel)]="petFormModel.assetType" class="border p-2 rounded w-full">
           <option *ngFor="let type of assetTypes" [value]="type">{{ type }}</option>
         </select>
       </div>
 
-      <div class="mb-4" *ngIf="isDollarAmount">
+      <div class="mb-4" *ngIf="showAssetFields && isDollarAmount">
         <label class="block text-gray-700 font-medium mb-2">
           Enter a whole number with no periods or commas
         </label>
-        <input type="number" formControlName="incomeAsset" class="border p-2 rounded w-full" placeholder="100000">
+        <input type="number" name="incomeAsset" [(ngModel)]="petFormModel.incomeAsset" class="border p-2 rounded w-full" placeholder="100000">
       </div>
 
-      <div class="mb-4" *ngIf="!isDollarAmount && showAssetFields">
+      <div class="mb-4" *ngIf="showAssetFields && !isDollarAmount">
         <label class="block text-gray-700 font-medium mb-2">
           Describe the asset
         </label>
-        <input type="text" formControlName="assetDescription" class="border p-2 rounded w-full" placeholder="For example, 100 shares of ABC stock">
+        <input type="text" name="assetDescription" [(ngModel)]="petFormModel.assetDescription" class="border p-2 rounded w-full" placeholder="For example, 100 shares of ABC stock">
       </div>
 
       <div class="flex justify-between mt-4">
-        <button type="button" (click)="Back()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
-          {{ petForm?.back || 'Back' }}
+        <button type="button" (click)="Back()"
+                class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+          Back
         </button>
-
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-          {{ petForm?.next || 'Next' }}
+        <button type="submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          confirm & Next
         </button>
       </div>
     </form>

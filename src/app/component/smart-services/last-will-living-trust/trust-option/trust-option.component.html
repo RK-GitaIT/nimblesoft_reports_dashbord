@@ -1,7 +1,10 @@
 <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h3 class="text-lg font-semibold mt-1">
+    {{ trust_data?.user?.lastName }} {{trust_data?.user?.lastName}} <b class="text-lg text-blue-500 font-semibold mt-1"> {{ trust_data?.title || '' }}</b>
+  </h3>
     <!-- Title -->
     <h1 class="text-xl font-semibold text-gray-800">
-      {{ trust_data?.title || '' }}
+      {{ trust_data?.title2 || '' }}
     </h1>
     <!-- Subtitle -->
     <h3 class="text-lg text-blue-500 font-semibold mt-1">
@@ -14,7 +17,7 @@
     
     <!-- Optional Input Section -->
     <div *ngIf="trust_data?.input_label">
-      <label class="block text-sm font-medium text-gray-700">
+      <label class="block text-sm font-medium text-gray-700 pt-10">
         {{ trust_data?.input_label }}
       </label>
       <input 

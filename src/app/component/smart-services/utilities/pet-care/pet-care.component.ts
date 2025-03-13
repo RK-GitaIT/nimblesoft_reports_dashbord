@@ -1,59 +1,49 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
-interface TrustForm {
-  hasPets: boolean;
-  createTrust: boolean;
-  leaveMoney: boolean;
-  assetType?: string;
-  incomeAsset?: number;
-  assetDescription?: string;
-}
-interface PetForm extends TrustForm {
-  next: string;
-  back: string;
-}
+import { FormsModule } from '@angular/forms';
+import { IPetForm } from '../../../../models/interfaces/utilities/IPetForm';
 
 @Component({
   selector: 'app-pet-care',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './pet-care.component.html',
   styleUrls: ['./pet-care.component.css']  
 })
 export class PetCareComponent {
-  trustForm: FormGroup;
+  // Model for our pet care form
+  petFormModel: IPetForm = {
+    hasPets: false,
+    createTrust: false,
+    leaveMoney: false,
+    assetType: '',
+    incomeAsset: 0,
+    assetDescription: '',
+    next: '',
+    back: ''
+  };
+
   assetTypes = ['Dollar-amount', 'Income-producing asset'];
-  @Input() petForm?: PetForm;  
+
+  @Input() petForm?: IPetForm;  
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
-  @Output() petData = new EventEmitter<TrustForm>();
+  @Output() petData_emit = new EventEmitter<IPetForm>();
 
-  constructor(private fb: FormBuilder) {
-    this.trustForm = this.fb.group({
-      hasPets: false,
-      createTrust: false,
-      leaveMoney: false,
-      assetType: '',
-      incomeAsset: undefined,
-      assetDescription: ''
-    });
+  // Getters to control conditional UI elements
+  get showCreateTrust(): boolean {
+    return this.petFormModel.hasPets;
   }
 
-  get showCreateTrust() {
-    return this.trustForm.get('hasPets')?.value;
+  get showLeaveMoney(): boolean {
+    return this.showCreateTrust && this.petFormModel.createTrust;
   }
 
-  get showLeaveMoney() {
-    return this.showCreateTrust && this.trustForm.get('createTrust')?.value;
+  get showAssetFields(): boolean {
+    return this.showLeaveMoney && this.petFormModel.leaveMoney;
   }
 
-  get showAssetFields() {
-    return this.showLeaveMoney && this.trustForm.get('leaveMoney')?.value;
-  }
-
-  get isDollarAmount() {
-    return this.trustForm.get('assetType')?.value === 'Dollar-amount';
+  get isDollarAmount(): boolean {
+    return this.petFormModel.assetType === 'Dollar-amount';
   }
 
   Back(): void {
@@ -61,7 +51,8 @@ export class PetCareComponent {
   }
 
   confirmToNext(): void {
-    this.petData.emit(this.trustForm.value as TrustForm);
+    // Emit the current form model data
+    this.petData_emit.emit(this.petFormModel);
     this.nextClicked.emit(this.petForm?.next ?? '');
   }
 }

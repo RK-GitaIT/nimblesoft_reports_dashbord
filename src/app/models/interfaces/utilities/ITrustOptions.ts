@@ -1,7 +1,11 @@
+import { Beneficiary } from "../Beneficiary.model";
+
 export interface ITrustOptions {
-      title: string;
-      sub_title: string;
-      sub_title_description: string;
+      user?: Beneficiary,
+      title?: string;
+      title2?: string;
+      sub_title?: string;
+      sub_title_description?: string;
       input_label?: string; 
       input_value?: string; 
       bottomDescription?: string; 
