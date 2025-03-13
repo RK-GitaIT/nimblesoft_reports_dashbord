@@ -57,4 +57,13 @@
   </app-pet-care>
 </ng-container>
 
+<ng-container *ngIf="currentStep === 'personal-residence'">
+  <app-personal-residence 
+    [personalResidenceData]="personalResidenceFormData"
+    (backClicked)="handleBackClicked($event)"
+    (nextClicked)="handleNextClicked($event)"
+    (personalResidenceData_emit)="onPersonalResidenceData($event)">
+  </app-personal-residence>
+</ng-container>
+
   

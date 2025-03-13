@@ -1,4 +1,4 @@
-export interface Bequest {
+export interface IRequests {
     bequestType: 'charity' | 'individual'; // Common field
     charityName?: string;
     charityCity?: string;

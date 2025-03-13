@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Bequest } from '../../../../models/interfaces/utilities/IBequest';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 
 @Component({
@@ -14,8 +14,8 @@ import { Bequest } from '../../../../models/interfaces/utilities/IBequest';
 export class AddBeneficieryComponent {
   @Input() showBequest: boolean = false; // ✅ Controls Bequest visibility
   @Input() showEffectiveDate: boolean = false; // ✅ Controls Effective Date visibility
-  @Input() beneficiaries: Bequest[] = []; // ✅ Directly accepts data from parent
-  @Output() beneficiariesChange = new EventEmitter<Bequest[]>(); // ✅ Emits on Save
+  @Input() beneficiaries: IRequests[] = []; // ✅ Directly accepts data from parent
+  @Output() beneficiariesChange = new EventEmitter<IRequests[]>(); // ✅ Emits on Save
 
   addBeneficiary() {
     this.beneficiaries.push({
@@ -45,7 +45,7 @@ toggleExpand(index: number) {
   this.beneficiaries[index].expanded = !this.beneficiaries[index].expanded;
   this.emitBeneficiaries();
 }
-  updateBeneficiary(index: number, field: keyof Bequest, value: any) {
+  updateBeneficiary(index: number, field: keyof IRequests, value: any) {
     this.beneficiaries[index] = { ...this.beneficiaries[index], [field]: value };
   }
 
