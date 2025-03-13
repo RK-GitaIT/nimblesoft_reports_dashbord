@@ -2,7 +2,14 @@
     <h3 class="text-lg font-semibold mt-1">
         Personal Representatives of your Last Will and Testament
     </h3>
-      
+    <app-successors 
+    [isChooseOption]="false"
+    [data_members]="personal_presentatives_data?.members"
+    [selectedRepresentatives]="selectedRepresentatives"
+    [getColor]="getColor"
+    (representativesChange)="handleSelectionChange($event)">
+</app-successors>
+
       <!-- Navigation Buttons -->
       <div class="flex justify-between mt-4">
         <button (click)="Back()"

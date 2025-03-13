@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IPersonalRepresentatives } from '../../../../../models/interfaces/utilities/IPersonalRepresentatives';
+import { SuccessorsComponent } from "../../../utilities/successors/successors.component";
+import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model';
 
 @Component({
   selector: 'app-trustees-of-joint-revocable',
-  imports: [],
+  imports: [SuccessorsComponent],
   templateUrl: './trustees-of-joint-revocable.component.html',
   styleUrl: './trustees-of-joint-revocable.component.css'
 })
@@ -30,6 +32,18 @@ export class TrusteesOfJointRevocableComponent implements OnInit, OnChanges {
       this.trusteesOfJointRevocableData_emit.emit(this.trusteesOfJointRevocableData);
       this.nextClicked.emit(this.trusteesOfJointRevocableData.next);
     }
+  }
+  data_members: Beneficiary[] = [];
+
+  selectedRepresentatives: Beneficiary[] = [];
+
+  getColor(user: Beneficiary): string {
+    return user.index % 2 === 0 ? 'bg-green-500' : 'bg-red-500';
+  }
+
+  handleSelectionChange(updatedReps: Beneficiary[]) {
+    console.log('Updated Representatives:', updatedReps);
+    this.selectedRepresentatives = updatedReps;
   }
 
 }
