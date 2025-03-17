@@ -54,7 +54,7 @@ export class MyfilesComponent implements OnInit {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Medical power of attorney designation of health care agent.pdf';
+      a.download = name;
       a.click();
       URL.revokeObjectURL(url);
       console.log('PDF downloaded successfully.');
