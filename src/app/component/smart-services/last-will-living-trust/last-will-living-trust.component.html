@@ -68,6 +68,7 @@
 
 <ng-container *ngIf="currentStep === 'residence-estate'">
   <app-residuary-estate
+  [trusteesOfJointRevocableData]="personalReps"
   (backClicked)="handleBackClicked($event)"
   (nextClicked)="handleNextClicked($event)">
   </app-residuary-estate>

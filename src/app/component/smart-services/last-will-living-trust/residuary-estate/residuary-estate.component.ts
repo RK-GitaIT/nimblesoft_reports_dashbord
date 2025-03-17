@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResidueEstateComponent } from "../../utilities/residue-estate/residue-estate.component";
 import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
+import { IPersonalRepresentatives } from '../../../../models/interfaces/utilities/IPersonalRepresentatives';
+import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 
 @Component({
   selector: 'app-residuary-estate',
@@ -9,6 +11,7 @@ import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPer
   styleUrl: './residuary-estate.component.css'
 })
 export class ResiduaryEstateComponent implements OnInit {
+  @Input() trusteesOfJointRevocableData?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
   
