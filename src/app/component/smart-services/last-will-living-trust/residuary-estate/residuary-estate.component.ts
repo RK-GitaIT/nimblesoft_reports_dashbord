@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResidueEstateComponent } from "../../utilities/residue-estate/residue-estate.component";
-import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
 import { IPersonalRepresentatives } from '../../../../models/interfaces/utilities/IPersonalRepresentatives';
-import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 
 @Component({
   selector: 'app-residuary-estate',
@@ -11,21 +9,22 @@ import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
   styleUrl: './residuary-estate.component.css'
 })
 export class ResiduaryEstateComponent implements OnInit {
-  @Input() trusteesOfJointRevocableData?: IPersonalRepresentatives;
+  @Input() residuaryEstateData?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
-  
+  @Output() residence_estate_data_emit = new EventEmitter<string>();
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+   
   }
   
   Back(): void {
-    this.backClicked.emit('personal-residence');
+    this.backClicked.emit(this.residuaryEstateData?.back);
   }
 
   confirmToNext(): void {
-    this.nextClicked.emit('initial');
+    this.residence_estate_data_emit.emit("hello");
+    this.nextClicked.emit(this.residuaryEstateData?.next);
   }
 }
 

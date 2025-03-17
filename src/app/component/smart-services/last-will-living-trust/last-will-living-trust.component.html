@@ -68,10 +68,20 @@
 
 <ng-container *ngIf="currentStep === 'residence-estate'">
   <app-residuary-estate
-  [trusteesOfJointRevocableData]="personalReps"
+  [residuaryEstateData]="residuaryEstate_Data"
   (backClicked)="handleBackClicked($event)"
-  (nextClicked)="handleNextClicked($event)">
+  (nextClicked)="handleNextClicked($event)"
+  (residence_estate_data_emit)="onResidenceEstateData($event)">
   </app-residuary-estate>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'ultimate-disposition'">
+  <app-ultimate-disposition
+  [ultimate_disposition_data]="ultimate_disposition"
+  (backClicked)="handleBackClicked($event)"
+  (nextClicked)="handleNextClicked($event)"
+  (ultimate_disposition_data_emit)="onUltimateDispositionData($event)">
+  </app-ultimate-disposition>
 </ng-container>
 
   
