@@ -2,14 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IPersonalWithOtherResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
+import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
+import { RealEstateComponent } from "../../utilities/real-estate/real-estate.component";
 
 @Component({
   selector: 'app-other-real-estate',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddBeneficieryComponent, RealEstateComponent],
   templateUrl: './other-real-estate.component.html',
   styleUrl: './other-real-estate.component.css'
 })
 export class OtherRealEstateComponent implements OnInit {
+
   @Input() other_real_estate_Data?: IPersonalWithOtherResidence;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
@@ -28,7 +32,9 @@ export class OtherRealEstateComponent implements OnInit {
       };
     }
   }
-
+  onBeneficiariesChange(updatedBeneficiaries: any[]) {
+    console.log("My Real estate beneficieries",updatedBeneficiaries);
+  }
   /** Returns a concatenated string of beneficiary names for joint ownership. */
   get jointOwnersLabel(): string {
     if (!this.other_real_estate_Data?.Beneficiary) return '';

@@ -1,0 +1,80 @@
+<div class="p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
+    <h3 class="text-lg font-semibold mt-1">Real Estate Management</h3>
+  
+    <!-- Add Real Estate Button -->
+    <button (click)="addRealEstate()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
+      + Add Real Estate
+    </button>
+  
+    <!-- Loop through each real estate entry -->
+    <div *ngFor="let estate of realEstateList; let i = index" class="mt-6 border rounded-lg shadow-lg p-4">
+      
+      <!-- Expand/Collapse Header -->
+      <div class="flex justify-between items-center cursor-pointer" (click)="toggleExpand(i)">
+        <h4 class="text-md font-semibold">Real Estate #{{ i + 1 }}</h4>
+        <button class="text-red-600 hover:text-red-800 font-bold" (click)="removeRealEstate(i); $event.stopPropagation()">
+          ❌ Delete
+        </button>
+      </div>
+  
+      <!-- Real Estate Content (Expandable/Collapsible) -->
+      <div *ngIf="estate.expanded">
+        <!-- Personal Residence Devise Selection -->
+        <div class="mt-4 space-x-2">
+          <label class="inline-flex items-center space-x-2">
+            <input type="radio" name="PersonalResidence-{{ i }}" [(ngModel)]="estate.PersonalResidenceDevise" [value]="true" />
+            <span>Yes</span>
+          </label>
+          <label class="inline-flex items-center space-x-2">
+            <input type="radio" name="PersonalResidence-{{ i }}" [(ngModel)]="estate.PersonalResidenceDevise" [value]="false" />
+            <span>No</span>
+          </label>
+        </div>
+  
+        <!-- Ownership Type Selection -->
+        <div class="mt-4" *ngIf="estate.PersonalResidenceDevise">
+          <h4 class="text-md font-semibold mt-2">Ownership Type</h4>
+  
+          <!-- Joint Ownership -->
+          <label class="inline-flex items-center space-x-2">
+            <input type="radio" name="ownership-{{ i }}" [(ngModel)]="estate.ownershipType" value="joint" (change)="updateOwnership(i, 'joint')" />
+            <span>Joint Ownership</span>
+          </label>
+
+          <!-- Sole Ownership -->
+            <div class="mt-2" *ngFor="let b of real_estate_Data?.Beneficiary; let i = index">
+                <label class="inline-flex items-center space-x-2">
+                <input
+                    type="radio"
+                    name="ownership"
+                    [(ngModel)]="estate.ownershipType"
+                    [value]="'sole_' + i"
+                    (change)="updateOwnership(i,'sole_' + i)"
+                />
+                <span>Owned by {{ b.firstName + ' ' + b.lastName }} only</span>
+                </label>
+            </div>
+  
+          <!-- Effective Date Section (Only Visible if ownership is Sole) -->
+          <div class="mt-4" [class.hidden]="estate.ownershipType === 'joint'">
+            <h4 class="text-md font-semibold">Effective Date of Devise</h4>
+            <label class="block mt-2">
+              <input type="radio" name="effectiveDate-{{ i }}" [(ngModel)]="estate.Effective_date_of_devise" value="regardless" (change)="updateEffectiveDate(i, 'regardless')" />
+              <span>At owner's death regardless of other beneficiaries</span>
+            </label>
+            <label class="block mt-2">
+              <input type="radio" name="effectiveDate-{{ i }}" [(ngModel)]="estate.Effective_date_of_devise" value="not_survive" (change)="updateEffectiveDate(i, 'not_survive')" />
+              <span>At owner's death only if other beneficiaries do not survive</span>
+            </label>
+          </div>
+        </div>
+  
+        <!-- Add Beneficiary Component -->
+        <div class="mt-4">
+          <h4 class="text-md font-semibold">You can add one or more beneficiaries below</h4>
+          <app-add-beneficiery [beneficiaries]="estate.Beneficiary" (beneficiariesChange)="onBeneficiariesChange(i, $event)"></app-add-beneficiery>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -3,7 +3,7 @@
         + Add Beneficiary
     </button>
     <div *ngFor="let beneficiary of beneficiaries; let i = index" 
-         class="mt-4 bg-white p-4 rounded-lg shadow-lg border border-gray-300">
+         class="mt-4 bg-white p-4 rounded-lg shadow-lg border border-gray-300 max-h-[500px] overflow-auto">
 
         <div class="flex justify-between items-center p-4  rounded-lg border border-gray-300 shadow-md"   (click)="toggleExpand(i)">
             <!-- Left Section: Beneficiary Title & Saved Details -->
@@ -79,12 +79,96 @@
             </div>
 
             <div>
-                <label class="block font-semibold mt-3">Percentage</label>
+                <label class="block font-bold mt-3">Percentage</label>
                 <input type="number" [(ngModel)]="beneficiaries[i].percentage"
                     class="border p-2 rounded w-full mt-1" placeholder="Enter percentage">
             </div>
+            <!--Bequests-->
+            <div *ngIf="showBequest">
+                <label class="block font-bold mt-4">Bequests</label>
+                <div class="flex gap-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" [(ngModel)]="beneficiaries[i].itemType" [value]="'dollar'">
+                        Dollar
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" [(ngModel)]="beneficiaries[i].itemType" [value]="'item'">
+                        Item
+                    </label>
+                </div>
+                   <!-- Conditional Inputs -->
+                <div *ngIf="beneficiary.itemType === 'dollar'" class="mt-3">
+                    <label class="block font-semibold">Amount</label>
+                    <input type="number" [(ngModel)]="beneficiaries[i].amount"
+                        class="border p-2 rounded w-full" placeholder="Enter amount">
+                </div>
 
-           
+                <div *ngIf="beneficiary.itemType === 'item'" class="mt-3">
+                    <label class="block font-semibold">Item Description</label>
+                    <input type="text" [(ngModel)]="beneficiaries[i].itemDescription"
+                        class="border p-2 rounded w-full" placeholder="Enter item description">
+                </div>
+                <div>
+                    <h1 class="block font-bold">Ownership Property</h1>
+                  
+                    <!-- Joint Ownership Radio -->
+                    <label class="inline-flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="ownership"
+                        [(ngModel)]="beneficiaries[i].ownershipType"
+                        value="joint"
+                        (change)="updateOwnership(i,'joint')"
+                      />
+                      <span>Joint Ownership</span>
+                    </label>
+                  
+                    <!-- Sole Ownership Radios -->
+                    <div *ngFor="let b of other_real_estate_Data!.Beneficiary">
+                      <label class="inline-flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          name="ownership"
+                          [(ngModel)]="beneficiaries[i].ownershipType"
+                          [value]="'sole_' + b.index"
+                          (change)="updateOwnership(i,'sole_' + b.index)"
+                        />
+                        <span>Owned by {{ b.firstName + ' ' + b.lastName }} only</span>
+                      </label>
+                    </div>
+                  
+                    <!-- Effective Date Radio (Hidden when ownershipType is 'joint') -->
+                    <div [class.hidden]="beneficiaries[i].ownershipType === 'joint'">
+                      <p class="block font-bold mt-3">Effective Date of Devise</p>
+                      <label class="block mt-2">
+                        <input
+                          type="radio"
+                          name="effectiveDate"
+                          [(ngModel)]="beneficiaries[i].effectiveDate"
+                          value="regardless"
+                        />
+                        <span>
+                            At's death regardless of whether
+                             is living
+                          </span>
+                      </label>
+                      <label class="block mt-2">
+                        <input
+                          type="radio"
+                          name="effectiveDate"
+                          [(ngModel)]="beneficiaries[i].effectiveDate"
+                          value="not_survive"
+                        />
+                        <span>
+                            At's death regardless of whether
+                             is living
+                          </span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  
+          </div>
         </div>
        
     </div>
