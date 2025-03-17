@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SuccessorsComponent } from '../successors/successors.component';
 import { AddBeneficieryComponent } from '../add-beneficiery/add-beneficiery.component';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-residue-estate',
@@ -13,6 +14,9 @@ import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
   styleUrl: './residue-estate.component.css'
 })
 export class ResidueEstateComponent {
+onBeneficiariesChange($event: IRequests[]) {
+throw new Error('Method not implemented.');
+}
   @Input() trusteesOfJointRevocableData?: Beneficiary[];
   selectedRepresentatives: Beneficiary[] = [];
 
