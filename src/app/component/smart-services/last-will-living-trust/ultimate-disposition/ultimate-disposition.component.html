@@ -1,0 +1,41 @@
+<div *ngIf="ultimate_disposition_data" class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-lg font-semibold mt-1">
+        Ultimate Disposition
+    </h3>
+    <h4 class="text-lg font-semibold mt-1">
+        Ultimate Disposition of Property
+    </h4>
+    <label class="inline-flex items-center space-x-2">
+        How do you want your assets distributed if none of the persons you named on the preceding page are living AND none of the charities you named on the preceding page are in existence?
+    </label>
+  
+    <div class="mt-4">
+        <select [(ngModel)]="ultimate_disposition_data.ultimate_beneficiary" class="border p-2 rounded w-full mt-2">
+            <option value="My heirs at law"> My heirs at law </option>
+            <option value="My and my spouse's heirs at law 50/50">My and my spouse's heirs at law 50/50</option>
+            <option value="Named persons and/or charities">Named persons and/or charities</option>
+        </select>
+    </div>
+
+    <div *ngIf="ultimate_disposition_data.ultimate_beneficiary == 'Named persons and/or charities'">
+        <label class="inline-flex items-center space-x-2">
+            Named persons and/or charities
+        </label>
+        <label class="inline-flex items-center space-x-2">
+            Beneficiary Details
+        </label>
+    </div>
+    
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="Back()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="confirmToNext()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Confirm & Next
+      </button>
+    </div>
+  </div>
+  
