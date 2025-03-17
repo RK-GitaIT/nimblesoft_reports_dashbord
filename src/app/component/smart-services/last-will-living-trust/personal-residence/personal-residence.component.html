@@ -4,7 +4,27 @@
     Devise of Personal Residence
   </h3>
 
-  <!-- If there's more than one beneficiary, show a joint ownership radio button -->
+  <div class="mt-4">
+    <label class="inline-flex items-center space-x-2">
+      <input
+        type="radio"
+        name="PersonalResidence"
+        [(ngModel)]="personalResidenceData!.PersonalResidenceDevise"
+        value=true
+      />
+      <label>Yes</label>
+      <input
+        type="radio"
+        name="PersonalResidence"
+        [(ngModel)]="personalResidenceData!.PersonalResidenceDevise"
+        value=false
+      />
+      <label>No</label>
+    </label>
+  </div>
+
+  <div *ngIf="personalResidenceData!.PersonalResidenceDevise">
+      <!-- If there's more than one beneficiary, show a joint ownership radio button -->
   <div class="mt-4" *ngIf="(personalResidenceData?.Beneficiary?.length || 0) > 1">
     <label class="inline-flex items-center space-x-2">
       <input
@@ -30,30 +50,6 @@
     </label>
   </div>
 
-  <!-- JOINT OWNERSHIP SECTION -->
-  <div class="mt-4" *ngIf="isJointOwnership">
-    <p class="text-gray-600 mb-2">
-      You have selected <b>Joint Ownership</b>. Replacement property options:
-    </p>
-    <label class="inline-flex items-center space-x-2 mr-4">
-      <input
-        type="radio"
-        name="replacement"
-        [(ngModel)]="personalResidenceData!.Replacement_property"
-        [value]="true"
-      />
-      <span>Yes</span>
-    </label>
-    <label class="inline-flex items-center space-x-2">
-      <input
-        type="radio"
-        name="replacement"
-        [(ngModel)]="personalResidenceData!.Replacement_property"
-        [value]="false"
-      />
-      <span>No</span>
-    </label>
-  </div>
 
   <!-- SOLE OWNERSHIP SECTION -->
   <div class="mt-4" *ngIf="!isJointOwnership && soleOwnerIndex !== null">
@@ -87,6 +83,34 @@
       </span>
     </label>
   </div>
+
+  <div class="mt-4">
+    <label class="inline-flex items-center space-x-2">
+      Replacement property:
+    </label>
+    <p>
+      Should beneficiary receive replacement property if your personal residence is sold and a new personal residence is purchased?
+    </p>
+    <label class="inline-flex items-center space-x-2 mr-4">
+      <input
+        type="radio"
+        name="replacement"
+        [(ngModel)]="personalResidenceData!.Replacement_property"
+        [value]="true"
+      />
+      <span>Yes</span>
+    </label>
+    <label class="inline-flex items-center space-x-2">
+      <input
+        type="radio"
+        name="replacement"
+        [(ngModel)]="personalResidenceData!.Replacement_property"
+        [value]="false"
+      />
+      <span>No</span>
+    </label>
+  </div>
+</div>
 
   <!-- Navigation Buttons -->
   <div class="flex justify-between mt-4">
