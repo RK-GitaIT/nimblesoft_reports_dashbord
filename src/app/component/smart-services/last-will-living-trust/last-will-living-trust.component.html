@@ -21,6 +21,7 @@
 
 <ng-container *ngIf="currentStep === 'personal-representatives'">
     <app-personal-representatives 
+    [trust_data]="trustOptionData" 
       [personal_presentatives_data]="personalReps"
       (backClicked)="handleBackClicked($event)"
       (nextClicked)="handleNextClicked($event)"
@@ -31,6 +32,7 @@
 
 <ng-container *ngIf="currentStep === 'successor-representatives'">
   <app-successor-representatives
+  [trust_data]="trustOptionData" 
     [successorRepresentativesData]="successorReps"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
@@ -41,6 +43,7 @@
 
 <ng-container *ngIf="currentStep === 'trustee-representatives'">
   <app-trustees-of-joint-revocable
+  [trust_data]="trustOptionData" 
     [trusteesOfJointRevocableData]="trusteesReps"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
@@ -50,6 +53,7 @@
 
 <ng-container *ngIf="currentStep === 'pet-care'">
   <app-pet-care 
+  [trust_data]="trustOptionData" 
     [petForm]="petFormData"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
@@ -59,6 +63,7 @@
 
 <ng-container *ngIf="currentStep === 'personal-residence'">
   <app-personal-residence 
+  [trust_data]="trustOptionData" 
     [personalResidenceData]="personalResidenceFormData"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
@@ -68,6 +73,7 @@
 
 <ng-container *ngIf="currentStep === 'other-residence'">
   <app-other-real-estate 
+  [trust_data]="trustOptionData" 
     [other_real_estate_Data]="other_real_estateFormData"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
@@ -77,6 +83,7 @@
 
 <ng-container *ngIf="currentStep === 'residence-estate'">
   <app-residuary-estate
+  [trust_data]="trustOptionData" 
   [residuaryEstateData]="residuaryEstate_Data"
   (backClicked)="handleBackClicked($event)"
   (nextClicked)="handleNextClicked($event)"
@@ -86,6 +93,7 @@
 
 <ng-container *ngIf="currentStep === 'ultimate-disposition'">
   <app-ultimate-disposition
+  [trust_data]="trustOptionData" 
   [ultimate_disposition_data]="ultimate_disposition"
   (backClicked)="handleBackClicked($event)"
   (nextClicked)="handleNextClicked($event)"
@@ -95,6 +103,7 @@
 
 <ng-container *ngIf="currentStep === 'property'">
   <app-property
+  [trust_data]="trustOptionData" 
   [property_data]="property"
   (backClicked)="handleBackClicked($event)"
   (nextClicked)="handleNextClicked($event)">

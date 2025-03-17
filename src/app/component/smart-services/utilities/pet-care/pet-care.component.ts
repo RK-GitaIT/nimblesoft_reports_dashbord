@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IPetForm } from '../../../../models/interfaces/utilities/IPetForm';
+import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-pet-care',
@@ -23,7 +24,7 @@ export class PetCareComponent {
   };
 
   assetTypes = ['Dollar-amount', 'Income-producing asset'];
-
+  @Input() trust_data?: ITrustOptions | null;
   @Input() petForm?: IPetForm;  
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();

@@ -14,8 +14,8 @@
            class="flex items-center p-3 border rounded-md cursor-pointer">
         
         <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
-              [ngClass]="selectedBeneficiaryItem?.index === data.index ? 'bg-gray-700' : 'bg-gray-300'">
-          {{ selectedBeneficiaryItem?.index === data.index ? '✓' : '' }}
+              [ngClass]="selectedBeneficiaryItem?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+          {{ selectedBeneficiaryItem?.index === data.index ? '✓' :(data.firstName.charAt(0) + data.lastName.charAt(0)) }}
         </span>
         
         <div class="ml-3">

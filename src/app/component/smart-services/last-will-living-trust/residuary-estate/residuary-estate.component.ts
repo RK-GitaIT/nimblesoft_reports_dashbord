@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResidueEstateComponent } from "../../utilities/residue-estate/residue-estate.component";
 import { IPersonalRepresentatives } from '../../../../models/interfaces/utilities/IPersonalRepresentatives';
+import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-residuary-estate',
@@ -9,6 +10,7 @@ import { IPersonalRepresentatives } from '../../../../models/interfaces/utilitie
   styleUrl: './residuary-estate.component.css'
 })
 export class ResiduaryEstateComponent implements OnInit {
+  @Input() trust_data?: ITrustOptions | null;
   @Input() residuaryEstateData?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();

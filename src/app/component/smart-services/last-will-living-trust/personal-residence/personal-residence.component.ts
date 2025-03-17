@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
 import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
 import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
+import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
   styleUrls: ['./personal-residence.component.css']
 })
 export class PersonalResidenceComponent implements OnInit {
-
+  @Input() trust_data?: ITrustOptions | null;
   @Input() personalResidenceData?: IPersonalResidence;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();

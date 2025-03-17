@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { IPersonalRepresentatives } from '../../../../../models/interfaces/utilities/IPersonalRepresentatives';
 import { SuccessorsComponent } from "../../../utilities/successors/successors.component";
 import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model';
+import { ITrustOptions } from '../../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-trustees-of-joint-revocable',
@@ -10,6 +11,7 @@ import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model'
   styleUrl: './trustees-of-joint-revocable.component.css'
 })
 export class TrusteesOfJointRevocableComponent implements OnInit, OnChanges {
+  @Input() trust_data?: ITrustOptions | null;
   @Input() trusteesOfJointRevocableData?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();

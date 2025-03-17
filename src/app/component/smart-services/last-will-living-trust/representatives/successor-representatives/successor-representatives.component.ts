@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { IPersonalRepresentatives } from '../../../../../models/interfaces/utilities/IPersonalRepresentatives';
 import { SuccessorsComponent } from "../../../utilities/successors/successors.component";
 import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model';
+import { ITrustOptions } from '../../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-successor-representatives',
@@ -10,6 +11,7 @@ import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model'
   styleUrl: './successor-representatives.component.css'
 })
 export class SuccessorRepresentativesComponent implements OnInit, OnChanges {
+    @Input() trust_data?: ITrustOptions | null;
   @Input() successorRepresentativesData?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
