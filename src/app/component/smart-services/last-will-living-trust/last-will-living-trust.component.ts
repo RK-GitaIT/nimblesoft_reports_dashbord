@@ -90,6 +90,8 @@ export class LastWillLivingTrustComponent implements OnInit {
   trustOptionData!: ITrustOptions;
   representativeData!: IRepresentatives;
   personalReps!: IPersonalRepresentatives;
+  successorReps!: IPersonalRepresentatives;
+  trusteesReps!: IPersonalRepresentatives;
   petFormData!: IPetForm;
   personalResidenceFormData!: IPersonalResidence;
   residuaryEstate_Data!: IPersonalRepresentatives;
@@ -306,7 +308,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   //#region successor Representatives component
 
   successor_representative_data_update(): void {
-      this.personalReps = {
+      this.successorReps = {
         members: this.actual_data_members,
         sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
         back: 'personal-representatives',
@@ -317,7 +319,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   successor_handleMembersDataEmit(data: IPersonalRepresentatives): void {
       console.log('Members data emitted:', data);
       // Update your parent component state as needed.
-      this.personalReps = data;
+      this.successorReps = data;
     this.trustee_representative_data_update();
   }
   
@@ -326,7 +328,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   //#region trustee Representatives component
 
   trustee_representative_data_update(): void {
-    this.personalReps = {
+    this.trusteesReps = {
       members: this.actual_data_members,
       sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
       back: 'successor-representatives',
@@ -337,7 +339,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   trustee_handleMembersDataEmit(data: IPersonalRepresentatives): void {
     console.log('Members data emitted:', data);
     // Update your parent component state as needed.
-    this.personalReps = data;
+    this.trusteesReps = data;
     this.pet_care_update();
   }
 

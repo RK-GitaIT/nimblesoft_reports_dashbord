@@ -31,7 +31,7 @@
 
 <ng-container *ngIf="currentStep === 'successor-representatives'">
   <app-successor-representatives
-    [successorRepresentativesData]="personalReps"
+    [successorRepresentativesData]="successorReps"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
     (successorRepresentativesDataEmit)="successor_handleMembersDataEmit($event)">
@@ -41,7 +41,7 @@
 
 <ng-container *ngIf="currentStep === 'trustee-representatives'">
   <app-trustees-of-joint-revocable
-    [trusteesOfJointRevocableData]="personalReps"
+    [trusteesOfJointRevocableData]="trusteesReps"
     (backClicked)="handleBackClicked($event)"
     (nextClicked)="handleNextClicked($event)"
     (trusteesOfJointRevocableData_emit)="trustee_handleMembersDataEmit($event)">
