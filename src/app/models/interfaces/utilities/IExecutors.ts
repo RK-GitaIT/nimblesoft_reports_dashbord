@@ -5,6 +5,7 @@ export interface IExecutors {
   title?: string;
   sub_title?: string;
   sub_title_description?: string;
+  beneficiary: Beneficiary;
   members: Beneficiary[]; 
   bottomTitle?: string; 
   bottomDescription?: string; 

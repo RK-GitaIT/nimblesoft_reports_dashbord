@@ -19,6 +19,9 @@ import { PersonalResidenceComponent } from './personal-residence/personal-reside
 import { ResiduaryEstateComponent } from "./residuary-estate/residuary-estate.component";
 import { UltimateDispositionComponent } from './ultimate-disposition/ultimate-disposition.component';
 import { IUltimateDisposition } from '../../../models/interfaces/utilities/IUltimateDisposition';
+import { PropertyComponent } from './property/property.component';
+import { IProperty } from '../../../models/interfaces/utilities/IProperty';
+import { Router } from '@angular/router';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -55,7 +58,8 @@ export interface DocumentPrepareFor {
     PetCareComponent,
     PersonalResidenceComponent, 
     ResiduaryEstateComponent,
-    UltimateDispositionComponent
+    UltimateDispositionComponent,
+    PropertyComponent
   ], 
   templateUrl: './last-will-living-trust.component.html',
   styleUrls: ['./last-will-living-trust.component.css']
@@ -69,12 +73,14 @@ export class LastWillLivingTrustComponent implements OnInit {
     "trustee-representatives", 
     "pet-care", 
     "personal-residence",
-    "ultimate-disposition"
+    "ultimate-disposition",
+    "property",
+    "finish"
   ] as const;
 
   user: Beneficiary | null = null;
   DocumentPrepareFor: DocumentPrepareFor | null = null;
-  currentStep: 'initial' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence'| 'residence-estate'| 'ultimate-disposition' |'initial' = 'initial';
+  currentStep: 'initial' |'property' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence'| 'residence-estate'| 'ultimate-disposition' | 'finish' | 'initial' = 'initial';
   beneficiaries: Beneficiary[] = [];
   total_members: Beneficiary[] = [];
   actual_data_members: Beneficiary[] = [];
@@ -88,8 +94,10 @@ export class LastWillLivingTrustComponent implements OnInit {
   personalResidenceFormData!: IPersonalResidence;
   residuaryEstate_Data!: IPersonalRepresentatives;
   ultimate_disposition!: IUltimateDisposition;
+  isSpouse!: boolean;
+  property!: IProperty;
 
-  constructor(private profileService: myProfileService) {}
+  constructor(private profileService: myProfileService,    private router: Router, ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -213,7 +221,12 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
 
   handleEdit(): void {
     if(this.DocumentPrepareFor?.beneficiary.relationshipCategory === 'self'){
-      this.currentStep = 'trust_option'
+      this.currentStep = 'trust_option';
+      this.isSpouse = false;
+    }else{
+      this.currentStep = 'personal-representatives';
+      this.isSpouse = true;
+      this.personal_representative_data_update();
     }
     console.log('Edit clicked from child component');
   }
@@ -237,6 +250,9 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
   
   handleNextClicked(value: string): void {
     this.setStep(value);
+    if(value == 'pet-care' && this.isSpouse){
+      this.pet_care_update();
+    }
   }
 
   //#region  Trust option Decision
@@ -273,7 +289,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     this.personalReps = {
       members: this.actual_data_members,
       sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
-      back: 'trust_option',
+      back: this.isSpouse ? 'initial' : 'trust_option',
       next: 'successor-representatives'
     };
   }
@@ -294,7 +310,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
         members: this.actual_data_members,
         sleeted_members: (this.DocumentPrepareFor != null ? this.DocumentPrepareFor.selected_personalReps : []),
         back: 'personal-representatives',
-        next: 'trustee-representatives'
+        next: this.isSpouse ? 'pet-care' : 'trustee-representatives'
       };
     }
   
@@ -327,7 +343,6 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
 
   //#endregion
   
-
   //#region pet-form
 
   pet_care_update(): void {
@@ -338,8 +353,8 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
       assetType: '',
       incomeAsset: 0,
       assetDescription: '',
-      back: 'trustee-representatives',
-      next: 'personal-residence'
+      back:  this.isSpouse ? 'successor-representatives' : 'trustee-representatives',
+      next: this.isSpouse ? 'property' : 'personal-residence'
     };
   }
   onPetData(data: IPetForm): void {
@@ -347,10 +362,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     if(this.DocumentPrepareFor!= null){
       this.DocumentPrepareFor.petFormData = data;
     }
-    this.personalResidence_update();
+    if(this.isSpouse){
+      this.property_data_update();
+    }else{
+      this.personalResidence_update();
+    }
   }
   //#endregion
-
 
   //#region Personal Residence
 
@@ -391,7 +409,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     this.ultimate_disposition = {
      beneficiary_Details: [],
      ultimate_beneficiary: '',
-     next: "initial",
+     next: "finish",
      back: "residence-estate",
     };
   }
@@ -402,4 +420,21 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     }
   }
   //#endregion
+
+   //#region property
+
+   property_data_update(): void {
+    this.property = {
+      next: "finish",
+      back: "pet-care",
+      title: "Last Will + Living Trust",
+      name: `${this.DocumentPrepareFor?.beneficiary?.firstName ?? ''} ${this.DocumentPrepareFor?.beneficiary?.lastName ?? ''}`.trim(),
+    };
+  }  
+  //#endregion
+
+  goToMyFiles(): void {
+    this.router.navigate(['/my-files']);
+  }  
+  
 }
