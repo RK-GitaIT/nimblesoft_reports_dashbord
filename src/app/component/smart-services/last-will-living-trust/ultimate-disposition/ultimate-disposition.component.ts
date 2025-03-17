@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IUltimateDisposition } from '../../../../models/interfaces/utilities/IUltimateDisposition';
+import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
 
 @Component({
   selector: 'app-ultimate-disposition',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddBeneficieryComponent],
   templateUrl: './ultimate-disposition.component.html',
   styleUrl: './ultimate-disposition.component.css'
 })
@@ -30,7 +31,9 @@ export class UltimateDispositionComponent implements OnInit {
   Back(): void {
     this.backClicked.emit(this.ultimate_disposition_data?.back ?? '');
   }
-
+  onBeneficiariesChange(updatedBeneficiaries: any[]) {
+    this.ultimate_disposition_data?.beneficiary_Details.push(updatedBeneficiaries);
+  }
   confirmToNext(): void {
     if (this.ultimate_disposition_data) {
       this.ultimate_disposition_data_emit.emit(this.ultimate_disposition_data);

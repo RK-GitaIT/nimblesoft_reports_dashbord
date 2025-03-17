@@ -61,6 +61,6 @@
 
     <!-- If "All to named persons and/or charities" is selected -->
     <div *ngIf="selectedOption === 'namedPersons'" class="mt-4">
-        <app-add-beneficiery></app-add-beneficiery>
+        <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)"></app-add-beneficiery>
     </div>
 </div>

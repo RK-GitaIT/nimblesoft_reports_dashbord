@@ -15,7 +15,7 @@ export class AddBeneficieryComponent {
   @Input() showBequest: boolean = false; // ✅ Controls Bequest visibility
   @Input() showEffectiveDate: boolean = false; // ✅ Controls Effective Date visibility
   @Input() beneficiaries: IRequests[] = []; // ✅ Directly accepts data from parent
-  @Output() beneficiariesChange = new EventEmitter<IRequests[]>(); // ✅ Emits on Save
+  @Output() beneficiariesChange = new EventEmitter<IRequests[]>(); 
 
   addBeneficiary() {
     this.beneficiaries.push({
@@ -29,7 +29,7 @@ export class AddBeneficieryComponent {
       amount: null,
       itemDescription: '',
       effectiveDate: '',
-      expanded:true
+      expanded: true,
     });
 
     // ✅ Automatically save & emit updated list
