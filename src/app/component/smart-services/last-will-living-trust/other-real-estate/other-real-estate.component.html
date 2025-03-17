@@ -1,9 +1,9 @@
-<div *ngIf="other_real_estate_Data" class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+<div  class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
     <h3 class="text-lg font-semibold mt-1">
         Other Real Estate
     </h3>
-
-    <div class="mt-4">
+    
+    <div class="mt-4 space-x-2">
       <label class="inline-flex items-center space-x-2">
         <input
           type="radio"
@@ -24,127 +24,50 @@
       </label>
     </div>
 
-    <div *ngIf="other_real_estate_Data!.PersonalResidenceDevise">
-        <!-- If there's more than one beneficiary, show a joint ownership radio button -->
-        <div class="mt-4" *ngIf="(other_real_estate_Data?.Beneficiary?.length || 0) > 1">
-          <label class="inline-flex items-center space-x-2">
-            <input
-              type="radio"
-              name="ownership"
-              [(ngModel)]="other_real_estate_Data!.ownershipType"
-              [value]="'joint'"
-            />
-            <span>Jointly owned by {{ jointOwnersLabel }}</span>
-          </label>
-        </div>
-
-        <!-- Always list each beneficiary as a sole owner option -->
-        <div class="mt-4" *ngFor="let b of other_real_estate_Data!.Beneficiary">
-          <label class="inline-flex items-center space-x-2">
-            <input
-              type="radio"
-              name="ownership"
-              [(ngModel)]="other_real_estate_Data!.ownershipType"
-              [value]="'sole_' + b.index"
-            />
-            <span>Owned by {{ b.firstName + ' ' + b.lastName }} only</span>
-          </label>
-        </div>
-
-        <!-- SOLE OWNERSHIP SECTION -->
-        <div class="mt-4" *ngIf="!isJointOwnership && soleOwnerIndex !== null">
-          <p class="text-gray-600 mb-2">
-            You selected <b>sole ownership</b> by beneficiary with index {{ soleOwnerIndex }}.
-          </p>
-          <p class="text-gray-600 font-semibold mt-2">Effective Date of Devise</p>
-          <label class="block mt-2">
-            <input
-              type="radio"
-              name="effectiveDate"
-              [(ngModel)]="other_real_estate_Data!.Effective_date_of_devise"
-              [value]="'regardless'"
-            />
-            <span>
-              At {{ selectedBeneficiaryName }}'s death regardless of whether
-              {{ otherBeneficiariesNames }} is living
-            </span>
-          </label>
-          <label class="block mt-2">
-            <input
-              type="radio"
-              name="effectiveDate"
-              [(ngModel)]="other_real_estate_Data!.Effective_date_of_devise"
-              [value]="'not_survive'"
-            />
-            <span>
-              At {{ selectedBeneficiaryName }}'s death only if
-              {{ otherBeneficiariesNames }} does not survive {{ selectedBeneficiaryName }}
-            </span>
-          </label>
-        </div>
-
-        <div class="mt-4">
-          <label class="inline-flex items-center space-x-2">
-            Replacement property:
-          </label>
-          <p>
-            Should the beneficiary receive replacement property if your personal residence is sold and a new personal residence is purchased?
-          </p>
-          <label class="inline-flex items-center space-x-2 mr-4">
-            <input
-              type="radio"
-              name="replacement"
-              [(ngModel)]="other_real_estate_Data!.Replacement_property"
-              [value]="true"
-            />
-            <span>Yes</span>
-          </label>
-          <label class="inline-flex items-center space-x-2">
-            <input
-              type="radio"
-              name="replacement"
-              [(ngModel)]="other_real_estate_Data!.Replacement_property"
-              [value]="false"
-            />
-            <span>No</span>
-          </label>
-        </div>
-    </div>
+    <div *ngIf="other_real_estate_Data!.PersonalResidenceDevise && other_real_estate_Data">
+      <app-real-estate
+      [real_estate_Data]="other_real_estate_Data">
+      </app-real-estate>    
 
     <div>
 
-        <h2 class="text-lg font-semibold mt-10">Specific Bequests</h2>
-        <p>Add specific bequests of tangible personal property or cash.</p>
-        <div class="mt-4">
-            <label class="inline-flex items-center space-x-2">
-                Specific Bequests
-                <div>
-                    <label class="inline-flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name="iSSpecificBequests"
-                        [(ngModel)]="other_real_estate_Data!.iSSpecificBequests"
-                        [value]="true"
-                      />
-                      <span>Yes</span>
-                    </label>
-                    <label class="inline-flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name="iSSpecificBequests"
-                        [(ngModel)]="other_real_estate_Data!.iSSpecificBequests"
-                        [value]="false"
-                      />
-                      <span>No</span>
-                    </label>
-                </div>
-            </label>
-          </div>
-          <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
-            Add + Functionality integration need here 
-          </div>
-    </div>
+</div>
 
+
+</div>
+<h2 class="text-lg font-semibold mt-10">Specific Bequests</h2>
+<p>Add specific bequests of tangible personal property or cash.</p>
+<div class="mt-4">
+    <label class="inline-flex items-center space-x-2">
+        Specific Bequests
+        <div class="ml-2 space-x-2">
+            <label class="inline-flex items-center space-x-2">
+              <input
+                type="radio"
+                name="iSSpecificBequests"
+                [(ngModel)]="other_real_estate_Data!.iSSpecificBequests"
+                [value]="true"
+              />
+              <span>Yes</span>
+            </label>
+            <label class="inline-flex items-center space-x-2">
+              <input
+                type="radio"
+                name="iSSpecificBequests"
+                [(ngModel)]="other_real_estate_Data!.iSSpecificBequests"
+                [value]="false"
+              />
+              <span>No</span>
+            </label>
+        </div>
+    </label>
+  </div>
+  <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
+    <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)"
+    [other_real_estate_Data]="other_real_estate_Data"
+    [showBequest]="true">
+    </app-add-beneficiery>
+  </div>
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-4">
       <button (click)="Back()"

@@ -2,16 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
+import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 
 @Component({
   selector: 'app-personal-residence',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddBeneficieryComponent],
   templateUrl: './personal-residence.component.html',
   styleUrls: ['./personal-residence.component.css']
 })
 export class PersonalResidenceComponent implements OnInit {
+
   @Input() personalResidenceData?: IPersonalResidence;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
@@ -52,7 +55,9 @@ export class PersonalResidenceComponent implements OnInit {
     }
     return null;
   }
-
+  onBeneficiariesChange(updatedBeneficiaries: any[]) {
+    console.log(updatedBeneficiaries);
+  }
   /**
    * Returns the full name of the selected sole owner
    * (e.g. "Krishna Gautam" if ownershipType = "sole_2").

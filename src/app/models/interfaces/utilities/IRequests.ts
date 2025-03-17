@@ -1,4 +1,5 @@
 export interface IRequests {
+    id?: number; // ✅ Added an ID field to track unique beneficiaries
     bequestType: 'charity' | 'individual'; // Common field
     charityName?: string;
     charityCity?: string;
@@ -12,6 +13,7 @@ export interface IRequests {
     itemDescription?: string;
   
     // Fields specific to NamedPersonBequest
+    ownershipType?:string;
     issueToTakeShare?: number | null;
     otherBeneficiariesToTakeShare?: number | null;
     alternateBeneficiaryName?: string;
