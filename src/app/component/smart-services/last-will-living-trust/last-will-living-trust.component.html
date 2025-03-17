@@ -66,6 +66,15 @@
   </app-personal-residence>
 </ng-container>
 
+<ng-container *ngIf="currentStep === 'other-residence'">
+  <app-other-real-estate 
+    [other_real_estate_Data]="other_real_estateFormData"
+    (backClicked)="handleBackClicked($event)"
+    (nextClicked)="handleNextClicked($event)"
+    (other_real_estate_data_emit)="on_other_real_estateFormDataData($event)">
+  </app-other-real-estate>
+</ng-container>
+
 <ng-container *ngIf="currentStep === 'residence-estate'">
   <app-residuary-estate
   [residuaryEstateData]="residuaryEstate_Data"

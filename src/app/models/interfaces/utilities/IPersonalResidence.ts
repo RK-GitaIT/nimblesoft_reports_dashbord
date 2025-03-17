@@ -12,4 +12,9 @@ export interface IPersonalResidence {
     back: string;
     next: string;
   }
+
+  export interface IPersonalWithOtherResidence  extends IPersonalResidence{
+    iSSpecificBequests?: boolean,
+    Requests?: Request[],
+  }
   

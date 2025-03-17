@@ -14,7 +14,7 @@ import { SuccessorRepresentativesComponent } from './representatives/successor-r
 import { TrusteesOfJointRevocableComponent } from './representatives/trustees-of-joint-revocable/trustees-of-joint-revocable.component';
 import { IPetForm } from '../../../models/interfaces/utilities/IPetForm';
 import { PetCareComponent } from '../utilities/pet-care/pet-care.component';
-import { IPersonalResidence } from '../../../models/interfaces/utilities/IPersonalResidence';
+import { IPersonalResidence, IPersonalWithOtherResidence } from '../../../models/interfaces/utilities/IPersonalResidence';
 import { PersonalResidenceComponent } from './personal-residence/personal-residence.component';
 import { ResiduaryEstateComponent } from "./residuary-estate/residuary-estate.component";
 import { UltimateDispositionComponent } from './ultimate-disposition/ultimate-disposition.component';
@@ -22,6 +22,7 @@ import { IUltimateDisposition } from '../../../models/interfaces/utilities/IUlti
 import { PropertyComponent } from './property/property.component';
 import { IProperty } from '../../../models/interfaces/utilities/IProperty';
 import { Router } from '@angular/router';
+import { OtherRealEstateComponent } from './other-real-estate/other-real-estate.component';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -56,7 +57,8 @@ export interface DocumentPrepareFor {
     SuccessorRepresentativesComponent,
     TrusteesOfJointRevocableComponent,
     PetCareComponent,
-    PersonalResidenceComponent, 
+    PersonalResidenceComponent,
+    OtherRealEstateComponent,
     ResiduaryEstateComponent,
     UltimateDispositionComponent,
     PropertyComponent
@@ -73,6 +75,7 @@ export class LastWillLivingTrustComponent implements OnInit {
     "trustee-representatives", 
     "pet-care", 
     "personal-residence",
+    "other-residence",
     "ultimate-disposition",
     "property",
     "finish"
@@ -80,7 +83,7 @@ export class LastWillLivingTrustComponent implements OnInit {
 
   user: Beneficiary | null = null;
   DocumentPrepareFor: DocumentPrepareFor | null = null;
-  currentStep: 'initial' |'property' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence'| 'residence-estate'| 'ultimate-disposition' | 'finish' | 'initial' = 'initial';
+  currentStep: 'initial' |'property' | 'trust_option' | 'personal-representatives' | 'successor-representatives' | 'trustee-representatives' | 'pet-care' | 'personal-residence' | 'other-residence'| 'residence-estate'| 'ultimate-disposition' | 'finish' | 'initial' = 'initial';
   beneficiaries: Beneficiary[] = [];
   total_members: Beneficiary[] = [];
   actual_data_members: Beneficiary[] = [];
@@ -94,6 +97,7 @@ export class LastWillLivingTrustComponent implements OnInit {
   trusteesReps!: IPersonalRepresentatives;
   petFormData!: IPetForm;
   personalResidenceFormData!: IPersonalResidence;
+  other_real_estateFormData!: IPersonalWithOtherResidence;
   residuaryEstate_Data!: IPersonalRepresentatives;
   ultimate_disposition!: IUltimateDisposition;
   isSpouse!: boolean;
@@ -377,7 +381,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   personalResidence_update(): void {
     this.personalResidenceFormData = {
      Beneficiary: this.Prepare_for_client,
-     next: "residence-estate",
+     next: "other-residence",
      back: "pet-care",
     };
   }
@@ -386,9 +390,27 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     if(this.DocumentPrepareFor!= null){
       this.DocumentPrepareFor.PersonalResidence = data;
     }
-    this.residence_estate_data_update();
+    this.other_real_estate_update();
   }
   //#endregion
+
+    //#region Personal Residence
+
+    other_real_estate_update(): void {
+      this.other_real_estateFormData = {
+       Beneficiary: this.Prepare_for_client,
+       next: "residence-estate",
+       back: "personal-residence",
+      };
+    }
+    on_other_real_estateFormDataData(data: IPersonalResidence): void {
+      console.log('Received pet data:', data);
+      if(this.DocumentPrepareFor!= null){
+        this.DocumentPrepareFor.PersonalResidence = data;
+      }
+      this.residence_estate_data_update();
+    }
+    //#endregion
 
   //#region residence-estate
 
@@ -396,7 +418,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     this.residuaryEstate_Data = {
      members: this.total_members,
      next: "ultimate-disposition",
-     back: "personal-residence",
+     back: "other-residence",
     };
   }
   onResidenceEstateData(data: any): void {
