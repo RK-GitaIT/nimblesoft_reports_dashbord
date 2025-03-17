@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SuccessorsComponent } from '../successors/successors.component';
 import { AddBeneficieryComponent } from '../add-beneficiery/add-beneficiery.component';
-import { myProfileService } from '../../../../services/json/my-profile.service';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 
 @Component({
@@ -14,6 +13,10 @@ import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
   styleUrl: './residue-estate.component.css'
 })
 export class ResidueEstateComponent {
+  @Input() trusteesOfJointRevocableData?: Beneficiary[];
+  selectedRepresentatives: Beneficiary[] = [];
+
+
   selectedOption: string = '';
   omitChildren: string = '';
   descendantsTrust: string = '';
@@ -21,31 +24,13 @@ export class ResidueEstateComponent {
   beneficiaries: any;
   total_members: any[] | undefined;
  
-    constructor(private profileService: myProfileService) {}
-   ngOnInit(): void {
-      this.loadUsers();
-    }
-  
-    //#region Initial component
-  
-    loadUsers(): void {
-      this.profileService.getProfile().subscribe({
-        next: (res) => {
-          let indexCounter = 0;
-         
-  
-          this.beneficiaries = Array.isArray(res?.beneficiaries)
-            ? res.beneficiaries.map((ben: Beneficiary, i: number) => ({ ...ben, index: indexCounter++ }))
-            : [];
-  
-          this.total_members = [...this.beneficiaries];
-         
-  
-          
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-        }
-      });
-    }
+
+  getColor(user: Beneficiary): string {
+    return user.index % 2 === 0 ? 'bg-green-500' : 'bg-red-500';
+  }
+
+  handleSelectionChange(updatedReps: Beneficiary[]) {
+    console.log('Updated Representatives:', updatedReps);
+    this.selectedRepresentatives = updatedReps;
+  }
 }
