@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IUltimateDisposition } from '../../../../models/interfaces/utilities/IUltimateDisposition';
 import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
+import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-ultimate-disposition',
@@ -11,6 +12,7 @@ import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-ben
   styleUrl: './ultimate-disposition.component.css'
 })
 export class UltimateDispositionComponent implements OnInit {
+  @Input() trust_data?: ITrustOptions | null;
   @Input() ultimate_disposition_data?: IUltimateDisposition;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { IPersonalRepresentatives } from '../../../../../models/interfaces/utilities/IPersonalRepresentatives';
 import { SuccessorsComponent } from "../../../utilities/successors/successors.component";
 import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model';
+import { ITrustOptions } from '../../../../../models/interfaces/utilities/ITrustOptions';
 @Component({
   selector: 'app-personal-representatives',
   imports: [SuccessorsComponent],
@@ -9,13 +10,14 @@ import { Beneficiary } from '../../../../../models/interfaces/Beneficiary.model'
   styleUrls: ['./personal-representatives.component.css']
 })
 export class PersonalRepresentativesComponent implements OnInit, OnChanges {
+  @Input() trust_data?: ITrustOptions | null;
   @Input() personal_presentatives_data?: IPersonalRepresentatives;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
   @Output() personal_presentatives_data_emit = new EventEmitter<IPersonalRepresentatives>(); 
 
   ngOnInit(): void {
-    // Initialization logic here
+   console.log(this.personal_presentatives_data);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

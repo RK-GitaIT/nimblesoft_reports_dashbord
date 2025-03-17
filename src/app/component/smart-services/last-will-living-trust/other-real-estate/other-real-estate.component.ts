@@ -5,6 +5,7 @@ import { IPersonalWithOtherResidence } from '../../../../models/interfaces/utili
 import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
 import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 import { RealEstateComponent } from "../../utilities/real-estate/real-estate.component";
+import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 
 @Component({
   selector: 'app-other-real-estate',
@@ -13,7 +14,7 @@ import { RealEstateComponent } from "../../utilities/real-estate/real-estate.com
   styleUrl: './other-real-estate.component.css'
 })
 export class OtherRealEstateComponent implements OnInit {
-
+  @Input() trust_data?: ITrustOptions | null;
   @Input() other_real_estate_Data?: IPersonalWithOtherResidence;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
