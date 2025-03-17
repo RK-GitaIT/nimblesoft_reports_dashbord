@@ -1,6 +1,7 @@
 export interface RevocableLivingTrust {
     Trust_Title?: string;
     Trustee_1?: string;
+    Trustee_2?: string;
     Co_Trustee_1?: string;
     Co_Trustee_2?: string;
     Child_1?: string;

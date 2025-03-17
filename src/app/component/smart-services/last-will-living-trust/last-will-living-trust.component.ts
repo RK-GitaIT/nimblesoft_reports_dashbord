@@ -23,6 +23,9 @@ import { PropertyComponent } from './property/property.component';
 import { IProperty } from '../../../models/interfaces/utilities/IProperty';
 import { Router } from '@angular/router';
 import { OtherRealEstateComponent } from './other-real-estate/other-real-estate.component';
+import { ClientData } from '../../../models/interfaces/ClientData';
+import { RevocableLivingTrust } from '../../../models/interfaces/RevocableLivingTrust';
+import { LastWillLivingTrustService } from '../../../services/last_will_living_trust/last-will-living-trust.service';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -102,8 +105,9 @@ export class LastWillLivingTrustComponent implements OnInit {
   ultimate_disposition!: IUltimateDisposition;
   isSpouse!: boolean;
   property!: IProperty;
+  ClientData!: ClientData;
 
-  constructor(private profileService: myProfileService,    private router: Router, ) {}
+  constructor(private profileService: myProfileService, private router: Router, private lastwill_generate: LastWillLivingTrustService) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -238,7 +242,7 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
   }
   
   handleAssemble(): void {
-    console.log('Assemble clicked from child component');
+    this.generateDocuments();
   }
 
   setStep(value: string): void {
@@ -258,6 +262,10 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
     this.setStep(value);
     if(value == 'pet-care' && this.isSpouse){
       this.pet_care_update();
+    }
+
+    if(value == 'finish'){
+      this.generateDocuments();
     }
   }
 
@@ -460,5 +468,114 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   goToMyFiles(): void {
     this.router.navigate(['/my-files']);
   }  
+
+  async clientDataUpdate() {
+    if (!this.ClientData) {
+      this.ClientData = {};
+    }
+    
+    if (!this.DocumentPrepareFor?.beneficiary) {
+      throw new Error("Beneficiary data is missing in DocumentPrepareFor.");
+    }
+    
+    const beneficiary = this.DocumentPrepareFor.beneficiary;
+    const person_1 = `${beneficiary.firstName ?? ''} ${beneficiary.lastName ?? ''}`.trim();
+    const person_2 = `${this.DocumentPrepareFor.last_will?.Spouse_name ?? ''}`.trim();
+    const children = this.total_members.filter(member => member.relationshipCategory === 'child');
+  
+    // Set beneficiary and last_will
+    this.ClientData.beneficiary = beneficiary;
+    this.ClientData.last_will = this.DocumentPrepareFor.last_will;
+  
+    //#region revocable_living_trust
+    if (!this.ClientData.revocable_living_trust) {
+      this.ClientData.revocable_living_trust = {};
+    }
+    
+    this.ClientData.revocable_living_trust.Trustee_1 = person_1;
+    this.ClientData.revocable_living_trust.Co_Trustee_1 = person_1;
+    this.ClientData.revocable_living_trust.Settlor_print_name_1 = person_1;
+    this.ClientData.revocable_living_trust.Trustee_print_name_1 = person_1;
+    if (this.DocumentPrepareFor.last_will?.Spouse_name) {
+      this.ClientData.revocable_living_trust.Trustee_2 = person_2;
+      this.ClientData.revocable_living_trust.Co_Trustee_2 = person_2;
+      this.ClientData.revocable_living_trust.Settlor_print_name_2 = person_2;
+      this.ClientData.revocable_living_trust.Trustee_print_name_2 = person_2;
+    }
+    
+    const trusteeNameKeys: (keyof RevocableLivingTrust)[] = [
+      "Trustee_name_1",
+      "Trustee_name_2",
+      "Trustee_name_3",
+      "Trustee_name_4",
+      "Trustee_name_5",
+      "Trustee_name_6"
+    ];
+    
+    for (let i = 0; i < Math.min(children.length, trusteeNameKeys.length); i++) {
+      const child = children[i];
+      this.ClientData.revocable_living_trust[trusteeNameKeys[i]] = `${child.firstName} ${child.lastName}`.trim();
+    }
+    //#endregion 
+  
+    //#region revocable_living_trust_execution_instructions
+    if (!this.ClientData.revocable_living_trust_execution_instructions) {
+      this.ClientData.revocable_living_trust_execution_instructions = {};
+    }
+    
+    this.ClientData.revocable_living_trust_execution_instructions.Trustee_name_1 = person_1;
+    this.ClientData.revocable_living_trust_execution_instructions.Trustee_name_2 = person_2;
+    this.ClientData.revocable_living_trust_execution_instructions.Co_Trustee_name_1 = person_1;
+    this.ClientData.revocable_living_trust_execution_instructions.Co_Trustee_name_2 = person_2;
+    //#endregion
+  
+    //#region revocable_living_trust_funding_instructions
+    if (!this.ClientData.revocable_living_trust_funding_instructions) {
+      this.ClientData.revocable_living_trust_funding_instructions = {};
+    }
+    
+    this.ClientData.revocable_living_trust_funding_instructions.Trust_Name_1 = person_1;
+    this.ClientData.revocable_living_trust_funding_instructions.Trust_Name_2 = person_2;
+    this.ClientData.revocable_living_trust_funding_instructions.Bank_account_name_1 = person_1;
+    this.ClientData.revocable_living_trust_funding_instructions.Bank_account_Trust_Title = person_2;
+    this.ClientData.revocable_living_trust_funding_instructions.Brokerage_account_name_1 = person_1;
+    this.ClientData.revocable_living_trust_funding_instructions.Brokerage_account_name_2 = person_2;
+    
+    this.ClientData.revocable_living_trust_funding_instructions.Insurance_name_1 = person_1;
+    this.ClientData.revocable_living_trust_funding_instructions.Insurance_name_2 = person_2;
+    this.ClientData.revocable_living_trust_funding_instructions.Plan_name_1 = person_2;
+    this.ClientData.revocable_living_trust_funding_instructions.Plan_name_2 = person_2;
+    
+    this.ClientData.revocable_living_trust_funding_instructions.Plan_Title = this.trustOptionData.input_value;
+    this.ClientData.revocable_living_trust_funding_instructions.Insurance_Title = this.trustOptionData.input_value;
+    this.ClientData.revocable_living_trust_funding_instructions.Trust_Title = this.trustOptionData.input_value;
+    this.ClientData.revocable_living_trust_funding_instructions.Bank_account_trust_title = this.trustOptionData.input_value;
+    this.ClientData.revocable_living_trust_funding_instructions.Brokerage_account_trust_title = this.trustOptionData.input_value;
+    //#endregion
+  
+    //#region Last_will_testament
+    if (!this.ClientData.last_will) {
+      this.ClientData.last_will = {};
+    }
+    this.ClientData.last_will.name = person_1;
+    this.ClientData.last_will.Spouse_name = person_2;
+    if (children.length > 0) {
+      this.ClientData.last_will.child_name_1 = `${children[0].firstName} ${children[0].lastName}`.trim();
+    }
+    if (children.length > 1) {
+      this.ClientData.last_will.child_name_2 = `${children[1].firstName} ${children[1].lastName}`.trim();
+    }
+    //#endregion
+  }
+  
+  
+
+ async generateDocuments(){
+    await this.clientDataUpdate();
+    if(this.ClientData!= null){
+      this.lastwill_generate.load_PDFs(this.ClientData);
+    }
+  }
+  
   
 }

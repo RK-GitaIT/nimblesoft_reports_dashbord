@@ -11,5 +11,5 @@ export interface ClientData {
     revocable_living_trust_execution_instructions?: RevocableLivingTrustExecutionInstructions;
     revocable_living_trust_funding_instructions?: RevocableLivingTrustFundingInstructions;
     last_will?: LastWill;
-    beneficiary : Beneficiary
+    beneficiary? : Beneficiary
   }

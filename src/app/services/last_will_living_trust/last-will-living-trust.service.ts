@@ -96,6 +96,7 @@ export class LastWillLivingTrustService {
       const fields = [
         { pdfField: "Trust_Title", value: this.client_data?.revocable_living_trust?.Trust_Title },
         { pdfField: "Trustee_1", value: this.client_data?.revocable_living_trust?.Trustee_1 },
+        { pdfField: "Trustee_2", value: this.client_data?.revocable_living_trust?.Trustee_2 },
         { pdfField: "Co-Trustee_1", value: this.client_data?.revocable_living_trust?.Co_Trustee_1 },
         { pdfField: "Co-Trustee_2", value: this.client_data?.revocable_living_trust?.Co_Trustee_2 },
         { pdfField: "Child_1", value: this.client_data?.revocable_living_trust?.Child_1 },
@@ -199,9 +200,13 @@ export class LastWillLivingTrustService {
         { pdfField: "Brokerage_account_name_1", value: this.client_data?.revocable_living_trust_funding_instructions?.Brokerage_account_name_1 },
         { pdfField: "Brokerage_account_name_2", value: this.client_data?.revocable_living_trust_funding_instructions?.Brokerage_account_name_2 },
         { pdfField: "Brokerage_account_trust_title", value: this.client_data?.revocable_living_trust_funding_instructions?.Brokerage_account_trust_title },
+        { pdfField: "Insurance_name_1", value: this.client_data?.revocable_living_trust_funding_instructions?.Insurance_name_1 },
+        { pdfField: "Insurance_name_2", value: this.client_data?.revocable_living_trust_funding_instructions?.Insurance_name_2 },
+        { pdfField: "Insurance_Title", value: this.client_data?.revocable_living_trust_funding_instructions?.Insurance_Title },
         { pdfField: "Plan_name_1", value: this.client_data?.revocable_living_trust_funding_instructions?.Plan_name_1 },
         { pdfField: "Plan_name_2", value: this.client_data?.revocable_living_trust_funding_instructions?.Plan_name_2 },
         { pdfField: "Plan_Title", value: this.client_data?.revocable_living_trust_funding_instructions?.Plan_Title },
+        { pdfField: "Trust_Title", value: this.client_data?.revocable_living_trust_funding_instructions?.Trust_Title },
       ];
   
       const form = pdfDoc.getForm();
