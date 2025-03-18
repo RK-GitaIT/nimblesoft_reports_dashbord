@@ -28,9 +28,9 @@
 
 
             <div *ngIf="successorType == 'charities'">
-                <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)"
-                                >
-    </app-add-beneficiery>
+                <app-add-beneficiary
+                (providing_Data_emit)="onBeneficiariesChange($event)">
+                </app-add-beneficiary>
             </div>
         </div>
     </div>

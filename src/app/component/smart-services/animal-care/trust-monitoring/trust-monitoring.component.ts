@@ -3,18 +3,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 import { DocumentPrepareFor } from '../animal-care.component';
-import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
+import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
 import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-trust-monitoring',
-  imports: [CommonModule, FormsModule, AddBeneficieryComponent],
+  imports: [CommonModule, FormsModule, AddBeneficiaryComponent],
   templateUrl: './trust-monitoring.component.html',
   styleUrl: './trust-monitoring.component.css'
 })
 export class TrustMonitoringComponent {
-  onBeneficiariesChange(updatedBeneficiaries: any[]) {
-    console.log("My Real estate beneficieries",updatedBeneficiaries);
+  onBeneficiariesChange(data: IRequests[]) {
+    console.log("My Real estate beneficiaries",data);
   }
 
   @Input() DispositionAgent: Beneficiary[] = [];
