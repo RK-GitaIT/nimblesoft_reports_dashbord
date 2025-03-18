@@ -1,0 +1,20 @@
+<div class="mt-4 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Prepare for</h3>
+    <div class="space-y-2">
+      <div *ngFor="let data of Prepare_for_client" 
+      (click)="selectUser(data)" 
+           [class.bg-blue-100]="DocumentPrepareFor?.beneficiary?.index === data.index" 
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        <!-- Show ✓ only for selected user -->
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+              [ngClass]="DocumentPrepareFor?.beneficiary?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+          {{ DocumentPrepareFor?.beneficiary?.index === data.index ? '✓' : (data.firstName.charAt(0) + data.lastName.charAt(0)) }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ data.firstName + ' ' + data.lastName }}</p>
+          <p class="text-sm text-gray-500">{{ data.relationship }}</p>
+        </div>
+      </div>
+    </div>
+   
+  </div>

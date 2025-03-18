@@ -1,0 +1,74 @@
+<!-- Initial view: Display beneficiary selection and overall document info -->
+<ng-container *ngIf="currentStep === 'initial'">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold text-gray-800">Pet Trust</h2>
+        <p class="text-gray-600 text-sm mt-1">
+            Your pets, whether a dog, cat, horse or iguana, are special. Once you are gone, they will need somebody to
+            take care of them. This Trust makes the necessary legal arrangements to provide care for your pet if
+            something were to happen to you. </p>
+
+        <app-prepare-for [Prepare_for_client]="Prepare_for_client" [DocumentPrepareFor]="DocumentPrepareFor"
+            [total_members]="total_members" [actual_data_members]="actual_data_members">
+        </app-prepare-for>
+        <!-- Buttons -->
+        <div class="flex gap-4 mt-4">
+            <button (click)="Edit()" class="px-4 py-2 bg-gray-600 text-white rounded-md"
+                [disabled]="!DocumentPrepareFor">
+                Edit
+            </button>
+            <button (click)="Assemble()" class="px-4 py-2 bg-blue-600 text-white rounded-md"
+                [disabled]="!DocumentPrepareFor">
+                Assemble
+            </button>
+        </div>
+        <div class="mt-6 ">
+            <h3 class="text-gray-800 font-semibold">Animal Care Trust </h3> 
+            <p class="text-gray-600 text-sm mt-2 "> names caregivers who will care for your
+            pets after your death and an individual who will manage the trust.</p>
+        </div>
+        <!-- Document Description -->
+        <div class="mt-6">
+            <h3 class="text-gray-800 font-semibold">Documents included in this package</h3>
+            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                <li>📄 Animal Care Trust</li>
+                <li>📄 Animal Care Trust Execution and Funding Instructions</li>
+            </ul>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="currentStep === 'pets'">
+    <app-pet-details [DocumentPrepareFor]="DocumentPrepareFor"  (selectionConfirmed)="handlePetsConfirmed($event)"
+        (selectionCanceled)="handlePetsCanceled()">
+    </app-pet-details>
+</ng-container>
+
+<!-- finances Successor selection step -->
+<ng-container *ngIf="currentStep === 'successor'">
+    <app-successor [SuccessorAgent]="SuccessorAgent" [DocumentPrepareFor]="DocumentPrepareFor"
+        (selectionConfirmed)="handleSuccessorConfirmed($event)" (selectionCanceled)="handleSuccessorCanceled()">
+    </app-successor>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'caregiver'">
+    <app-caregiver [CaregiverAgent]="CaregiverAgent" [DocumentPrepareFor]="DocumentPrepareFor"
+        (selectionConfirmed)="handlecaregiverConfirmed($event)" (selectionCanceled)="handlecaregiverCanceled()">
+    </app-caregiver>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'Monitoring'">
+    <app-monitoring  [DocumentPrepareFor]="DocumentPrepareFor" (selectionConfirmed)="handleMonitoringConfirmed()"
+        (selectionCanceled)="handleMonitoringCanceled()">
+    </app-monitoring>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'Disposition'">
+    <app-trust-monitoring [DocumentPrepareFor]="DocumentPrepareFor" [DispositionAgent]="DispositionAgent"
+        (selectionConfirmed)="handleTrustConfirmed()" (selectionCanceled)="handleTrustCanceled()">
+    </app-trust-monitoring>
+</ng-container>
+
+<ng-container *ngIf="currentStep === 'finish'">
+    <app-ultimate-disposition [DocumentPrepareFor]="DocumentPrepareFor" [beneficiaryList]="Prepare_for_client"
+        (selectionConfirmed)="handleDispositionConfirmed()" (selectionCanceled)="handleDispositionCanceled()">
+    </app-ultimate-disposition>
+</ng-container>
