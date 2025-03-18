@@ -8,6 +8,9 @@ import { MyfilesComponent } from './component/myfiles/myfiles.component';
 import { HealthcareComponent } from './component/smart-services/healthcare/healthcare.component';
 import { PropertyGuardianshipComponent } from './component/smart-services/property-guardianship/property-guardianship.component';
 import { LastWillLivingTrustComponent } from './component/smart-services/last-will-living-trust/last-will-living-trust.component';
+import { AnimalCareComponent } from './component/smart-services/animal-care/animal-care.component';
+import { FinancesComponent } from './component/smart-services/finances/finances.component';
+
 
 export const routes: Routes = [
   { path: 'family-other', component: ProfileComponent },
@@ -22,5 +25,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/qrgenerator', pathMatch: 'full' },
   {path:'my-profile', component:MyProfileComponent},
   {path:'last-will',component:PropertyGuardianshipComponent},
-  {path:'last-will-living-trust',component:LastWillLivingTrustComponent}
+  {path:'last-will-living-trust',component:LastWillLivingTrustComponent},
+  {path:'animal-care',component:AnimalCareComponent},
+  {path:'finances',component:FinancesComponent}
 ];

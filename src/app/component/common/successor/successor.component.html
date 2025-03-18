@@ -1,0 +1,41 @@
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-xl font-semibold text-gray-800">
+      {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' + DocumentPrepareFor.beneficiary.lastName :
+      '' }}'s  Pet Trust
+    </h1>
+    <h2 class="text-base text-blue-600 font-semibold">
+      Trustees
+    </h2>
+    <hr class="border-t border-gray-300 mt-3">
+  </div>
+
+  <!-- Main Content: two-column layout (left form, right help text) -->
+  <div >
+    <!-- Left Panel -->
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-3">
+        Initial Trustee
+      </h3>
+      <p>
+        You will serve as Initial Trustee of this Animal Care Trust
+      </p>
+      <app-successors 
+      [data_members]="SuccessorAgent"
+      [selectedRepresentatives]="selectedRepresentatives"
+      [getColor]="getColor"
+      (representativesChange)="handleSelectionChange($event)">
+  </app-successors>
+  <!-- Buttons -->
+  <div class="flex justify-between mt-4">
+    <button (click)="cancelSelection()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+      Back
+    </button>
+    <button (click)="confirmToNext()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+      Next
+    </button>
+  </div>
+
+
+</div>

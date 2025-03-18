@@ -1,0 +1,36 @@
+
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-xl font-semibold text-gray-800">
+      {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' +
+      DocumentPrepareFor.beneficiary.lastName :
+      '' }}'s Pet Details
+    </h1>
+    <h2 class="text-base text-blue-600 font-semibold">
+      Pet Trust
+    </h2>
+    <hr class="border-t border-gray-300 mt-3">
+  </div>
+<div >
+  <div>
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Pet</h2>
+
+    <app-add-pet (petsChange)="handlePetsUpdate($event)"></app-add-pet>
+
+   
+
+    <!-- Buttons -->
+    <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="confirmToNext()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Next
+      </button>
+    </div>
+
+  </div>
+</div>
+</div>

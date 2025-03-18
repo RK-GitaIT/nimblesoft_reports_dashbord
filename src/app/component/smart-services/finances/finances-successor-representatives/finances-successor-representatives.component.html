@@ -1,0 +1,33 @@
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Header -->
+    <div class="text-xl font-semibold text-gray-800">
+        <h1 class="text-xl font-semibold text-gray-800">
+            {{ DocumentPrepareFor ? DocumentPrepareFor.beneficiary.firstName + ' ' + DocumentPrepareFor.beneficiary.lastName : '' }}'s Power of Attorney
+        </h1>
+      <h2 class="text-black font-bold">
+        Attorney In Fact
+      </h2>
+      <hr class="border-t border-gray-300 mt-3">
+      <h3 class="text-lg text-blue-500 font-semibold">
+       Successor Representatives
+      </h3>
+    </div>
+    <app-successors 
+    [data_members]="SuccessorAgent"
+    [selectedRepresentatives]="selectedRepresentatives"
+    [getColor]="getColor"
+    (representativesChange)="handleSelectionChange($event)">
+</app-successors>
+     <!-- Buttons -->
+     <div class="flex justify-between mt-4">
+      <button (click)="cancelSelection()"
+              class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">
+        Back
+      </button>
+      <button (click)="handleFinish()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Finish
+      </button>
+    </div>
+  </div>
+  

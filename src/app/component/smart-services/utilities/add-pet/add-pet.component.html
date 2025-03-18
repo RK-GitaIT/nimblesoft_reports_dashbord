@@ -1,0 +1,68 @@
+<div class="max-h-[500px] overflow-y-auto p-2 border rounded-lg bg-gray-50">
+    <form class="space-y-6">
+      <div *ngFor="let pet of pets; let i = index" class="relative p-4 border rounded-lg bg-white">
+        
+        <!-- Expand/Collapse Button -->
+        <button type="button" (click)="toggleExpand(i)" class="absolute top-2 right-10 text-blue-500 hover:text-blue-700">
+          <svg *ngIf="!pet.expanded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M12 5v14m7-7H5" />
+          </svg>
+          <svg *ngIf="pet.expanded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M5 12h14" />
+          </svg>
+        </button>
+  
+       <!-- Remove Pet Button (Always visible) -->
+<button type="button" (click)="removePet(i)" class="absolute top-2 right-2 text-red-500 hover:text-red-700">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+      <path fill-rule="evenodd" d="M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h5a1 1 0 1 1 0 2h-1v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6H4a1 1 0 1 1 0-2h5V3zm2 3v12a1 1 0 0 0 2 0V6a1 1 0 0 0-2 0zM7 6a1 1 0 1 1 2 0v12a1 1 0 1 1-2 0V6zm8-1a1 1 0 0 1 1 1v12a1 1 0 1 1-2 0V6a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
+    </svg>
+  </button>
+  
+        <h3 class="text-lg font-semibold text-gray-700">Pet {{ i + 1 }}</h3>
+        
+        <div *ngIf="pet.expanded">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Name</label>
+              <input type="text" [(ngModel)]="pet.name" name="name{{i}}" class="w-full p-2 border rounded-md" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Pet Type</label>
+              <select [(ngModel)]="pet.petType" name="petType{{i}}" class="w-full p-2 border rounded-md" required>
+                <option value="">Select Pet Type</option>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="horse">Horse</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          
+          <div *ngIf="pet.petType && pet.petType.toLowerCase() === 'other'" class="mt-4">
+            <label class="block text-sm font-medium text-gray-600">Specify Other Pet Type</label>
+            <input type="text" [(ngModel)]="pet.otherPetType" name="otherPetType{{i}}" class="w-full p-2 border rounded-md" required />
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Breed or Other Description</label>
+              <input type="text" [(ngModel)]="pet.breed" name="breed{{i}}" class="w-full p-2 border rounded-md" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600">ID Number</label>
+              <input type="text" [(ngModel)]="pet.idNumber" name="idNumber{{i}}" class="w-full p-2 border rounded-md" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Add Pet Button -->
+  <div class="mt-4 space-y-4">
+    <button type="button" class="w-full bg-green-500 text-white px-4 py-2 rounded-md" (click)="addPet()">
+      Add Pet
+    </button>
+  </div>
+  
