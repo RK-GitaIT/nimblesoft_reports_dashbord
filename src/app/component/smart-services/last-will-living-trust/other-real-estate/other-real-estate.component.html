@@ -28,10 +28,8 @@
     </div>
 
     <div *ngIf="other_real_estate_Data!.PersonalResidenceDevise && other_real_estate_Data">
-      <app-real-estate
-      [real_estate_Data]="other_real_estate_Data">
-      </app-real-estate>    
-
+      <app-real-estate [real_estate_data]="other_real_estate_Data.data" >
+      </app-real-estate>
     <div>
 
 </div>
@@ -66,10 +64,7 @@
     </label>
   </div>
   <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
-    <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)"
-    [other_real_estate_Data]="other_real_estate_Data"
-    [showBequest]="true">
-    </app-add-beneficiery>
+    <app-add-beneficiary></app-add-beneficiary>
   </div>
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-4">

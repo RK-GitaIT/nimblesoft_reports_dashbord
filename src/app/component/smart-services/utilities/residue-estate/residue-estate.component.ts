@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SuccessorsComponent } from '../successors/successors.component';
-import { AddBeneficieryComponent } from '../add-beneficiery/add-beneficiery.component';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
+import { AddBeneficiaryComponent } from '../add-beneficiary/add-beneficiary.component';
 
 @Component({
   selector: 'app-residue-estate',
   standalone: true,
-  imports: [CommonModule, FormsModule, SuccessorsComponent, AddBeneficieryComponent],
+  imports: [CommonModule, FormsModule, SuccessorsComponent, AddBeneficiaryComponent],
   templateUrl: './residue-estate.component.html',
   styleUrl: './residue-estate.component.css'
 })

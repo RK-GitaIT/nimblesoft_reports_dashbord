@@ -28,8 +28,10 @@
         <label class="inline-flex items-center space-x-2">
             Beneficiary Details
         </label>
-
-        <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)" ></app-add-beneficiery>
+        <app-add-beneficiary
+        [providing_Data]="ultimate_disposition_data.beneficiary_Details"
+        (providing_Data_emit)="onBeneficiariesChange($event)">
+      </app-add-beneficiary>
     </div>
 
     <!-- Navigation Buttons -->

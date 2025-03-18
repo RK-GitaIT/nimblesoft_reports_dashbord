@@ -1,4 +1,5 @@
 import { Beneficiary } from "../Beneficiary.model";
+import { IRealEstateEntry } from "./IRealEstateEntry";
 
 export interface ITrustOptions {
       user?: Beneficiary,

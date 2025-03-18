@@ -1,23 +1,22 @@
+import { Beneficiary } from "../Beneficiary.model";
+
 export interface IRequests {
     id?: number; // ✅ Added an ID field to track unique beneficiaries
-    bequestType: 'charity' | 'individual'; // Common field
+    bequestType?: string;//'charity' | 'individual'; // Common field
     charityName?: string;
     charityCity?: string;
     charityState?: string;
     individualName?: string;
     effectiveDate?: string;
-  
+    beneficiary?: Beneficiary;
+    percentage?: string;
     // Fields specific to SpecificBequest
-    itemType?: 'dollar' | 'physical' | 'item';
+    itemType?: string;
     amount?: number | null;
     itemDescription?: string;
-  
-    // Fields specific to NamedPersonBequest
-    ownershipType?:string;
-    issueToTakeShare?: number | null;
-    otherBeneficiariesToTakeShare?: number | null;
-    alternateBeneficiaryName?: string;
-    percentage?: number | null;
-    expanded?:boolean;
+
+    ownership_type?: string;
+    effective_date?: string;
+
   }
   

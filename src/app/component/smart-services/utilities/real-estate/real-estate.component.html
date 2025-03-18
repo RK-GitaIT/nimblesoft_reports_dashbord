@@ -1,80 +1,91 @@
-<div class="p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-    <h3 class="text-lg font-semibold mt-1">Real Estate Management</h3>
-  
-    <!-- Add Real Estate Button -->
-    <button (click)="addRealEstate()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
-      + Add Real Estate
-    </button>
-  
-    <!-- Loop through each real estate entry -->
-    <div *ngFor="let estate of realEstateList; let i = index" class="mt-6 border rounded-lg shadow-lg p-4">
-      
-      <!-- Expand/Collapse Header -->
-      <div class="flex justify-between items-center cursor-pointer" (click)="toggleExpand(i)">
-        <h4 class="text-md font-semibold">Real Estate #{{ i + 1 }}</h4>
-        <button class="text-red-600 hover:text-red-800 font-bold" (click)="removeRealEstate(i); $event.stopPropagation()">
-          ❌ Delete
-        </button>
-      </div>
-  
-      <!-- Real Estate Content (Expandable/Collapsible) -->
-      <div *ngIf="estate.expanded">
-        <!-- Personal Residence Devise Selection -->
-        <div class="mt-4 space-x-2">
-          <label class="inline-flex items-center space-x-2">
-            <input type="radio" name="PersonalResidence-{{ i }}" [(ngModel)]="estate.PersonalResidenceDevise" [value]="true" />
-            <span>Yes</span>
-          </label>
-          <label class="inline-flex items-center space-x-2">
-            <input type="radio" name="PersonalResidence-{{ i }}" [(ngModel)]="estate.PersonalResidenceDevise" [value]="false" />
-            <span>No</span>
-          </label>
-        </div>
-  
-        <!-- Ownership Type Selection -->
-        <div class="mt-4" *ngIf="estate.PersonalResidenceDevise">
-          <h4 class="text-md font-semibold mt-2">Ownership Type</h4>
-  
-          <!-- Joint Ownership -->
-          <label class="inline-flex items-center space-x-2">
-            <input type="radio" name="ownership-{{ i }}" [(ngModel)]="estate.ownershipType" value="joint" (change)="updateOwnership(i, 'joint')" />
-            <span>Joint Ownership</span>
-          </label>
+<div class="flex-1 h-screen overflow-auto p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
+  <h3 class="text-lg font-semibold mt-1">Real Estate Management</h3>
 
-          <!-- Sole Ownership -->
-            <div class="mt-2" *ngFor="let b of real_estate_Data?.Beneficiary; let i = index">
-                <label class="inline-flex items-center space-x-2">
-                <input
-                    type="radio"
-                    name="ownership"
-                    [(ngModel)]="estate.ownershipType"
-                    [value]="'sole_' + i"
-                    (change)="updateOwnership(i,'sole_' + i)"
-                />
-                <span>Owned by {{ b.firstName + ' ' + b.lastName }} only</span>
-                </label>
-            </div>
-  
-          <!-- Effective Date Section (Only Visible if ownership is Sole) -->
-          <div class="mt-4" [class.hidden]="estate.ownershipType === 'joint'">
-            <h4 class="text-md font-semibold">Effective Date of Devise</h4>
-            <label class="block mt-2">
-              <input type="radio" name="effectiveDate-{{ i }}" [(ngModel)]="estate.Effective_date_of_devise" value="regardless" (change)="updateEffectiveDate(i, 'regardless')" />
-              <span>At owner's death regardless of other beneficiaries</span>
-            </label>
-            <label class="block mt-2">
-              <input type="radio" name="effectiveDate-{{ i }}" [(ngModel)]="estate.Effective_date_of_devise" value="not_survive" (change)="updateEffectiveDate(i, 'not_survive')" />
-              <span>At owner's death only if other beneficiaries do not survive</span>
-            </label>
-          </div>
+  <!-- PROPERTY LIST SECTION -->
+  <div class="mt-4">
+    <h3 class="text-gray-700 font-medium mb-2">Properties</h3>
+    <div *ngIf="real_estate_data?.EstateDetails?.length; else noProperties">
+      <div *ngFor="let property of real_estate_data?.EstateDetails; let i = index" class="p-3 border rounded-md mt-2 flex justify-between items-center">
+        <div>
+          <p><strong>Address:</strong> {{ property.address }}</p>
+          <p><strong>Effective Date:</strong> {{ property.Effective_date_of_devise }}</p>
+          <p><strong>Ownership:</strong> {{ property.ownershipType }}</p>
+          <p><strong>Total Beneficiaries:</strong> {{ property.requests.length }}</p>
         </div>
-  
-        <!-- Add Beneficiary Component -->
-        <div class="mt-4">
-          <h4 class="text-md font-semibold">You can add one or more beneficiaries below</h4>
-          <app-add-beneficiery [beneficiaries]="estate.Beneficiary" (beneficiariesChange)="onBeneficiariesChange(i, $event)"></app-add-beneficiery>
+        <div class="flex space-x-2">
+          <button (click)="deleteProperty(i)" class="bg-red-500 text-white px-3 py-1 rounded">🗑 Delete</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noProperties>
+      <p class="text-gray-500 text-center">No properties added yet.</p>
+    </ng-template>
+  </div>
+
+  <!-- ADD PROPERTY FORM SECTION -->
+  <div class="mt-6 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Add Property</h3>
+    <div class="mb-2">
+      <label class="block">
+        <input type="text" class="border p-2 rounded w-full" placeholder="Enter Property Address" [(ngModel)]="currentStage.address">
+      </label>
+    </div>
+    <div class="text-right">
+      <button (click)="addRealEstate()" class="bg-blue-500 text-white px-4 py-2 rounded">
+        + Add Property
+      </button>
+    </div>
+  </div>
+
+  <!-- OWNERSHIP SELECTION SECTION -->
+  <div class="mt-6 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Ownership of the Property</h3>
+    <div class="space-y-2">
+      <div *ngFor="let data of real_estate_data?.Beneficiary" 
+           (click)="selectUser(data)" 
+           [class.bg-blue-100]="selectedBeneficiaryItem?.index === data.index" 
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full" 
+              [ngClass]="selectedBeneficiaryItem?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+          {{ selectedBeneficiaryItem?.index === data.index ? '✓' : (data.isJointAccount ? 'J' : (data.firstName.charAt(0) + (data.lastName ? data.lastName.charAt(0) : ''))) }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">
+            <span *ngIf="data.isJointAccount">Jointly owned by</span>
+            <span *ngIf="!data.isJointAccount">Owned by</span> 
+            {{ data.firstName + ' ' + data.lastName }} 
+            <span *ngIf="!data.isJointAccount">only</span>
+          </p>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- EFFECTIVE DATE SELECTION SECTION -->
+  <div class="mt-6 bg-white p-4 rounded-lg shadow" >
+    <h3 class="text-gray-700 font-medium mb-2">Effective Date of Decision</h3>
+    <div class="space-y-2">
+      <div *ngFor="let option of effectiveDate" 
+           (click)="selectEffectiveDate(option)" 
+           [class.bg-blue-100]="currentStage.Effective_date_of_devise === option" 
+           class="flex items-center p-3 border rounded-md cursor-pointer">
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+              [ngClass]="currentStage.Effective_date_of_devise === option ? 'bg-gray-700' : 'bg-gray-400'">
+          {{ currentStage.Effective_date_of_devise === option ? '✓' : '?' }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ option }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- EFFECTIVE DATE SELECTION SECTION -->
+   <div>
+    <app-add-beneficiary
+    [providing_Data]="currentStage.requests"
+    (providing_Data_emit)="updateRequests($event)">
+  </app-add-beneficiary>
+  </div>
+
+</div>

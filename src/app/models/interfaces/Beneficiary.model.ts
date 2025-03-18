@@ -1,5 +1,6 @@
 export interface Beneficiary {
     selected?: any;
+    isJointAccount?: boolean;
     index: number,
     firstName: string;
     lastName: string;

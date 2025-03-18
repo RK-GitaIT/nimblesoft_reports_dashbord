@@ -1,100 +1,164 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
-import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
-import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
+import { IPersonalResidence, IPersonalWithOtherResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
 import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
-
+import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
+import { RealEstateEntry } from '../../../../models/interfaces/utilities/IRealEstateEntry';
+import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-personal-residence',
   standalone: true,
-  imports: [CommonModule, FormsModule, AddBeneficieryComponent],
+  imports: [CommonModule, FormsModule, AddBeneficiaryComponent],
   templateUrl: './personal-residence.component.html',
   styleUrls: ['./personal-residence.component.css']
 })
 export class PersonalResidenceComponent implements OnInit {
+
+  @Input() personalResidenceData: IPersonalWithOtherResidence = {
+    Beneficiary: [],
+    PersonalResidenceDevise: false,
+    isReplacement_property: false,
+    back: '',
+    next: '',
+    Special_Benefits:[],
+    beneficiaries: []
+  };
+
   @Input() trust_data?: ITrustOptions | null;
-  @Input() personalResidenceData?: IPersonalResidence;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
-  @Output() personalResidenceData_emit = new EventEmitter<IPersonalResidence>(); 
+  @Output() personalResidenceData_emit = new EventEmitter<IPersonalWithOtherResidence>(); 
+
+  selectedBeneficiaryItem?: Beneficiary;
+  Temp_beneficiary: Beneficiary[] = [];
+  effectiveDate: string[] = [];
+  Decision_Date: string[] = ["No", "Yes"];
+  selectedEffectiveDate?: string;
+  currentStage?: RealEstateEntry;
+  selectReplacement_property_data: string = "No";
+  selectDecisionData: string = "No";
 
   ngOnInit(): void {
-    // If no data is passed in, initialize with default values.
-    if (!this.personalResidenceData) {
+    if(this.personalResidenceData.Special_Benefits == null){
+      this.personalResidenceData.Special_Benefits = [];
+    }
+    this.loadData();
+    if (this.personalResidenceData.PersonalResidenceDevise === undefined) {
+      this.personalResidenceData.PersonalResidenceDevise = false;
+    }
+  }
+
+  Back(): void {
+    this.backClicked.emit(this.personalResidenceData.back);
+  }
+
+  confirmToNext(): void {
+    this.personalResidenceData_emit.emit({ ...this.personalResidenceData });
+    this.nextClicked.emit(this.personalResidenceData.next);
+  }
+
+  loadData() {
+    if (!this.personalResidenceData || !this.personalResidenceData.Beneficiary) return;
+
+    this.Temp_beneficiary = this.personalResidenceData.Beneficiary.map((b, i) => ({
+      ...b,
+      index: i + 1,
+    }));
+
+    if (this.personalResidenceData.Beneficiary.length > 1) {
+      const names = this.personalResidenceData.Beneficiary.map(b => `${b.firstName} ${b.lastName}`);
+      const jointName = names.length > 2
+        ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+        : names.join(' and ');
+
+      const jointData: Beneficiary = {
+        index: 0,
+        firstName: jointName,
+        lastName: '',
+        dateOfBirth: '',
+        gender: 'Other',
+        relationship: '',
+        relationshipCategory: '',
+        phoneNumber: '',
+        email: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        creationDate: '',
+        isJointAccount: true,
+      };
+
+      const updatedBeneficiaries = this.personalResidenceData.Beneficiary.map((b, i) => ({
+        ...b,
+        index: i + 1,
+      }));
+
       this.personalResidenceData = {
-        back: '',
-        next: '',
-        Beneficiary: [],
-        ownershipType: '',
-        Replacement_property: false,
-        Effective_date_of_devise: '' // For the sole ownership scenario
+        ...this.personalResidenceData,
+        Beneficiary: [jointData, ...updatedBeneficiaries]
       };
     }
   }
 
-  /** Returns a concatenated string of beneficiary names for joint ownership. */
-  get jointOwnersLabel(): string {
-    if (!this.personalResidenceData?.Beneficiary) return '';
-    return this.personalResidenceData.Beneficiary
-      .map(b => b.firstName + ' ' + b.lastName)
-      .join(' and ');
+
+  addRealEstate() {
+    console.log("Adding real estate property...");
   }
 
-  /** Checks if joint ownership is selected. */
-  get isJointOwnership(): boolean {
-    return this.personalResidenceData?.ownershipType === 'joint';
+  getUserColor(user: { firstName: string; lastName?: string }): string {
+    const colors = [
+      'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500',
+      'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500'
+    ];
+    const firstChar = user.firstName.charCodeAt(0);
+    const lastChar = user.lastName ? user.lastName.charCodeAt(0) : firstChar;
+    const index = (firstChar + lastChar) % colors.length;
+    return colors[index];
   }
+  
+  selectUser(data: Beneficiary) {
+    this.selectedBeneficiaryItem = data;
+    
+    this.effectiveDate = [];
 
-  /** Returns the sole owner index if ownershipType starts with "sole_". */
-  get soleOwnerIndex(): number | null {
-    const ownership = this.personalResidenceData?.ownershipType || '';
-    if (ownership.startsWith('sole_')) {
-      return +ownership.split('_')[1];
+    if (!data.isJointAccount && this.Temp_beneficiary.length > 1) {
+      const name1 = `${data.firstName} ${data.lastName}`;
+      const otherBeneficiary = this.Temp_beneficiary.find(a => a.index !== data.index);
+      const name2 = otherBeneficiary ? `${otherBeneficiary.firstName} ${otherBeneficiary.lastName}` : 'another beneficiary';
+      this.effectiveDate = [
+        `At ${name1}'s death regardless of whether ${name2} is living`,
+        `At ${name1}'s death only if ${name2} does not survive ${name1}`
+      ];
     }
-    return null;
+    console.log("Effective Date Options:", this.effectiveDate);
+
   }
-  onBeneficiariesChange(updatedBeneficiaries: any[]) {
-    console.log(updatedBeneficiaries);
-  }
-  /**
-   * Returns the full name of the selected sole owner
-   * (e.g. "Krishna Gautam" if ownershipType = "sole_2").
-   */
-  get selectedBeneficiaryName(): string {
-    if (!this.personalResidenceData?.Beneficiary || this.soleOwnerIndex === null) {
-      return '';
-    }
-    const ben = this.personalResidenceData.Beneficiary.find(
-      b => b.index === this.soleOwnerIndex
-    );
-    return ben ? `${ben.firstName} ${ben.lastName}` : '';
+  
+  selectEffectiveDate(option: string) {
+    this.selectedEffectiveDate = option;
+    // You may update any additional field if needed.
   }
 
-  /**
-   * Returns a comma-separated list of all other beneficiaries' full names.
-   * For example: "Hema Latha, John Doe"
-   */
-  get otherBeneficiariesNames(): string {
-    if (!this.personalResidenceData?.Beneficiary || this.soleOwnerIndex === null) {
-      return '';
-    }
-    const others = this.personalResidenceData.Beneficiary.filter(
-      b => b.index !== this.soleOwnerIndex
-    );
-    return others.map(b => `${b.firstName} ${b.lastName}`).join(', ');
+  selectDecision(option: string) {
+    console.log("Decision selected:", option);
+    this.selectDecisionData = option;
+    this.personalResidenceData.PersonalResidenceDevise = (option === "Yes");
   }
 
-  Back(): void {
-    this.backClicked.emit(this.personalResidenceData?.back ?? '');
+  selectReplacement_property(option: string) {
+    console.log("Replacement property option:", option);
+    this.selectReplacement_property_data = option;
+    this.personalResidenceData.isReplacement_property = (option === "Yes");
+
+     this.personalResidenceData_emit.emit(this.personalResidenceData);
   }
 
-  confirmToNext(): void {
-    if (this.personalResidenceData) {
-      this.personalResidenceData_emit.emit(this.personalResidenceData);
-      this.nextClicked.emit(this.personalResidenceData.next);
-    }
-  }
+  updateBeneficiaries(updatedList: IRequests[]) {
+    this.personalResidenceData.Special_Benefits = updatedList;
+  }  
+
 }

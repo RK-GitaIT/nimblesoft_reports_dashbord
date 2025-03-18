@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddBeneficieryComponent } from './add-beneficiery.component';
+import { AddBeneficiaryComponent } from './add-beneficiary.component';
 
-describe('AddBeneficieryComponent', () => {
-  let component: AddBeneficieryComponent;
-  let fixture: ComponentFixture<AddBeneficieryComponent>;
+describe('AddBeneficiaryComponent', () => {
+  let component: AddBeneficiaryComponent;
+  let fixture: ComponentFixture<AddBeneficiaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddBeneficieryComponent]
+      imports: [AddBeneficiaryComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddBeneficieryComponent);
+    fixture = TestBed.createComponent(AddBeneficiaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
