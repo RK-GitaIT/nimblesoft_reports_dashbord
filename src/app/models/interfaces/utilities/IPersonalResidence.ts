@@ -1,20 +1,17 @@
 import { Beneficiary } from "../Beneficiary.model";
+import { IRealEstateEntry } from "./IRealEstateEntry";
 import { IRequests } from "./IRequests";
 
 export interface IPersonalResidence {
-    PersonalResidenceDevise?: boolean;
+    data?:IRealEstateEntry;
     Beneficiary?: Beneficiary[];
-    Effective_date_of_devise?: string;
-    Replacement_property?: boolean;
-    beneficiaries_requests?: any;
-    finalData?: any;
-    ownershipType?: string; 
+    PersonalResidenceDevise?: boolean;
     back: string;
     next: string;
   }
 
   export interface IPersonalWithOtherResidence  extends IPersonalResidence{
     iSSpecificBequests?: boolean,
-    Requests?: Request[],
+    Special_Benefits?: IRequests[],
   }
   

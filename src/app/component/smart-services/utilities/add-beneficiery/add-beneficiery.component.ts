@@ -14,9 +14,9 @@ import { IPersonalWithOtherResidence } from '../../../../models/interfaces/utili
 })
 export class AddBeneficieryComponent {
 
-  @Input() showBequest: boolean = false; // ✅ Controls Bequest visibility
-  @Input() showEffectiveDate: boolean = false; // ✅ Controls Effective Date visibility
-  @Input() beneficiaries: IRequests[] = []; // ✅ Directly accepts data from parent
+  @Input() showBequest: boolean = false; 
+  @Input() showEffectiveDate: boolean = false; 
+  @Input() beneficiaries: IRequests[] = []; 
   @Output() beneficiariesChange = new EventEmitter<IRequests[]>(); 
   @Input() other_real_estate_Data?: IPersonalWithOtherResidence;
   selectedName: string = '';
@@ -61,9 +61,9 @@ toggleExpand(index: number) {
     this.beneficiaries.splice(index, 1);
   }
  
-  get isJointOwnership(): boolean {
-    return this.other_real_estate_Data?.ownershipType === 'joint';
-  }
+  // get isJointOwnership(): boolean {
+  //   return this.other_real_estate_Data.iSSpecificBequests = true;
+  // }
   
   
  
