@@ -32,7 +32,7 @@ export interface DocumentPrepareFor {
   selected_personalReps?: Beneficiary[];
   SuccessorExecutors: Beneficiary[];
   PropertyGuardianshipRepresentatives: Beneficiary[];
-  PersonalResidence?: IPersonalResidence,
+  PersonalResidence?: IPersonalWithOtherResidence,
   petFormData?: IPetForm,
   last_will: {
     successorType: string;
@@ -395,7 +395,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     };
   }
   
-  onPersonalResidenceData(data: IPersonalResidence): void {
+  onPersonalResidenceData(data: IPersonalWithOtherResidence): void {
     console.log('Received pet data:', data);
     if(this.DocumentPrepareFor!= null){
       this.DocumentPrepareFor.PersonalResidence = data;

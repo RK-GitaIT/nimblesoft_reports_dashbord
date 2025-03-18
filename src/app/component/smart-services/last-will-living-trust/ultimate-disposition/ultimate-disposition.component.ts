@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IUltimateDisposition } from '../../../../models/interfaces/utilities/IUltimateDisposition';
 import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-ultimate-disposition',
@@ -33,8 +34,10 @@ export class UltimateDispositionComponent implements OnInit {
   Back(): void {
     this.backClicked.emit(this.ultimate_disposition_data?.back ?? '');
   }
-  onBeneficiariesChange(updatedBeneficiaries: any[]) {
-    this.ultimate_disposition_data?.beneficiary_Details.push(updatedBeneficiaries);
+  onBeneficiariesChange(updatedBeneficiaries: IRequests[]) {
+    if (this.ultimate_disposition_data) {
+      this.ultimate_disposition_data.beneficiary_Details = updatedBeneficiaries;
+    }
   }
   confirmToNext(): void {
     if (this.ultimate_disposition_data) {
@@ -42,4 +45,7 @@ export class UltimateDispositionComponent implements OnInit {
       this.nextClicked.emit(this.ultimate_disposition_data.next);
     }
   }
+
+ 
+  
 }

@@ -82,7 +82,10 @@
 
    <!-- EFFECTIVE DATE SELECTION SECTION -->
    <div>
-    <app-add-beneficiary></app-add-beneficiary>
+    <app-add-beneficiary
+    [providing_Data]="currentStage.requests"
+    (providing_Data_emit)="updateRequests($event)">
+  </app-add-beneficiary>
   </div>
 
 </div>

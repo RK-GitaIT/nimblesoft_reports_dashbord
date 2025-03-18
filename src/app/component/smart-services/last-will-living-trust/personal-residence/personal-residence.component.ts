@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IPersonalResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
+import { IPersonalResidence, IPersonalWithOtherResidence } from '../../../../models/interfaces/utilities/IPersonalResidence';
 import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 import { RealEstateEntry } from '../../../../models/interfaces/utilities/IRealEstateEntry';
 import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-personal-residence',
@@ -16,18 +17,20 @@ import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-ben
 })
 export class PersonalResidenceComponent implements OnInit {
 
-  @Input() personalResidenceData: IPersonalResidence = {
+  @Input() personalResidenceData: IPersonalWithOtherResidence = {
     Beneficiary: [],
     PersonalResidenceDevise: false,
     isReplacement_property: false,
     back: '',
-    next: ''
+    next: '',
+    Special_Benefits:[],
+    beneficiaries: []
   };
 
   @Input() trust_data?: ITrustOptions | null;
   @Output() backClicked = new EventEmitter<string>(); 
   @Output() nextClicked = new EventEmitter<string>();
-  @Output() personalResidenceData_emit = new EventEmitter<IPersonalResidence>(); 
+  @Output() personalResidenceData_emit = new EventEmitter<IPersonalWithOtherResidence>(); 
 
   selectedBeneficiaryItem?: Beneficiary;
   Temp_beneficiary: Beneficiary[] = [];
@@ -39,6 +42,9 @@ export class PersonalResidenceComponent implements OnInit {
   selectDecisionData: string = "No";
 
   ngOnInit(): void {
+    if(this.personalResidenceData.Special_Benefits == null){
+      this.personalResidenceData.Special_Benefits = [];
+    }
     this.loadData();
     if (this.personalResidenceData.PersonalResidenceDevise === undefined) {
       this.personalResidenceData.PersonalResidenceDevise = false;
@@ -147,5 +153,12 @@ export class PersonalResidenceComponent implements OnInit {
     console.log("Replacement property option:", option);
     this.selectReplacement_property_data = option;
     this.personalResidenceData.isReplacement_property = (option === "Yes");
+
+     this.personalResidenceData_emit.emit(this.personalResidenceData);
   }
+
+  updateBeneficiaries(updatedList: IRequests[]) {
+    this.personalResidenceData.Special_Benefits = updatedList;
+  }  
+
 }

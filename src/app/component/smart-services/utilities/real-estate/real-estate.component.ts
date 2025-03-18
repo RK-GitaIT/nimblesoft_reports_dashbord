@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 import { IRealEstateEntry, RealEstateEntry } from '../../../../models/interfaces/utilities/IRealEstateEntry';
 import { AddBeneficiaryComponent } from '../add-beneficiary/add-beneficiary.component';
+import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 
 @Component({
   selector: 'app-real-estate',
@@ -132,6 +133,10 @@ export class RealEstateComponent implements OnInit {
     const index = (data.firstName.charCodeAt(0) + (data.lastName ? data.lastName.charCodeAt(0) : 0)) % colors.length;
     return colors[index];
   }
+
+  updateRequests(updatedList: IRequests[]) {
+      this.currentStage.requests = updatedList;
+  }  
 
   /** Resets the add property form and selections */
   resetForm() {

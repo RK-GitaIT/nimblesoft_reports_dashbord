@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IRequests } from '../../../../models/interfaces/utilities/IRequests';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
@@ -48,6 +48,9 @@ export class AddBeneficiaryComponent implements OnInit {
   @Input() beneficiaries_Data: Beneficiary[] = [];
   // typeofRequest determines which UI view to show; default is 'model1'
   @Input() typeofRequest: string = 'model1';
+
+  @Output() providing_Data_emit = new EventEmitter<IRequests[]>();
+
   
   // Temporary beneficiaries list with index information
   Temp_beneficiary: Beneficiary[] = [];
@@ -151,11 +154,16 @@ export class AddBeneficiaryComponent implements OnInit {
   
   // Add the current request to the providing_Data array and then reset the form.
   addRequests() {
-    // Set a unique ID (here simply length + 1; adjust as needed)
     this.current_stage.id = this.providing_Data.length + 1;
+  
+    // Append to array and emit updated data
     this.providing_Data = [...this.providing_Data, this.current_stage];
+    this.providing_Data_emit.emit(this.providing_Data);
+  
+    // Reset form after adding request
     this.resetForm();
   }
+  
   
   // Remove a request by filtering out the one with a matching id.
   RemoveRequests(data: IRequests) {

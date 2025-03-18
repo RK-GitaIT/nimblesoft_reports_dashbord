@@ -99,7 +99,12 @@
     </div> 
 
     <div class="mt-4 bg-white p-4 rounded-lg shadow" *ngIf="selectReplacement_property_data ==='Yes'">
-      <app-add-beneficiary></app-add-beneficiary>
+      <app-add-beneficiary
+      [providing_Data]="personalResidenceData.Special_Benefits || []"
+      [beneficiaries_Data]="personalResidenceData.beneficiaries || []"
+      (providing_Data_emit)="updateBeneficiaries($event)">
+    </app-add-beneficiary>
+    
     </div> 
   </div>
   
