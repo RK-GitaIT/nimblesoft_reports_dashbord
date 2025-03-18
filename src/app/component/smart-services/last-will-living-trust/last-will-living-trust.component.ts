@@ -388,11 +388,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
 
   personalResidence_update(): void {
     this.personalResidenceFormData = {
-     Beneficiary: this.Prepare_for_client,
-     next: "other-residence",
-     back: "pet-care",
+      Beneficiary: this.Prepare_for_client,
+      next: "other-residence",
+      back: "pet-care",
+      PersonalResidenceDevise: false, 
     };
   }
+  
   onPersonalResidenceData(data: IPersonalResidence): void {
     console.log('Received pet data:', data);
     if(this.DocumentPrepareFor!= null){
@@ -406,6 +408,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
 
     other_real_estate_update(): void {
       this.other_real_estateFormData = {
+       PersonalResidenceDevise: false,
        Beneficiary: this.Prepare_for_client,
        next: "residence-estate",
        back: "personal-residence",

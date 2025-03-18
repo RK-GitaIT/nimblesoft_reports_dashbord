@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Beneficiary } from '../../../../models/interfaces/Beneficiary.model';
 import { IRealEstateEntry, RealEstateEntry } from '../../../../models/interfaces/utilities/IRealEstateEntry';
+import { AddBeneficiaryComponent } from '../add-beneficiary/add-beneficiary.component';
 
 @Component({
   selector: 'app-real-estate',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddBeneficiaryComponent],
   templateUrl: './real-estate.component.html',
   styleUrl: './real-estate.component.css',
 })

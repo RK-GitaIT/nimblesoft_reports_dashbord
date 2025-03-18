@@ -63,12 +63,9 @@
         </div>
     </label>
   </div>
-  <!-- <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
-    <app-add-beneficiery (beneficiariesChange)="onBeneficiariesChange($event)"
-    [other_real_estate_Data]="other_real_estate_Data?.Special_Benefits"
-    [showBequest]="true">
-    </app-add-beneficiery>
-  </div> -->
+  <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
+    <app-add-beneficiary></app-add-beneficiary>
+  </div>
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-4">
       <button (click)="Back()"

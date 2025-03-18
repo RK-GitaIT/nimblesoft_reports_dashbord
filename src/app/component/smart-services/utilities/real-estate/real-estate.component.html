@@ -62,7 +62,7 @@
   </div>
 
   <!-- EFFECTIVE DATE SELECTION SECTION -->
-  <div class="mt-6 bg-white p-4 rounded-lg shadow" *ngIf="!selectedBeneficiaryItem?.isJointAccount">
+  <div class="mt-6 bg-white p-4 rounded-lg shadow" >
     <h3 class="text-gray-700 font-medium mb-2">Effective Date of Decision</h3>
     <div class="space-y-2">
       <div *ngFor="let option of effectiveDate" 
@@ -79,4 +79,10 @@
       </div>
     </div>
   </div>
+
+   <!-- EFFECTIVE DATE SELECTION SECTION -->
+   <div>
+    <app-add-beneficiary></app-add-beneficiary>
+  </div>
+
 </div>

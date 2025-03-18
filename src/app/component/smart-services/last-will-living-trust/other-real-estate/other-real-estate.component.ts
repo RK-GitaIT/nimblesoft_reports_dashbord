@@ -5,10 +5,11 @@ import { IPersonalWithOtherResidence } from '../../../../models/interfaces/utili
 import { RealEstateComponent } from "../../utilities/real-estate/real-estate.component";
 import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
 import { IRealEstateEntry } from '../../../../models/interfaces/utilities/IRealEstateEntry';
+import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
 
 @Component({
   selector: 'app-other-real-estate',
-  imports: [CommonModule, FormsModule, RealEstateComponent],
+  imports: [CommonModule, FormsModule, RealEstateComponent, AddBeneficiaryComponent],
   templateUrl: './other-real-estate.component.html',
   styleUrl: './other-real-estate.component.css'
 })

@@ -1,0 +1,180 @@
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-xl font-semibold mb-4">Add Beneficiary Request</h2>
+
+  <!-- Table of Existing Requests -->
+  <table class="min-w-full border border-gray-300 mb-6">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border p-2">Bequest Details</th>
+        <th class="border p-2" *ngIf="typeofRequest=='model2' || typeofRequest=='model3' || typeofRequest=='model6'">
+          Request Type
+        </th>
+        <th class="border p-2" *ngIf="typeofRequest=='model1' || typeofRequest=='model6'">
+          Percentage
+        </th>
+        <th class="border p-2" *ngIf="typeofRequest=='model3' || typeofRequest=='model6'">
+          Ownership
+        </th>
+        <th class="border p-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of providing_Data" class="hover:bg-gray-50">
+        <td class="border p-2">
+          <ng-container *ngIf="data.bequestType === 'Charity'; else individual">
+            {{ data.charityName }} - ({{ data.charityCity }} {{ data.charityState }}) (Charity)
+          </ng-container>
+          <ng-template #individual>
+            <ng-container *ngIf="data.bequestType === 'Individual'; else fallback">
+              {{ data.individualName }} (Individual)
+            </ng-container>
+            <ng-template #fallback>
+              {{ data.individualName || '' }}
+            </ng-template>
+          </ng-template>
+        </td>
+        <td class="border p-2" *ngIf="typeofRequest=='model2' || typeofRequest=='model3' || typeofRequest=='model6'">
+          {{ data.itemType || '' }}
+        </td>
+        <td class="border p-2" *ngIf="typeofRequest=='model1' || typeofRequest=='model6'">
+          {{ data.percentage || '' }}
+        </td>
+        <td class="border p-2" *ngIf="typeofRequest=='model3' || typeofRequest=='model6'">
+          {{ data.ownership_type || '' }}
+        </td>
+        <td class="border p-2">
+          <button (click)="RemoveRequests(data)" class="bg-red-500 text-white px-2 py-1 rounded">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Personal Residence Devise (Replacement Property) Section -->
+  <div class="mt-4 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Personal Residence Devise</h3>
+    <div class="flex space-x-4">
+      <div *ngFor="let option of Decision_Date" 
+           (click)="selectReplacement_property(option)" 
+           [class.bg-blue-100]="selectReplacement_property_data === option"  
+           class="flex items-center p-3 border rounded-md cursor-pointer w-1/2">
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+              [ngClass]="selectReplacement_property_data === option ? 'bg-gray-700' : 'bg-gray-400'">
+          {{ selectReplacement_property_data === option ? '✓' : '?' }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ option }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Replacement Property Details Section -->
+  <div *ngIf="selectReplacement_property_data == 'Charity'" class="mt-4 bg-white p-4 rounded-lg shadow">
+    <div class="flex space-x-4">
+      <div class="w-1/3">
+         <label for="charityName" class="block text-gray-700 text-sm font-medium mb-1">Charity Name</label>
+         <input id="charityName" type="text" placeholder="Enter Charity Name" class="border p-3 rounded w-full" [(ngModel)]="current_stage.charityName">
+      </div>
+      <div class="w-1/3">
+         <label for="charityCity" class="block text-gray-700 text-sm font-medium mb-1">City</label>
+         <input id="charityCity" type="text" placeholder="Enter Charity City" class="border p-3 rounded w-full" [(ngModel)]="current_stage.charityCity">
+      </div>
+      <div class="w-1/3">
+         <label for="charityState" class="block text-gray-700 text-sm font-medium mb-1">State</label>
+         <input id="charityState" type="text" placeholder="Enter Charity State" class="border p-3 rounded w-full" [(ngModel)]="current_stage.charityState">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectReplacement_property_data == 'Individual'" class="mt-4 bg-white p-4 rounded-lg shadow">
+    <div class="flex space-x-4">
+      <div class="w-1/2">
+        <label for="individualName" class="block text-gray-700 text-sm font-medium mb-1">Individual Name</label>
+        <input id="individualName" type="text" placeholder="Enter Individual Name" class="border p-3 rounded w-full" [(ngModel)]="current_stage.individualName">
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Type Section (for model2/model6) -->
+  <div *ngIf="typeofRequest == 'model2' || typeofRequest == 'model6'" class="mt-4 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-gray-700 font-medium mb-2">Request Type</h3>
+    <div class="flex space-x-4">
+      <div *ngFor="let option of Request_Type_Date" 
+           (click)="selectReplacement_request(option)" 
+           [class.bg-blue-100]="selectReplacement_request_data === option"  
+           class="flex items-center p-3 border rounded-md cursor-pointer w-1/2">
+        <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+              [ngClass]="selectReplacement_request_data === option ? 'bg-gray-700' : 'bg-gray-400'">
+          {{ selectReplacement_request_data === option ? '✓' : '?' }}
+        </span>
+        <div class="ml-3">
+          <p class="font-medium text-gray-800">{{ option }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Model1: Percentage Input -->
+  <div *ngIf="typeofRequest == 'model1'" class="mt-4 bg-white p-4 rounded-lg shadow">
+    <div class="flex space-x-4">
+      <div class="w-1/2">
+        <label for="percentage" class="block text-gray-700 text-sm font-medium mb-1">Percentage</label>
+        <input id="percentage" type="text" placeholder="Enter percentage" class="border p-3 rounded w-full" [(ngModel)]="current_stage.percentage">
+      </div>
+    </div>
+  </div>
+
+  <!-- Model3/Model6: Beneficiary Ownership & Effective Date -->
+  <div *ngIf="typeofRequest == 'model3' || typeofRequest == 'model6'" class="mt-4">
+    <!-- Beneficiary Ownership Table -->
+    <div class="mt-4 bg-white p-4 rounded-lg shadow">
+      <h3 class="text-gray-700 font-medium mb-2">Ownership of the Property</h3>
+      <div class="space-y-2">
+        <div *ngFor="let data of beneficiaries_Data" 
+             (click)="selectUser(data)" 
+             [class.bg-blue-100]="selectedBeneficiaryItem?.index === data.index" 
+             class="flex items-center p-3 border rounded-md cursor-pointer">
+          <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+                [ngClass]="selectedBeneficiaryItem?.index === data.index ? 'bg-gray-700' : getUserColor(data)">
+            {{ selectedBeneficiaryItem?.index === data.index ? '✓' : (data.isJointAccount ? 'J' : (data.firstName.charAt(0) + (data.lastName ? data.lastName.charAt(0) : ''))) }}
+          </span>
+          <div class="ml-3">
+            <p class="font-medium text-gray-800">
+              <span *ngIf="data.isJointAccount">Jointly owned by</span>
+              <span *ngIf="!data.isJointAccount">Owned by</span> 
+              {{ data.firstName + ' ' + data.lastName }} 
+              <span *ngIf="!data.isJointAccount">only</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Effective Date Selection -->
+    <div class="mt-4 bg-white p-4 rounded-lg shadow" *ngIf="selectedBeneficiaryItem && !selectedBeneficiaryItem.isJointAccount">
+      <h3 class="text-gray-700 font-medium mb-2">Effective Date of Decision</h3>
+      <div class="flex space-x-4">
+        <div *ngFor="let option of effectiveDate" 
+             (click)="selectEffectiveDate(option)" 
+             [class.bg-blue-100]="current_stage.effective_date === option" 
+             class="flex items-center p-3 border rounded-md cursor-pointer w-1/2">
+          <span class="w-8 h-8 flex items-center justify-center text-white font-semibold rounded-full"
+                [ngClass]="current_stage.effective_date === option ? 'bg-gray-700' : 'bg-gray-400'">
+            {{ current_stage.effective_date === option ? '✓' : '?' }}
+          </span>
+          <div class="ml-3">
+            <p class="font-medium text-gray-800">{{ option }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Request Button -->
+  <div class="mt-6">
+    <button (click)="addRequests()" class="bg-blue-500 text-white px-4 py-2 rounded">
+      Add Request
+    </button>
+  </div>
+</div>

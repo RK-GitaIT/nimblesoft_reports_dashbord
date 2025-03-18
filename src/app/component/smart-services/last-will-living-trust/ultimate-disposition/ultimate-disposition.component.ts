@@ -2,12 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IUltimateDisposition } from '../../../../models/interfaces/utilities/IUltimateDisposition';
-import { AddBeneficieryComponent } from "../../utilities/add-beneficiery/add-beneficiery.component";
 import { ITrustOptions } from '../../../../models/interfaces/utilities/ITrustOptions';
+import { AddBeneficiaryComponent } from '../../utilities/add-beneficiary/add-beneficiary.component';
 
 @Component({
   selector: 'app-ultimate-disposition',
-  imports: [CommonModule, FormsModule, AddBeneficieryComponent],
+  imports: [CommonModule, FormsModule, AddBeneficiaryComponent],
   templateUrl: './ultimate-disposition.component.html',
   styleUrl: './ultimate-disposition.component.css'
 })
