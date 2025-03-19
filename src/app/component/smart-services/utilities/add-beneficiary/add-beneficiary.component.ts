@@ -40,12 +40,16 @@ export class AddBeneficiaryComponent implements OnInit {
     amount: null,
     itemDescription: '',
     ownership_type: '',
-    effective_date: ''
+    effective_date: '',
+    takeShare: undefined,
+    otherBeneficiaries: undefined,
+    alternativeOption: ''
   };
-  
+  alternativeOptions = ['Donate to Charity', 'Transfer to Estate', 'Reallocate to Other Heirs'];
   // Data provided from parent component
   @Input() providing_Data: IRequests[] = [];
   @Input() beneficiaries_Data: Beneficiary[] = [];
+  @Input() showShare: Boolean =false;
   // typeofRequest determines which UI view to show; default is 'model1'
   @Input() typeofRequest: string = 'model1';
 
@@ -56,21 +60,45 @@ export class AddBeneficiaryComponent implements OnInit {
   Temp_beneficiary: Beneficiary[] = [];
   
   ngOnInit(): void {
+    console.log(this.providing_Data)
     this.loadData();
   }
   
   // When a replacement property option is selected (Charity or Individual)
   selectReplacement_property(data: string) {
     this.selectReplacement_property_data = data;
-    // Save selection to the model (bequestType)
     this.current_stage.bequestType = data;
   }
+  updateTakeShare(value: boolean) {
+    this.current_stage.takeShare = value;
+    if (value) {
+      this.current_stage.otherBeneficiaries = undefined;
+      this.current_stage.alternativeOption = '';
+    }
+  }
+  
+  updateOtherBeneficiaries(value: boolean) {
+    this.current_stage.otherBeneficiaries = value;
+    if (value) {
+      this.current_stage.alternativeOption = '';
+    }
+  }
+  
+  updateAlternativeOption(event: Event) {
+    this.current_stage.alternativeOption = (event.target as HTMLSelectElement).value;
+  }
+  
   
   // When a request type option is selected (Dollar Amount or Item)
   selectReplacement_request(data: string) {
     this.selectReplacement_request_data = data;
     // Save selection to the model (itemType)
     this.current_stage.itemType = data;
+    if (data === 'Dollar Amount') {
+      this.current_stage.itemDescription = ''; // Clear item description if switching
+    } else {
+      this.current_stage.amount = null; // Clear amount if switching
+    }
   }
   
   // Prepare beneficiaries data: add an index to each and, if more than one, create a joint record.

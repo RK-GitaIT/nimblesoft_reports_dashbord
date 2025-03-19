@@ -47,6 +47,19 @@ export interface DocumentPrepareFor {
     Spouse_name?: string;
     name?: string;
   };
+  data?:{
+    PrepareForClient?:Beneficiary;
+    trustData?:ITrustOptions;
+    personalData?:IPersonalRepresentatives;
+    successorData?:IPersonalRepresentatives;
+    trustRepresentData?:IPersonalRepresentatives
+    petData?:IPetForm;
+    personalResidence?:IPersonalWithOtherResidence;
+    otherRealEstate?:IPersonalResidence;
+    residenceEstate?:any;
+    ultimateDisposition?:IUltimateDisposition;
+
+  }
 }
 
 @Component({
@@ -292,6 +305,14 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   handleTrustDataEmit(data: ITrustOptions): void {
     console.log('Trust data emitted:', data);
     this.trustOptionData = data;
+    // Ensure 'data' exists before assigning 'trustData'
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.trustData = data;
     this.personal_representative_data_update();
   }
 
@@ -310,7 +331,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
 
   Personal_handleMembersDataEmit(data: IPersonalRepresentatives): void {
     console.log('Members data emitted:', data);
-    // Update your parent component state as needed.
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.personalData = data;
     this.personalReps = data;
     this.successor_representative_data_update();
   }
@@ -330,6 +357,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   
   successor_handleMembersDataEmit(data: IPersonalRepresentatives): void {
       console.log('Members data emitted:', data);
+      if (!this.DocumentPrepareFor) {
+        console.error('DocumentPrepareFor is null, cannot update trustData');
+        return;
+      }
+      // Ensure 'data' exists before assigning 'trustData'
+      this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+      this.DocumentPrepareFor.data.successorData = data;
       // Update your parent component state as needed.
       this.successorReps = data;
     this.trustee_representative_data_update();
@@ -350,7 +384,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
 
   trustee_handleMembersDataEmit(data: IPersonalRepresentatives): void {
     console.log('Members data emitted:', data);
-    // Update your parent component state as needed.
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.trustRepresentData = data;
     this.trusteesReps = data;
     this.pet_care_update();
   }
@@ -373,6 +413,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   }
   onPetData(data: IPetForm): void {
     console.log('Received pet data:', data);
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.petData = data;
     if(this.DocumentPrepareFor!= null){
       this.DocumentPrepareFor.petFormData = data;
     }
@@ -397,6 +444,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   
   onPersonalResidenceData(data: IPersonalWithOtherResidence): void {
     console.log('Received pet data:', data);
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.personalResidence = data;
     if(this.DocumentPrepareFor!= null){
       this.DocumentPrepareFor.PersonalResidence = data;
     }
@@ -416,6 +470,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     }
     on_other_real_estateFormDataData(data: IPersonalResidence): void {
       console.log('Received pet data:', data);
+      if (!this.DocumentPrepareFor) {
+        console.error('DocumentPrepareFor is null, cannot update trustData');
+        return;
+      }
+      // Ensure 'data' exists before assigning 'trustData'
+      this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+      this.DocumentPrepareFor.data.otherRealEstate = data;
       if(this.DocumentPrepareFor!= null){
         this.DocumentPrepareFor.PersonalResidence = data;
       }
@@ -434,6 +495,13 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   }
   onResidenceEstateData(data: any): void {
     console.log('Received pet data:', data);
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.residenceEstate = data;
     this.ultimate_disposition_data_update();
   }
   //#endregion
@@ -443,6 +511,7 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   ultimate_disposition_data_update(): void {
     this.ultimate_disposition = {
      beneficiary_Details: [],
+     persons:this.beneficiaries,
      ultimate_beneficiary: '',
      next: "finish",
      back: "residence-estate",
@@ -450,9 +519,18 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   }
   onUltimateDispositionData(data: IUltimateDisposition): void {
     console.log('Received pet data:', data);
+    if (!this.DocumentPrepareFor) {
+      console.error('DocumentPrepareFor is null, cannot update trustData');
+      return;
+    }
+    // Ensure 'data' exists before assigning 'trustData'
+    this.DocumentPrepareFor.data = this.DocumentPrepareFor.data || {};  
+    this.DocumentPrepareFor.data.ultimateDisposition = data;
     if(this.ultimate_disposition!= null){
       this.ultimate_disposition = data;
     }
+
+    console.log('My Data ',this.DocumentPrepareFor.data);
   }
   //#endregion
 

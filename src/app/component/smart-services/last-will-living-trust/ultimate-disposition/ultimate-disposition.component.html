@@ -30,6 +30,8 @@
         </label>
         <app-add-beneficiary
         [providing_Data]="ultimate_disposition_data.beneficiary_Details"
+        [beneficiaries_Data]="ultimate_disposition_data.persons ?? []"
+        [showShare]="true"
         (providing_Data_emit)="onBeneficiariesChange($event)">
       </app-add-beneficiary>
     </div>

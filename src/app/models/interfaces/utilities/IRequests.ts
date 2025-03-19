@@ -17,6 +17,9 @@ export interface IRequests {
 
     ownership_type?: string;
     effective_date?: string;
+    takeShare?: boolean;  // ✅ New Field
+    otherBeneficiaries?: boolean;  // ✅ New Field
+    alternativeOption?: string;  // ✅ New Field
 
   }
   
