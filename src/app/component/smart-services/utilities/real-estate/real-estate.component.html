@@ -1,5 +1,12 @@
 <div class="flex-1 h-screen overflow-auto p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-  <h3 class="text-lg font-semibold mt-1">Real Estate Management</h3>
+  <div class="flex justify-between">
+    <h3 class="text-lg font-semibold mt-1">Real Estate Management</h3>
+    <div class="text-right">
+      <button (click)="addRealEstate()" class="bg-blue-500 text-white px-4 py-2 rounded">
+        + Add Property
+      </button>
+    </div>
+  </div>
 
   <!-- PROPERTY LIST SECTION -->
   <div class="mt-4">
@@ -29,11 +36,6 @@
       <label class="block">
         <input type="text" class="border p-2 rounded w-full" placeholder="Enter Property Address" [(ngModel)]="currentStage.address">
       </label>
-    </div>
-    <div class="text-right">
-      <button (click)="addRealEstate()" class="bg-blue-500 text-white px-4 py-2 rounded">
-        + Add Property
-      </button>
     </div>
   </div>
 
@@ -87,5 +89,5 @@
     (providing_Data_emit)="updateRequests($event)">
   </app-add-beneficiary>
   </div>
-
+ 
 </div>

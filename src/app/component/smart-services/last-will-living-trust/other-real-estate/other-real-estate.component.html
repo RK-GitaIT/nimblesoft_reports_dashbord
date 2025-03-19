@@ -64,7 +64,8 @@
     </label>
   </div>
   <div *ngIf="other_real_estate_Data!.iSSpecificBequests">
-    <app-add-beneficiary></app-add-beneficiary>
+    <app-add-beneficiary typeofRequest="model6" [beneficiaries_Data]="other_real_estate_Data?.Beneficiary ?? []"
+    ></app-add-beneficiary>
   </div>
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-4">

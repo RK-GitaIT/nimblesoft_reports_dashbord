@@ -25,6 +25,7 @@ export class UltimateDispositionComponent implements OnInit {
       this.ultimate_disposition_data = {
         back: '',
         next: '',
+        persons:[],
         ultimate_beneficiary: '',
         beneficiary_Details: [],
       };
