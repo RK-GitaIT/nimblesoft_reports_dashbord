@@ -291,7 +291,7 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
       title2: 'Decision',
       sub_title: 'Joint Revocable Trust Option',
       sub_title_description: 
-        `NetLaw offers married clients two choices when creating a Revocable Living Trust, a joint trust or separate individual trusts. Please keep in mind that the NetLaw Trusts, whether joint or individual, are created for the purpose of probate avoidance only. The NetLaw Trusts do not include estate or income tax planning or asset protection planning. If you have questions or concerns with regard to tax or asset protection planning, please contact customer service or an attorney of your choice.
+        `Estate Planning offers married clients two choices when creating a Revocable Living Trust, a joint trust or separate individual trusts. Please keep in mind that the Estate Planning Trusts, whether joint or individual, are created for the purpose of probate avoidance only. The Estate Planning Trusts do not include estate or income tax planning or asset protection planning. If you have questions or concerns with regard to tax or asset protection planning, please contact customer service or an attorney of your choice.
 
 If you choose to create a joint Revocable Trust, you will be able to create two Wills, one for each spouse, and one joint Revocable Trust. The first spouse to complete documents will create the joint Trust (along with his or her Will), then the other spouse will create his or her Will separately. Collectively, these documents allow you to name the Personal Representative of your estate, the Guardian of your minor children, and direct how you want your assets or property distributed.
 
