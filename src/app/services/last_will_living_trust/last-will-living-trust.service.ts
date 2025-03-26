@@ -66,8 +66,8 @@ export class LastWillLivingTrustService {
         const { pdfField, value } = fieldDef;
         if (availableFields.includes(pdfField)) {
           try {
-            form.getTextField(pdfField).setText(value);
-            console.log(`Filled "${pdfField}" with value "${value}"`);
+              form.getTextField(pdfField).setText(value);
+              console.log(`Filled "${pdfField}" with value "${value}"`);
           } catch (e) {
             console.warn(`Error setting value for field "${pdfField}":`, e);
           }
@@ -78,7 +78,7 @@ export class LastWillLivingTrustService {
   
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
-      const fileName = 'Trust.pdf';
+      const fileName = 'Certificate of Trust.pdf';
       const file = new File([blob], fileName, { type: 'application/pdf' });
       this.files.push(file);
       console.log('Trust PDF loaded successfully.');
@@ -177,7 +177,7 @@ export class LastWillLivingTrustService {
   
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
-      const fileName = 'Trust.pdf';
+      const fileName = 'Revocable Living Trust Execution Instructions.pdf';
       const file = new File([blob], fileName, { type: 'application/pdf' });
       this.files.push(file);
       console.log('Trust PDF loaded successfully.');
@@ -245,7 +245,7 @@ export class LastWillLivingTrustService {
   
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
-      const fileName =   'Last Will & Testament.pdf';
+      const fileName =   'Last Will & Testament Execution Instructions.pdf';
       const file = new File([blob], fileName, { type: 'application/pdf' });
       this.files.push(file);
       console.log('Trust PDF loaded successfully.');
@@ -293,7 +293,7 @@ export class LastWillLivingTrustService {
   
       const pdf_Bytes = await pdfDoc.save();
       const blob = new Blob([pdf_Bytes], { type: 'application/pdf' });
-      const fileName =   'Last Will & Testament Execution Instructions.pdf';
+      const fileName =   'Last_will & Testament.pdf';
       const file = new File([blob], fileName, { type: 'application/pdf' });
       this.files.push(file);
       console.log('Trust PDF loaded successfully.');
