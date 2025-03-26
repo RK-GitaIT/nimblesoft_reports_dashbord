@@ -36,7 +36,7 @@ export class AuthService {
   logout(): void {
     sessionStorage.removeItem('token');
     this.authSubject.next(false);
-    this.toastService.showToast('Logged Out', 'Session ended.', 'warning');
+   // this.toastService.showToast('Logged Out', 'Session ended.', 'warning');
     this.router.navigate(['/login']);
   }
 
