@@ -92,6 +92,7 @@ export class LastWillLivingTrustService {
       const url = 'assets/pdf/Revocable_Living_Trust_Agreement.pdf';
       const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(pdfBytes);
+      console.log(this.client_data);
   
       const fields = [
         { pdfField: "Trust_Title", value: this.client_data?.revocable_living_trust?.Trust_Title },

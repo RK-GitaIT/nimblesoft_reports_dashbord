@@ -661,10 +661,37 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     this.ClientData.trust.trustName=this.trustOptionData.title;
     
     //#endregion
+
+    //#regin Trust
+    if(!this.ClientData.trust) {
+      this.ClientData.trust = {};
+    }
+    this.ClientData.trust.trustName = this.DocumentPrepareFor.data?.trustData?.input_value;
+    
+    this.ClientData.trust.settlorsTrust = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+
+    this.ClientData.trust.addressTrustee1 = this.DocumentPrepareFor.data?.trustData?.user?.address;
+
+    this.ClientData.trust.addressTrustee2 = this.DocumentPrepareFor.data?.trustData?.user?.address;
+
+    this.ClientData.trust.actingTrustee = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+    this.ClientData.trust.initialTrustees = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+
+    this.ClientData.trust.settlorsAndTrustees = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+    this.ClientData.trust.acknowledgedTrustName = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+    this.ClientData.trust.currentTrustees = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+
+    this.ClientData.trust.trustTitle = this.DocumentPrepareFor.data?.trustData?.input_value;
+
+    this.ClientData.trust.assetTrustName = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
+
+    this.ClientData.trust.printSignature1 = person_1;
+    this.ClientData.trust.printSignature2 = person_2;
+
+    //#endregion
   }
   
   
-
  async generateDocuments(){
     await this.clientDataUpdate();
     if(this.ClientData!= null){
