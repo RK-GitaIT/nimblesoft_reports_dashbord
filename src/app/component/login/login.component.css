@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Subtle Input Focus Animation */
+input:focus {
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Button Hover Effect (Minimal) */
+button:hover {
+  opacity: 0.9;
+  transition: opacity 0.2s ease-in-out;
+}

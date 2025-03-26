@@ -1,4 +1,4 @@
-<div class="flex h-screen">
+<div *ngIf="isAuthenticated; else loginScreen" class="flex h-screen">
   <app-sidebar class="flex-shrink-0"></app-sidebar>
 
   <!-- Main content area -->
@@ -6,5 +6,8 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-
 <app-toast-notification></app-toast-notification>
+<!-- Login Screen -->
+<ng-template #loginScreen>
+  <router-outlet></router-outlet>
+</ng-template>
