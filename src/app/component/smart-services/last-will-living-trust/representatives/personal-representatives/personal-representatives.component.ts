@@ -30,6 +30,7 @@ export class PersonalRepresentativesComponent implements OnInit, OnChanges {
 
   confirmToNext(): void {
     if (this.personal_presentatives_data) {
+      this.personal_presentatives_data.sleeted_members=this.selectedRepresentatives
       this.personal_presentatives_data_emit.emit(this.personal_presentatives_data);
       this.nextClicked.emit(this.personal_presentatives_data.next);
     }
