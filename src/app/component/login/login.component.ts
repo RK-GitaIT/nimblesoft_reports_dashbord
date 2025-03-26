@@ -17,20 +17,29 @@ export class LoginComponent {
   rememberMe: boolean = false;
   loading: boolean = false;
 
-  isResetPassword: boolean = false;  // Controls modal visibility
+  isResetPassword: boolean = false; 
   resetEmail: string = '';
   resetPassword: string = '';
 
   constructor(private authService: AuthService, private router: Router, private toastService: ToastService) {}
 
+  private passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[0-9]).{8,}$/;
+
   login() {
+    if (!this.passwordRegex.test(this.password)) {
+      this.toastService.showToast(
+        'Error',
+        'Password must be at least 8 characters long, contain one special character, and one number.',
+        'error'
+      );
+      return;
+    }
+
     this.loading = true;
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        setTimeout(() => {
-          this.loading = false;
-          this.router.navigate(['/my-profile']);
-        }, 1500);
+        this.loading = false;
+        this.router.navigate(['/my-profile']);
       },
       error: (err) => {
         console.error('Login Error:', err);
@@ -41,7 +50,6 @@ export class LoginComponent {
     });
   }
 
-  // Toggle Reset Password Popup
   toggleResetPassword(event: Event) {
     event.preventDefault();  // Prevents unwanted page reloads or resets
     this.isResetPassword = !this.isResetPassword;
@@ -49,10 +57,18 @@ export class LoginComponent {
     this.resetPassword = '';
   }
 
-  // Send Reset Password Request
   sendResetPassword() {
     if (!this.resetEmail || !this.resetPassword) {
       this.toastService.showToast('Error', 'Please enter your email and new password', 'error');
+      return;
+    }
+
+    if (!this.passwordRegex.test(this.resetPassword)) {
+      this.toastService.showToast(
+        'Error',
+        'Password must be at least 8 characters long, contain one special character, and one number.',
+        'error'
+      );
       return;
     }
 
