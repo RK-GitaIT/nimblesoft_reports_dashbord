@@ -4,6 +4,7 @@ import { DocumentPrepareFor } from '../../component/smart-services/property-guar
 import { Router } from '@angular/router';
 import { LegalDocumentsService } from '../leagl_documents/leagl-documents.service';
 import { ToastService } from '../toast.service';
+import { Beneficiary } from '../../models/interfaces/Beneficiary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,8 @@ export class FinancesService {
       const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(pdfBytes);
 
+      console.log("Data_Finance:",this.client_data?.SuccessorRepresentativesAgent)
+
       var fields = [
         {
           controlName: 'field1',
@@ -39,11 +42,11 @@ export class FinancesService {
         },
         {
           controlName: 'field2',
-          pdfField: 'Child_Name',
+          pdfField: 'Child_Name', 
           label: 'Your Agent Name & Address',
           tooltip: 'insert the name and address of the person appointed',
           type: 'text',
-          value: `${this.client_data?.SuccessorRepresentativesAgent?.[0]?.firstName ?? ''} ${this.client_data?.SuccessorRepresentativesAgent?.[0]?.lastName ?? ''}`.trim()
+          value: this.client_data?.RepresentativesAgent?.length ? this.client_data?.RepresentativesAgent.map((agent: Beneficiary) => `${agent.firstName ?? ''} ${agent.lastName ?? ''}`).join(', ').trim(): ''
         }
         ,
         {
@@ -52,7 +55,7 @@ export class FinancesService {
           label: 'Your Agent Name & Address',
           tooltip: 'insert the name and address of the person appointed',
           type: 'text',
-          value: `${this.client_data?.SuccessorRepresentativesAgent?.[0]?.address ?? ''} `.trim()
+          value: `${this.client_data?.RepresentativesAgent?.[0]?.address ?? ''} `.trim()
         }
         ,
         {
@@ -61,7 +64,7 @@ export class FinancesService {
           label: 'Your Agent Name & Address',
           tooltip: 'insert the name and address of the person appointed',
           type: 'text',
-          value: `${this.client_data?.SuccessorRepresentativesAgent?.[0]?.city ?? ''} ${this.client_data?.SuccessorRepresentativesAgent?.[0]?.state ?? ''} ${this.client_data?.SuccessorRepresentativesAgent?.[0]?.zipCode ?? ''}`.trim()
+          value: `${this.client_data?.RepresentativesAgent?.[0]?.city ?? ''} ${this.client_data?.RepresentativesAgent?.[0]?.state ?? ''} ${this.client_data?.SuccessorRepresentativesAgent?.[0]?.zipCode ?? ''}`.trim()
         }
       ];
 
@@ -74,7 +77,8 @@ export class FinancesService {
           try {
             switch (fieldDef.type) {
               case 'text':
-                form.getTextField(fieldDef.pdfField).setText(value);
+                const textField = form.getTextField(fieldDef.pdfField).setText(value);
+                console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
                 break;
               case 'radio':
                 form.getRadioGroup(fieldDef.pdfField).select(value);
