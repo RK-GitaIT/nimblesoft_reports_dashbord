@@ -77,8 +77,7 @@ export class FinancesService {
           try {
             switch (fieldDef.type) {
               case 'text':
-                const textField = form.getTextField(fieldDef.pdfField).setText(value);
-                console.log(`Filled "${fieldDef.pdfField}" with value "${value}"`);
+                form.getTextField(fieldDef.pdfField).setText(value);
                 break;
               case 'radio':
                 form.getRadioGroup(fieldDef.pdfField).select(value);
