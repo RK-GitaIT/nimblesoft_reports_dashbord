@@ -26,7 +26,9 @@ import { OtherRealEstateComponent } from './other-real-estate/other-real-estate.
 import { ClientData } from '../../../models/interfaces/ClientData';
 import { RevocableLivingTrust } from '../../../models/interfaces/RevocableLivingTrust';
 import { LastWillLivingTrustService } from '../../../services/last_will_living_trust/last-will-living-trust.service';
-
+import { Revocable_living_trust_execution_instructions } from '../../../services/pdf_generator/Revocable_living_trust_execution_instructions';
+import { last_Will_Testament_Execution_Instructions } from '../../../services/pdf_generator/Last-Will-Testament -Execution-Instructions';
+import { Revocable_living_TrustAgreementPDF } from '../../../services/pdf_generator/last_Will_living_revocable_Trust';
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
   selected_personalReps?: Beneficiary[];
@@ -120,7 +122,7 @@ export class LastWillLivingTrustComponent implements OnInit {
   property!: IProperty;
   ClientData!: ClientData;
 
-  constructor(private profileService: myProfileService, private router: Router, private lastwill_generate: LastWillLivingTrustService) {}
+  constructor(private profileService: myProfileService, private router: Router, private lastwill_generate: LastWillLivingTrustService, private revocable_living_trust_execution_instructions: Revocable_living_trust_execution_instructions, private last_Will_Testament_Execution_Instructions : last_Will_Testament_Execution_Instructions, private revocable_living_TrustAgreementPDF: Revocable_living_TrustAgreementPDF) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -694,6 +696,9 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
   
  async generateDocuments(){
     await this.clientDataUpdate();
+     this.revocable_living_trust_execution_instructions.generateWillPDF(this.ClientData.revocable_living_trust_execution_instructions);
+     this.last_Will_Testament_Execution_Instructions.generatePDF();
+     this.revocable_living_TrustAgreementPDF.livingtrustrevocablegeneratePDF(this.ClientData.revocable_living_trust);
     if(this.ClientData!= null){
       this.lastwill_generate.load_PDFs(this.ClientData);
     }
