@@ -9,6 +9,8 @@ export interface ITrustOptions {
       sub_title_description?: string;
       input_label?: string; 
       input_value?: string; 
+      revocable_radio_description?:string;
+      revocable_radio_value?:boolean;
       bottomDescription?: string; 
       back : string;
       next: string;
