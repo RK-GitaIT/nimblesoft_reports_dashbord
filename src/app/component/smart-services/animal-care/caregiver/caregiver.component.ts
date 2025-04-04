@@ -30,6 +30,7 @@ export class CaregiverComponent {
 
   handleSelectionChange(updatedReps: Beneficiary[]) {
     console.log('Updated Representatives:', updatedReps);
+    this.DocumentPrepareFor ? this.DocumentPrepareFor.caregiver=updatedReps : [];
     this.selectedRepresentatives = updatedReps;
   }
   

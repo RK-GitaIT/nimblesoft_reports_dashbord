@@ -26,6 +26,11 @@ import { OtherRealEstateComponent } from './other-real-estate/other-real-estate.
 import { ClientData } from '../../../models/interfaces/ClientData';
 import { RevocableLivingTrust } from '../../../models/interfaces/RevocableLivingTrust';
 import { LastWillLivingTrustService } from '../../../services/last_will_living_trust/last-will-living-trust.service';
+import { generateLivingTrustPDF } from '../../../services/pdf_generator/Living_Trust_Funding_Instructions';
+import { generateCertificateOfTrustPDF } from '../../../services/pdf_generator/Certificate_of_trust';
+import { generateLastWillAndTestament } from '../../../services/pdf_generator/Last_will_testament';
+
+
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -119,7 +124,7 @@ export class LastWillLivingTrustComponent implements OnInit {
   isSpouse!: boolean;
   property!: IProperty;
   ClientData!: ClientData;
-
+  loading: boolean = false;
   constructor(private profileService: myProfileService, private router: Router, private lastwill_generate: LastWillLivingTrustService) {}
 
   ngOnInit(): void {
@@ -295,7 +300,9 @@ Finally, you can protect your children’s inheritance by keeping it in trust un
 
 If you choose to create a joint Revocable Trust, you will be able to create two Wills, one for each spouse, and one joint Revocable Trust. The first spouse to complete documents will create the joint Trust (along with his or her Will), then the other spouse will create his or her Will separately. Collectively, these documents allow you to name the Personal Representative of your estate, the Guardian of your minor children, and direct how you want your assets or property distributed.
 
-Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor != null) ? this.DocumentPrepareFor.last_will.Spouse_name : "") + " ?",
+`,
+      revocable_radio_description:`Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor != null) ? this.DocumentPrepareFor.last_will.Spouse_name : "") + `?`,
+      revocable_radio_value:true,
       input_label: 'Trust Name',
       back: 'initial',
       next: 'personal-representatives'
@@ -670,9 +677,9 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     
     this.ClientData.trust.settlorsTrust = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
 
-    this.ClientData.trust.addressTrustee1 = this.DocumentPrepareFor.data?.trustData?.user?.address;
+    this.ClientData.trust.addressTrustee1 = `${this.DocumentPrepareFor?.beneficiary?.address}, ${this.DocumentPrepareFor?.beneficiary?.city}`;
 
-    this.ClientData.trust.addressTrustee2 = this.DocumentPrepareFor.data?.trustData?.user?.address;
+    this.ClientData.trust.addressTrustee2 = this.DocumentPrepareFor?.beneficiary?.city;
 
     this.ClientData.trust.actingTrustee = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
     this.ClientData.trust.initialTrustees = `${person_1 ?? ''} and ${person_2 ?? ''}`.trim();
@@ -691,13 +698,25 @@ Do you want to create a Joint Revocable Trust with ` + ((this.DocumentPrepareFor
     //#endregion
   }
   
-  
+
+
  async generateDocuments(){
+    this.loading = true; 
     await this.clientDataUpdate();
+    console.log('Hello',this.ClientData.revocable_living_trust_funding_instructions);
+   await generateLivingTrustPDF(this.ClientData.revocable_living_trust_funding_instructions);
+   await generateCertificateOfTrustPDF(this.ClientData.trust);
+   await generateLastWillAndTestament(this.ClientData.last_will);
+ 
+  
     if(this.ClientData!= null){
-      this.lastwill_generate.load_PDFs(this.ClientData);
+      await this.lastwill_generate.load_PDFs(this.ClientData);
+     
     }
+    this.loading = false; 
   }
   
   
 }
+
+

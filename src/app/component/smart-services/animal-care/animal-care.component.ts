@@ -11,6 +11,8 @@ import { CaregiverComponent } from './caregiver/caregiver.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { UltimateDispositionComponent } from './ultimate-disposition/ultimate-disposition.component';
 import { TrustMonitoringComponent } from './trust-monitoring/trust-monitoring.component';
+import { generateAnimalCarePDF } from '../../../services/pdf_generator/Animal_care_trust';
+import { animalTrustPdf } from '../../../services/pdf_generator/animal_trust_instructions';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;
@@ -25,7 +27,7 @@ export interface DispositionFund {
   type: string; 
   name: string; 
   percentage: null; 
-  charityDetails: { name: string; city: string; state: string }  // Change '' to string
+  charityDetails: { name: string; city: string; state: string }  
 }
 
 export interface Monitoring {
@@ -122,9 +124,13 @@ export class AnimalCareComponent implements OnInit {
     });
   }
 
-  Assemble(): void {
+  async Assemble(): Promise<void> {
     // this.pdfgeneration.loadPdfs(this.DocumentPrepareFor);
     console.log("Download PDF for:", this.DocumentPrepareFor);
+    // Call the function to generate the PDF
+    
+    await generateAnimalCarePDF(this.DocumentPrepareFor);
+    await animalTrustPdf()
     // Trigger your PDF generation logic here.
   }
 
@@ -192,17 +198,19 @@ export class AnimalCareComponent implements OnInit {
   handleTrustCanceled(): void {
     this.currentStep = 'Monitoring';
   }
-  handleTrustConfirmed(): void {
+  async handleTrustConfirmed(): Promise<void> {
 
     // Move on to HIPAA Authorization step.
     this.currentStep = 'finish';
+   
   }
 
   handleDispositionCanceled(): void {
     this.currentStep = 'Disposition';
   }
-  handleDispositionConfirmed(): void {
-
+  async handleDispositionConfirmed(): Promise<void> {
+    await generateAnimalCarePDF(this.DocumentPrepareFor);
+    await animalTrustPdf()
     this.goToMyFiles();
   }
 

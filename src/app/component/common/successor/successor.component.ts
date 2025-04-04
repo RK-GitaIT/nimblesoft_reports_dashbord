@@ -29,6 +29,7 @@ export class SuccessorComponent implements OnInit {
 
   handleSelectionChange(updatedReps: Beneficiary[]) {
     console.log('Updated Representatives:', updatedReps);
+    this.DocumentPrepareFor? this.DocumentPrepareFor.Successor=updatedReps : []
     this.selectedRepresentatives = updatedReps;
   }
 
@@ -99,8 +100,7 @@ export class SuccessorComponent implements OnInit {
 
   confirmToNext(): void {
     if (!this.DocumentPrepareFor) return;
-    console.log('Selected  Representatives:',
-      this.DocumentPrepareFor.Successor
+    console.log('Selected  Representatives:', this.DocumentPrepareFor.Successor
     );
     this.selectionConfirmed.emit(
       [...this.DocumentPrepareFor.Successor]

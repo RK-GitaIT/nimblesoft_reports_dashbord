@@ -16,10 +16,9 @@ export class SuccessorsComponent {
   @Input() isChooseOption: Boolean = true;
   @Input() selectedRepresentatives: Beneficiary[] = [];
   @Output() representativesChange = new EventEmitter<Beneficiary[]>();
+  @Input() successorType: String='multiple' // Default Selection
+
   @Input() getColor!: (user: Beneficiary) => string; // Function to determine color from parent
-
-  successorType: string = 'multiple'; // Default Selection
-
   /**
    * Handles dropdown changes and adjusts selection accordingly
    */

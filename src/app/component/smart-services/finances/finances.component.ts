@@ -8,6 +8,8 @@ import { FinancesRepresentativeAgentComponent } from './finances-representative-
 import { FinancesSuccessorRepresentativesComponent } from './finances-successor-representatives/finances-successor-representatives.component';
 import { Router } from '@angular/router';
 import { FinancesService } from '../../../services/finances/finances.service';
+import { generatePowerOfAttorneyPDF } from '../../../services/pdf_generator/Power_of_attorney';
+import { powerofattorneyInstructionsPDF } from '../../../services/pdf_generator/Power_of_Attorney_Execution';
 
 export interface DocumentPrepareFor {
   beneficiary: Beneficiary;  
@@ -110,7 +112,9 @@ user: Beneficiary | null = null;
     return colors[index];
   }
 
-  Assemble(): void {
+  async Assemble(): Promise<void> {
+    await generatePowerOfAttorneyPDF(this.DocumentPrepareFor?.beneficiary)
+    await  powerofattorneyInstructionsPDF()
     this.pdfgeneration.loadPdfs(this.DocumentPrepareFor);
     console.log("Download PDF for:", this.DocumentPrepareFor);
     // Trigger your PDF generation logic here.
@@ -175,7 +179,7 @@ user: Beneficiary | null = null;
 
   handleFinish(): void {
     this.pdfgeneration.loadPdfs(this.DocumentPrepareFor);
-    this.currentStep = 'finish'; // or whatever step you want
+    this.currentStep = 'finish'; 
   }
 
   goToMyFiles(): void {

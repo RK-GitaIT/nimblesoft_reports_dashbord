@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { myProfileService } from '../../../services/json/my-profile.service';
 import { LastWillTrustService } from '../../../services/Lastwill_trust/last-will-trust.service';
 import { Beneficiary } from '../../../models/interfaces/Beneficiary.model';
+import { generateLastWillAndTestament } from '../../../services/pdf_generator/Last_will_testament';
 
 /** 
  * Original interface for the first list of "Specific Bequests" 
@@ -272,7 +273,8 @@ export class PropertyGuardianshipComponent implements OnInit {
   }
 
   /** Final step: load PDFs, move to "finish" */
-  confirmAndFinish(): void {
+  async confirmAndFinish(): Promise<void> {
+    await generateLastWillAndTestament(this.DocumentPrepareFor?.last_will);
     this.finalizeDocuments();
   }
 
@@ -301,6 +303,7 @@ export class PropertyGuardianshipComponent implements OnInit {
   /** "Assemble" button in the 'initial' step */
   Assemble(): void {
     if (this.DocumentPrepareFor) {
+      generateLastWillAndTestament(this.DocumentPrepareFor.last_will);
       this.updateLastWillTestament();
       this.lastwilltrus.load_PDFs(this.DocumentPrepareFor);
       console.log('Download PDF for:', this.DocumentPrepareFor);

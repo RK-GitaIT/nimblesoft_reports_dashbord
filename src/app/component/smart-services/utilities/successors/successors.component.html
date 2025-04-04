@@ -11,7 +11,7 @@
     </div>
 
     <!-- Explanation -->
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-gray-600" *ngIf="isChooseOption">
       <ng-container [ngSwitch]="successorType">
         <div *ngSwitchCase="'multiple'">You have chosen to name multiple successor representatives who will serve <b>together</b>.</div>
         <div *ngSwitchCase="'one'">You have chosen to name <b>one</b> successor representative.</div>
